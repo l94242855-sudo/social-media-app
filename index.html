@@ -12,7 +12,7 @@
     
     <style>
         /* ============================================
-           CSS
+           CSS (same as before)
            ============================================ */
         :root {
             --primary: #7C3AED;
@@ -1457,7 +1457,7 @@
         document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
 
         // ============================================
-        // AUTH
+        // AUTH - LOGIN
         // ============================================
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -1475,6 +1475,9 @@
             }
         });
 
+        // ============================================
+        // AUTH - GOOGLE LOGIN
+        // ============================================
         document.getElementById('googleAuthBtn').addEventListener('click', async () => {
             const provider = new firebase.auth.GoogleAuthProvider();
             try {
@@ -1489,6 +1492,9 @@
             }
         });
 
+        // ============================================
+        // AUTH - SIGNUP (FIXED)
+        // ============================================
         document.getElementById('signupForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const name = document.getElementById('signupName').value;
@@ -1496,15 +1502,31 @@
             const email = document.getElementById('signupEmail').value;
             const password = document.getElementById('signupPassword').value;
 
+            // Validate username format
             if (!username.match(/^[a-z0-9_]{3,20}$/)) {
                 showToast('Username must be 3-20 characters (letters, numbers, underscore)', 'error');
                 return;
             }
 
             try {
+                // 1. Check if username already exists
+                showToast('Checking username availability...', 'info');
+                const usernameQuery = await db.collection('users')
+                    .where('username', '==', username)
+                    .get();
+                if (!usernameQuery.empty) {
+                    showToast('Username already taken. Please choose another.', 'error');
+                    return;
+                }
+
+                // 2. Create user with email/password
                 showToast('Creating account...', 'info');
                 const result = await auth.createUserWithEmailAndPassword(email, password);
+                
+                // 3. Update profile with display name
                 await result.user.updateProfile({ displayName: name });
+
+                // 4. Save user data to Firestore
                 await db.collection('users').doc(result.user.uid).set({
                     uid: result.user.uid,
                     name: name,
@@ -1516,15 +1538,32 @@
                     following: [],
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
+
+                // 5. Send verification email
                 await result.user.sendEmailVerification();
                 showToast('Verification email sent! Check your inbox.', 'success');
+
+                // 6. Switch to OTP screen
                 document.querySelector('.auth-card:first-child').style.display = 'none';
                 document.getElementById('signupCard').style.display = 'none';
                 document.getElementById('otpScreen').style.display = 'flex';
                 document.getElementById('otpEmailDisplay').textContent = email;
                 startEmailVerificationCheck(result.user);
+
             } catch (error) {
-                showToast(error.message, 'error');
+                // Handle specific Firebase errors
+                let errorMsg = error.message;
+                if (error.code === 'auth/email-already-in-use') {
+                    errorMsg = 'This email is already registered. Please sign in or use another email.';
+                } else if (error.code === 'auth/weak-password') {
+                    errorMsg = 'Password should be at least 6 characters.';
+                } else if (error.code === 'auth/invalid-email') {
+                    errorMsg = 'Please enter a valid email address.';
+                } else if (error.code === 'auth/network-request-failed') {
+                    errorMsg = 'Network error. Please check your connection.';
+                }
+                showToast(errorMsg, 'error');
+                console.error('Signup error:', error);
             }
         });
 
@@ -2143,7 +2182,7 @@
             navigator.serviceWorker.register('/service-worker.js').catch(() => {});
         }
 
-        console.log('🚀 ConnectHub v1.0 loaded!');
+        console.log('🚀 ConnectHub v1.0 loaded with fixed signup!');
     </script>
 </body>
 </html>
