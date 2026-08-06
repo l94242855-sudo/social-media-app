@@ -5,20 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link rel="manifest" href="/manifest.json" />
     <meta name="theme-color" content="#7C3AED" />
-    <title>ConnectHub</title>
+    <title>Social Media App</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     
     <style>
-        /* ============================================
-           CSS (same as before)
-           ============================================ */
+        /* ===== CSS VARIABLES ===== */
         :root {
             --primary: #7C3AED;
             --primary-dark: #6D28D9;
             --primary-light: #A78BFA;
-            --primary-gradient: linear-gradient(135deg, #7C3AED, #6D28D9);
+            --gradient: linear-gradient(135deg, #7C3AED, #6D28D9);
             --bg: #F8FAFC;
             --card: #FFFFFF;
             --text: #0F172A;
@@ -26,10 +24,9 @@
             --border: #E2E8F0;
             --shadow: 0 1px 3px rgba(0,0,0,0.06);
             --shadow-lg: 0 10px 40px rgba(0,0,0,0.08);
-            --shadow-xl: 0 20px 60px rgba(0,0,0,0.12);
             --radius: 16px;
             --radius-full: 9999px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition: all 0.3s ease;
         }
 
         [data-theme="dark"] {
@@ -43,7 +40,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            font-family: 'Inter', -apple-system, sans-serif;
+            font-family: 'Inter', sans-serif;
             background: var(--bg);
             color: var(--text);
             height: 100vh;
@@ -55,76 +52,9 @@
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
 
-        /* ============================================
-           SPLASH SCREEN
-           ============================================ */
-        #splashScreen {
-            position: fixed;
-            inset: 0;
-            z-index: 99999;
-            background: linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
-        }
-        #splashScreen.hidden {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-
-        .splash-logo {
-            width: 120px;
-            height: 120px;
-            background: rgba(255,255,255,0.15);
-            border-radius: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            animation: pulse 1.5s ease-in-out infinite;
-            backdrop-filter: blur(10px);
-        }
-        .splash-logo i { font-size: 60px; color: white; }
-        .splash-text {
-            margin-top: 24px;
-            font-size: 32px;
-            font-weight: 900;
-            color: white;
-            letter-spacing: 2px;
-        }
-        .splash-text span { opacity: 0.8; }
-        .splash-loader {
-            margin-top: 40px;
-            width: 48px;
-            height: 48px;
-            border: 4px solid rgba(255,255,255,0.2);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-        .splash-sub {
-            margin-top: 16px;
-            color: rgba(255,255,255,0.6);
-            font-size: 14px;
-            font-weight: 400;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* ============================================
-           AUTH SCREEN
-           ============================================ */
+        /* ===== AUTH SCREEN ===== */
         .auth-container {
-            display: none;
+            display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
@@ -139,7 +69,7 @@
         .auth-card {
             background: var(--card);
             border-radius: var(--radius);
-            box-shadow: var(--shadow-xl);
+            box-shadow: var(--shadow-lg);
             padding: 48px;
             max-width: 420px;
             width: 100%;
@@ -147,59 +77,30 @@
         }
 
         @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(30px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .auth-header { text-align: center; margin-bottom: 32px; }
         
         .auth-logo {
-            width: 80px;
-            height: 80px;
-            background: var(--primary-gradient);
-            border-radius: 24px;
+            width: 72px; height: 72px;
+            background: var(--gradient);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 16px;
-            box-shadow: 0 8px 32px rgba(124, 58, 237, 0.35);
-            position: relative;
-            transition: var(--transition);
+            box-shadow: 0 8px 24px rgba(124,58,237,0.3);
         }
-        .auth-logo:hover { transform: scale(1.05) rotate(-5deg); }
-        .auth-logo i { font-size: 36px; color: white; }
-        .auth-logo .logo-dot {
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            background: #FCD34D;
-            border-radius: 50%;
-            bottom: -4px;
-            right: -4px;
-            border: 3px solid var(--card);
-        }
-
-        .auth-card h1 {
-            font-size: 28px;
-            font-weight: 900;
-            color: var(--text);
-            letter-spacing: -0.5px;
-        }
-        .auth-card h1 span { color: var(--primary); }
-        .auth-subtitle {
-            color: var(--text-light);
-            font-size: 14px;
-            margin-top: 4px;
-        }
+        .auth-logo i { font-size: 32px; color: white; }
+        .auth-card h1 { font-size: 28px; font-weight: 800; }
+        .auth-subtitle { color: var(--text-light); font-size: 14px; margin-top: 4px; }
 
         .auth-form { display: flex; flex-direction: column; gap: 16px; }
         .form-group { display: flex; flex-direction: column; gap: 6px; }
-        .form-group label {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text);
-        }
-        .form-group label i { color: var(--primary); width: 20px; }
+        .form-group label { font-size: 13px; font-weight: 600; }
+        .form-group label i { color: var(--primary); width: 18px; }
         .form-group input {
             padding: 12px 16px;
             border: 2px solid var(--border);
@@ -208,12 +109,11 @@
             background: var(--bg);
             color: var(--text);
             transition: var(--transition);
-            font-family: inherit;
         }
         .form-group input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.1);
+            box-shadow: 0 0 0 4px rgba(124,58,237,0.1);
         }
 
         .btn {
@@ -233,14 +133,12 @@
         .btn-full { width: 100%; }
         
         .btn-primary {
-            background: var(--primary-gradient);
+            background: var(--gradient);
             color: white;
-            box-shadow: 0 4px 14px rgba(124, 58, 237, 0.35);
+            box-shadow: 0 4px 14px rgba(124,58,237,0.35);
         }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
-        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(124,58,237,0.4); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
         
         .btn-google {
             background: var(--card);
@@ -273,7 +171,6 @@
             font-size: 12px;
             color: var(--text-light);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
         .auth-footer {
@@ -288,11 +185,8 @@
             font-weight: 600;
             cursor: pointer;
         }
-        .auth-footer a:hover { text-decoration: underline; }
 
-        /* ============================================
-           OTP SCREEN
-           ============================================ */
+        /* ===== OTP SCREEN ===== */
         .otp-container {
             display: none;
             justify-content: center;
@@ -302,10 +196,14 @@
             padding: 20px;
         }
 
+        [data-theme="dark"] .otp-container {
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+        }
+
         .otp-card {
             background: var(--card);
             border-radius: var(--radius);
-            box-shadow: var(--shadow-xl);
+            box-shadow: var(--shadow-lg);
             padding: 48px;
             max-width: 420px;
             width: 100%;
@@ -313,7 +211,7 @@
         }
 
         .otp-card .icon { font-size: 64px; color: var(--primary); margin-bottom: 16px; }
-        .otp-card h2 { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
+        .otp-card h2 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
         .otp-card p { color: var(--text-light); margin-bottom: 24px; }
 
         .otp-input-group {
@@ -322,6 +220,7 @@
             justify-content: center;
             margin: 24px 0;
         }
+
         .otp-input-group input {
             width: 50px;
             height: 56px;
@@ -334,10 +233,11 @@
             color: var(--text);
             transition: var(--transition);
         }
+
         .otp-input-group input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.1);
+            box-shadow: 0 0 0 4px rgba(124,58,237,0.1);
         }
 
         .otp-card .resend-timer {
@@ -350,26 +250,21 @@
         .error-message { color: #EF4444; font-size: 13px; margin-top: 8px; display: none; }
         .success-message { color: #10B981; font-size: 13px; margin-top: 8px; display: none; }
 
-        /* ============================================
-           MAIN APP
-           ============================================ */
+        /* ===== MAIN APP ===== */
         .app-container {
             display: none;
             height: 100vh;
             flex-direction: column;
-            background: var(--bg);
         }
 
-        /* ============================================
-           BOTTOM NAV
-           ============================================ */
+        /* ===== BOTTOM NAV ===== */
         .bottom-nav {
             display: flex;
             justify-content: space-around;
             align-items: center;
             background: var(--card);
             border-top: 1px solid var(--border);
-            padding: 6px 0 env(safe-area-inset-bottom, 8px) 0;
+            padding: 8px 0;
             flex-shrink: 0;
             position: sticky;
             bottom: 0;
@@ -381,40 +276,21 @@
             flex-direction: column;
             align-items: center;
             gap: 2px;
-            padding: 4px 12px;
+            padding: 4px 16px;
             cursor: pointer;
             color: var(--text-light);
             transition: var(--transition);
             border: none;
             background: none;
             font-family: inherit;
-            font-size: 9px;
-            font-weight: 500;
-            position: relative;
+            font-size: 10px;
         }
         .nav-item i { font-size: 22px; transition: var(--transition); }
         .nav-item.active { color: var(--primary); }
         .nav-item.active i { transform: scale(1.1); }
         .nav-item:hover { color: var(--primary); }
-        .nav-item .badge {
-            position: absolute;
-            top: 0;
-            right: 0;
-            background: #EF4444;
-            color: white;
-            font-size: 9px;
-            font-weight: 700;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
 
-        /* ============================================
-           SCREENS
-           ============================================ */
+        /* ===== SCREENS ===== */
         .screen {
             display: none;
             flex: 1;
@@ -424,9 +300,7 @@
         }
         .screen.active { display: block; }
 
-        /* ============================================
-           HOME - STORIES BAR
-           ============================================ */
+        /* ===== STORIES ===== */
         .stories-bar {
             display: flex;
             gap: 12px;
@@ -442,56 +316,32 @@
             gap: 4px;
             cursor: pointer;
             flex-shrink: 0;
-            transition: var(--transition);
         }
-        .story-item:hover { transform: scale(1.05); }
-        .story-item .ring {
-            width: 68px;
-            height: 68px;
-            border-radius: 50%;
-            padding: 3px;
-            background: var(--primary-gradient);
-        }
-        .story-item .ring img {
-            width: 100%;
-            height: 100%;
+        .story-item img {
+            width: 64px;
+            height: 64px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid var(--card);
-        }
-        .story-item .add-story {
-            width: 68px;
-            height: 68px;
-            border-radius: 50%;
-            border: 2px dashed var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            color: var(--primary);
-            background: var(--bg);
+            border: 3px solid var(--primary);
+            padding: 2px;
         }
         .story-item span {
             font-size: 11px;
             color: var(--text-light);
-            max-width: 68px;
+            max-width: 64px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
 
-        /* ============================================
-           POSTS
-           ============================================ */
+        /* ===== POSTS ===== */
         .post-card {
             background: var(--card);
             border-radius: var(--radius);
             margin: 12px 16px;
             box-shadow: var(--shadow);
             overflow: hidden;
-            transition: var(--transition);
         }
-        .post-card:hover { box-shadow: var(--shadow-lg); }
 
         .post-header {
             display: flex;
@@ -504,39 +354,15 @@
             height: 40px;
             border-radius: 50%;
             object-fit: cover;
-            cursor: pointer;
         }
-        .post-header .post-user {
-            flex: 1;
-        }
-        .post-header .post-user .name {
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-        }
-        .post-header .post-user .name:hover { color: var(--primary); }
-        .post-header .post-user .time {
-            font-size: 12px;
-            color: var(--text-light);
-        }
-        .post-header .more-btn {
-            color: var(--text-light);
-            cursor: pointer;
-            padding: 4px 8px;
-            border-radius: 50%;
-            transition: var(--transition);
-        }
-        .post-header .more-btn:hover { background: var(--bg); }
+        .post-header .name { font-weight: 600; font-size: 14px; }
+        .post-header .time { font-size: 12px; color: var(--text-light); }
 
-        .post-text {
-            padding: 12px 16px;
-            font-size: 14px;
-            line-height: 1.6;
-        }
+        .post-text { padding: 12px 16px; font-size: 14px; line-height: 1.6; }
 
         .post-actions {
             display: flex;
-            gap: 12px;
+            gap: 16px;
             padding: 8px 16px 12px;
             border-top: 1px solid var(--border);
         }
@@ -551,10 +377,8 @@
             align-items: center;
             gap: 6px;
             font-family: inherit;
-            padding: 4px 8px;
-            border-radius: 8px;
         }
-        .post-actions button:hover { background: var(--bg); color: var(--primary); }
+        .post-actions button:hover { color: var(--primary); }
         .post-actions button.liked { color: #EF4444; }
         .post-actions button .count { font-size: 13px; font-weight: 500; }
 
@@ -582,21 +406,18 @@
         }
         .post-comments .comment-input button {
             padding: 8px 16px;
-            background: var(--primary-gradient);
+            background: var(--gradient);
             color: white;
             border: none;
             border-radius: 20px;
             cursor: pointer;
             font-weight: 600;
-            transition: var(--transition);
         }
-        .post-comments .comment-input button:hover { transform: scale(1.05); }
 
         .comment-item {
             display: flex;
             gap: 10px;
             padding: 6px 0;
-            animation: slideIn 0.3s ease;
         }
         .comment-item img {
             width: 28px;
@@ -604,24 +425,10 @@
             border-radius: 50%;
             object-fit: cover;
         }
-        .comment-item .content .name {
-            font-weight: 600;
-            font-size: 12px;
-            color: var(--text);
-        }
-        .comment-item .content .text {
-            font-size: 13px;
-            color: var(--text-light);
-        }
+        .comment-item .content .name { font-weight: 600; font-size: 12px; }
+        .comment-item .content .text { font-size: 13px; color: var(--text); }
 
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ============================================
-           EXPLORE
-           ============================================ */
+        /* ===== EXPLORE ===== */
         .explore-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -633,26 +440,17 @@
             aspect-ratio: 1;
             object-fit: cover;
             cursor: pointer;
-            transition: var(--transition);
         }
-        .explore-grid img:hover { opacity: 0.8; }
 
-        /* ============================================
-           CREATE
-           ============================================ */
+        /* ===== CREATE ===== */
         .create-container {
             padding: 20px;
             max-width: 600px;
             margin: 0 auto;
         }
-        .create-container h2 {
-            font-size: 24px;
-            font-weight: 800;
-            margin-bottom: 16px;
-        }
         .create-container textarea {
             width: 100%;
-            min-height: 150px;
+            min-height: 120px;
             padding: 16px;
             border: 2px solid var(--border);
             border-radius: var(--radius);
@@ -661,12 +459,10 @@
             background: var(--card);
             color: var(--text);
             resize: vertical;
-            transition: var(--transition);
         }
         .create-container textarea:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.1);
         }
         .create-container .btn-primary {
             width: 100%;
@@ -675,20 +471,16 @@
             margin-top: 16px;
         }
 
-        /* ============================================
-           MESSAGES / CHAT
-           ============================================ */
+        /* ===== MESSAGES ===== */
         .chat-list { padding: 12px 16px; }
         .chat-item {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 12px 16px;
-            border-radius: var(--radius);
-            transition: var(--transition);
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
             cursor: pointer;
         }
-        .chat-item:hover { background: var(--bg); }
         .chat-item img {
             width: 48px;
             height: 48px;
@@ -696,19 +488,10 @@
             object-fit: cover;
         }
         .chat-item .info { flex: 1; }
-        .chat-item .info .name { font-weight: 600; font-size: 15px; }
-        .chat-item .info .last-msg {
-            font-size: 13px;
-            color: var(--text-light);
-        }
-        .chat-item .time {
-            font-size: 11px;
-            color: var(--text-light);
-        }
+        .chat-item .info .name { font-weight: 600; }
+        .chat-item .info .last-msg { font-size: 13px; color: var(--text-light); }
 
-        /* ============================================
-           PROFILE
-           ============================================ */
+        /* ===== PROFILE ===== */
         .profile-header {
             background: var(--card);
             padding: 20px;
@@ -718,98 +501,29 @@
         }
         .profile-header .cover {
             width: 100%;
-            height: 140px;
-            background: var(--primary-gradient);
+            height: 120px;
+            background: var(--gradient);
             border-radius: var(--radius);
-            margin-bottom: -50px;
-            position: relative;
-            overflow: hidden;
-        }
-        .profile-header .cover img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .profile-header .avatar-wrapper {
-            position: relative;
-            display: inline-block;
+            margin-bottom: -40px;
         }
         .profile-header .avatar {
-            width: 90px;
-            height: 90px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             border: 4px solid var(--card);
             object-fit: cover;
-            transition: var(--transition);
         }
-        .profile-header .avatar:hover { transform: scale(1.02); }
-        .profile-header .avatar-edit {
-            position: absolute;
-            bottom: 4px;
-            right: 4px;
-            background: var(--primary);
-            color: white;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            border: 2px solid var(--card);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        .profile-header .avatar-edit:hover { transform: scale(1.1); }
-
-        .profile-header .name {
-            font-size: 22px;
-            font-weight: 800;
-            margin-top: 8px;
-        }
-        .profile-header .username {
-            color: var(--text-light);
-            font-size: 14px;
-            font-weight: 500;
-        }
-        .profile-header .bio {
-            color: var(--text-light);
-            font-size: 14px;
-            margin-top: 4px;
-            max-width: 300px;
-            margin-left: auto;
-            margin-right: auto;
-        }
+        .profile-header .name { font-size: 20px; font-weight: 700; margin-top: 8px; }
+        .profile-header .bio { color: var(--text-light); font-size: 14px; }
         .profile-stats {
             display: flex;
             justify-content: center;
-            gap: 40px;
+            gap: 32px;
             padding: 16px 0;
         }
-        .profile-stats .stat { text-align: center; cursor: pointer; }
-        .profile-stats .stat .number {
-            font-weight: 800;
-            font-size: 20px;
-            color: var(--text);
-        }
-        .profile-stats .stat .label {
-            font-size: 12px;
-            color: var(--text-light);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .profile-stats .stat:hover .number { color: var(--primary); }
-
-        .profile-actions {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin: 12px 0;
-        }
-        .profile-actions .btn {
-            padding: 8px 24px;
-            font-size: 13px;
-        }
+        .profile-stats .stat { text-align: center; }
+        .profile-stats .stat .number { font-weight: 700; font-size: 18px; }
+        .profile-stats .stat .label { font-size: 12px; color: var(--text-light); }
 
         .profile-posts {
             display: grid;
@@ -817,166 +531,28 @@
             gap: 4px;
             padding: 4px;
         }
-        .profile-posts .post-item {
-            position: relative;
-            aspect-ratio: 1;
-            overflow: hidden;
-            cursor: pointer;
-        }
-        .profile-posts .post-item img {
+        .profile-posts img {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: var(--transition);
-        }
-        .profile-posts .post-item:hover img { transform: scale(1.05); }
-        .profile-posts .post-item .overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(0,0,0,0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: var(--transition);
-            gap: 16px;
-        }
-        .profile-posts .post-item:hover .overlay { opacity: 1; }
-        .profile-posts .post-item .overlay span {
-            color: white;
-            font-size: 14px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        /* ============================================
-           SETTINGS
-           ============================================ */
-        .settings-container {
-            padding: 20px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        .settings-container h2 {
-            font-size: 24px;
-            font-weight: 800;
-            margin-bottom: 20px;
-        }
-        .settings-group {
-            background: var(--card);
-            border-radius: var(--radius);
-            padding: 16px;
-            margin-bottom: 16px;
-            box-shadow: var(--shadow);
-        }
-        .settings-group h3 {
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            color: var(--text);
-        }
-        .settings-group .setting-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        .settings-group .setting-item:last-child { border-bottom: none; }
-        .settings-group .setting-item:hover { padding-left: 8px; }
-        .settings-group .setting-item .left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .settings-group .setting-item .left i {
-            width: 24px;
-            color: var(--primary);
-            font-size: 16px;
-        }
-        .settings-group .setting-item .left .title {
-            font-weight: 500;
-            font-size: 14px;
-        }
-        .settings-group .setting-item .left .desc {
-            font-size: 12px;
-            color: var(--text-light);
-        }
-        .settings-group .setting-item .right {
-            color: var(--text-light);
-            font-size: 14px;
-        }
-        .settings-group .setting-item .toggle {
-            width: 48px;
-            height: 28px;
-            background: var(--border);
-            border-radius: var(--radius-full);
-            position: relative;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        .settings-group .setting-item .toggle.active {
-            background: var(--primary);
-        }
-        .settings-group .setting-item .toggle .dot {
-            width: 22px;
-            height: 22px;
-            background: white;
-            border-radius: 50%;
-            position: absolute;
-            top: 3px;
-            left: 3px;
-            transition: var(--transition);
-        }
-        .settings-group .setting-item .toggle.active .dot {
-            left: 23px;
-        }
-
-        /* ============================================
-           NOTIFICATIONS
-           ============================================ */
-        .notif-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            background: var(--card);
-            border-radius: var(--radius);
-            margin-bottom: 8px;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            cursor: pointer;
-        }
-        .notif-item:hover { box-shadow: var(--shadow-lg); }
-        .notif-item img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+            aspect-ratio: 1;
             object-fit: cover;
         }
-        .notif-item .content { flex: 1; }
-        .notif-item .content .text {
-            font-size: 14px;
-        }
-        .notif-item .content .text strong { color: var(--primary); }
-        .notif-item .content .time {
-            font-size: 12px;
-            color: var(--text-light);
-        }
-        .notif-item .unread {
-            width: 10px;
-            height: 10px;
-            background: var(--primary);
-            border-radius: 50%;
-        }
 
-        /* ============================================
-           TOAST
-           ============================================ */
+        .logout-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: var(--bg);
+            border: none;
+            padding: 10px 14px;
+            border-radius: 10px;
+            cursor: pointer;
+            color: var(--text-light);
+            font-size: 16px;
+            transition: var(--transition);
+        }
+        .logout-btn:hover { background: var(--border); color: var(--text); }
+
+        /* ===== TOAST ===== */
         #toastContainer {
             position: fixed;
             bottom: 80px;
@@ -994,9 +570,6 @@
             animation: slideUp 0.3s ease;
             box-shadow: var(--shadow-lg);
             max-width: 350px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
         .toast.success { border-left: 4px solid #10B981; }
         .toast.error { border-left: 4px solid #EF4444; }
@@ -1007,75 +580,40 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ============================================
-           RESPONSIVE
-           ============================================ */
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .auth-card { padding: 32px 24px; margin: 16px; }
             .otp-card { padding: 32px 24px; margin: 16px; }
             .post-card { margin: 8px 8px; }
             .stories-bar { padding: 12px; gap: 8px; }
-            .story-item .ring { width: 56px; height: 56px; }
-            .story-item .add-story { width: 56px; height: 56px; font-size: 22px; }
-            .nav-item { padding: 4px 10px; font-size: 8px; }
-            .nav-item i { font-size: 18px; }
+            .story-item img { width: 56px; height: 56px; }
+            .nav-item { padding: 4px 12px; font-size: 9px; }
+            .nav-item i { font-size: 20px; }
             #toastContainer { right: 10px; left: 10px; bottom: 80px; }
             .otp-input-group input { width: 40px; height: 48px; font-size: 20px; }
-            .profile-stats { gap: 20px; }
-            .settings-container { padding: 12px; }
         }
 
         @media (max-width: 480px) {
             .auth-card { padding: 24px 16px; }
             .otp-card { padding: 24px 16px; }
-            .profile-stats { gap: 12px; }
+            .profile-stats { gap: 16px; }
             .profile-stats .stat .number { font-size: 16px; }
             .post-actions { flex-wrap: wrap; }
             .otp-input-group input { width: 36px; height: 44px; font-size: 18px; }
         }
 
         .hidden { display: none !important; }
-
-        .loading-spinner {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 40px;
-            gap: 8px;
-            color: var(--text-light);
-        }
-        .loading-spinner i {
-            font-size: 24px;
-            color: var(--primary);
-        }
     </style>
 </head>
 <body>
 
-    <!-- ============================================ -->
-    <!-- SPLASH SCREEN                                -->
-    <!-- ============================================ -->
-    <div id="splashScreen">
-        <div class="splash-logo">
-            <i class="fas fa-connectdevelop"></i>
-        </div>
-        <div class="splash-text">Connect<span>Hub</span></div>
-        <div class="splash-loader"></div>
-        <div class="splash-sub">Connecting people...</div>
-    </div>
-
-    <!-- ============================================ -->
-    <!-- AUTH SCREEN (Login)                          -->
-    <!-- ============================================ -->
+    <!-- ===== AUTH SCREEN ===== -->
     <div id="authScreen" class="auth-container">
         <div class="auth-card">
             <div class="auth-header">
-                <div class="auth-logo">
-                    <i class="fas fa-connectdevelop"></i>
-                    <div class="logo-dot"></div>
-                </div>
-                <h1>Connect<span>Hub</span></h1>
-                <p class="auth-subtitle">Connect, share, and discover</p>
+                <div class="auth-logo"><i class="fas fa-comment-dots"></i></div>
+                <h1>Social App</h1>
+                <p class="auth-subtitle">Connect with the world</p>
             </div>
 
             <form id="loginForm" class="auth-form">
@@ -1087,42 +625,27 @@
                     <label for="loginPassword"><i class="fas fa-lock"></i> Password</label>
                     <input type="password" id="loginPassword" placeholder="••••••••" required />
                 </div>
-                <button type="submit" class="btn btn-primary btn-full">
-                    <i class="fas fa-sign-in-alt"></i> Sign In
-                </button>
+                <button type="submit" class="btn btn-primary btn-full"><i class="fas fa-sign-in-alt"></i> Sign In</button>
             </form>
 
             <div class="auth-divider"><span>or</span></div>
 
-            <button id="googleAuthBtn" class="btn btn-google btn-full">
-                <i class="fab fa-google"></i> Continue with Google
-            </button>
+            <button id="googleAuthBtn" class="btn btn-google btn-full"><i class="fab fa-google"></i> Continue with Google</button>
 
-            <div class="auth-footer">
-                Don't have an account? <a id="showSignup">Sign Up</a>
-            </div>
+            <div class="auth-footer">Don't have an account? <a id="showSignup">Sign Up</a></div>
         </div>
 
-        <!-- Signup Card -->
         <div class="auth-card" id="signupCard" style="display: none;">
             <div class="auth-header">
-                <div class="auth-logo">
-                    <i class="fas fa-user-plus"></i>
-                    <div class="logo-dot"></div>
-                </div>
-                <h1>Join Connect<span>Hub</span></h1>
-                <p class="auth-subtitle">Create your account</p>
+                <div class="auth-logo"><i class="fas fa-user-plus"></i></div>
+                <h1>Create Account</h1>
+                <p class="auth-subtitle">Join the community</p>
             </div>
 
             <form id="signupForm" class="auth-form">
                 <div class="form-group">
                     <label for="signupName"><i class="fas fa-user"></i> Full Name</label>
                     <input type="text" id="signupName" placeholder="John Doe" required />
-                </div>
-                <div class="form-group">
-                    <label for="signupUsername"><i class="fas fa-at"></i> Username</label>
-                    <input type="text" id="signupUsername" placeholder="johndoe" required />
-                    <small style="color:var(--text-light);font-size:11px;">Unique username (letters, numbers, underscore)</small>
                 </div>
                 <div class="form-group">
                     <label for="signupEmail"><i class="fas fa-envelope"></i> Email</label>
@@ -1132,25 +655,19 @@
                     <label for="signupPassword"><i class="fas fa-lock"></i> Password</label>
                     <input type="password" id="signupPassword" placeholder="Min 6 characters" required minlength="6" />
                 </div>
-                <button type="submit" class="btn btn-primary btn-full">
-                    <i class="fas fa-user-plus"></i> Create Account
-                </button>
+                <button type="submit" class="btn btn-primary btn-full"><i class="fas fa-user-plus"></i> Create Account</button>
             </form>
 
-            <div class="auth-footer">
-                Already have an account? <a id="showLogin">Sign In</a>
-            </div>
+            <div class="auth-footer">Already have an account? <a id="showLogin">Sign In</a></div>
         </div>
     </div>
 
-    <!-- ============================================ -->
-    <!-- OTP SCREEN                                   -->
-    <!-- ============================================ -->
+    <!-- ===== OTP SCREEN ===== -->
     <div id="otpScreen" class="otp-container">
         <div class="otp-card">
-            <div class="icon"><i class="fas fa-envelope-open-text"></i></div>
+            <div class="icon"><i class="fas fa-envelope"></i></div>
             <h2>Verify Your Email</h2>
-            <p>We've sent a verification link to <strong id="otpEmailDisplay">your@email.com</strong></p>
+            <p>We've sent a verification code to <strong id="otpEmailDisplay">your@email.com</strong></p>
             <p style="font-size:13px;color:var(--text-light);">Please check your inbox and spam folder.</p>
 
             <div class="otp-input-group" id="otpInputGroup">
@@ -1166,173 +683,67 @@
             <div id="otpSuccess" class="success-message"><i class="fas fa-check-circle"></i> Email verified! Redirecting...</div>
 
             <button id="verifyOtpBtn" class="btn btn-primary btn-full"><i class="fas fa-check"></i> Verify Email</button>
-            <button id="resendOtpBtn" class="btn btn-outline btn-full" style="margin-top:12px;"><i class="fas fa-redo"></i> Resend Verification</button>
+            <button id="resendOtpBtn" class="btn btn-outline btn-full" style="margin-top:12px;"><i class="fas fa-redo"></i> Resend Email</button>
 
             <div class="resend-timer" id="resendTimer">Resend available in <span id="countdownTimer">60</span> seconds</div>
             <div class="auth-footer" style="margin-top:16px;"><a id="backToLogin">← Back to Sign In</a></div>
         </div>
     </div>
 
-    <!-- ============================================ -->
-    <!-- MAIN APP                                     -->
-    <!-- ============================================ -->
+    <!-- ===== MAIN APP ===== -->
     <div id="appContainer" class="app-container">
-        <!-- HOME -->
         <div id="screenHome" class="screen active">
-            <div class="stories-bar" id="storiesBar">
-                <div class="story-item" onclick="showToast('Add a story', 'info')">
-                    <div class="add-story"><i class="fas fa-plus"></i></div>
-                    <span>Add Story</span>
-                </div>
-                <div class="story-item">
-                    <div class="ring"><img src="https://ui-avatars.com/api/?name=A&background=7C3AED&color=fff" /></div>
-                    <span>Alice</span>
-                </div>
-                <div class="story-item">
-                    <div class="ring"><img src="https://ui-avatars.com/api/?name=B&background=8B5CF6&color=fff" /></div>
-                    <span>Bob</span>
-                </div>
-                <div class="story-item">
-                    <div class="ring"><img src="https://ui-avatars.com/api/?name=C&background=6D28D9&color=fff" /></div>
-                    <span>Charlie</span>
-                </div>
-            </div>
-            <div id="feedContainer">
-                <div style="text-align:center;padding:40px;color:var(--text-light);">
-                    <i class="fas fa-newspaper" style="font-size:48px;display:block;margin-bottom:16px;color:var(--border);"></i>
-                    <h3 style="color:var(--text);font-weight:700;">No posts yet</h3>
-                    <p>Create your first post!</p>
-                </div>
-            </div>
+            <div class="stories-bar" id="storiesBar"></div>
+            <div id="feedContainer"></div>
         </div>
 
-        <!-- EXPLORE -->
         <div id="screenExplore" class="screen">
             <div style="padding:16px;">
-                <div class="search-wrapper" style="display:flex;align-items:center;background:var(--card);border-radius:12px;padding:0 16px;box-shadow:var(--shadow);">
+                <div class="search-wrapper" style="display:flex;align-items:center;background:var(--bg);border-radius:10px;padding:0 12px;">
                     <i class="fas fa-search" style="color:var(--text-light);"></i>
                     <input type="text" id="exploreSearch" placeholder="Search users..." style="border:none;background:transparent;padding:12px;font-size:14px;width:100%;outline:none;color:var(--text);" />
                 </div>
             </div>
-            <div class="explore-grid" id="exploreGrid">
-                <div class="explore-item"></div>
-                <div class="explore-item"></div>
-                <div class="explore-item"></div>
-                <div class="explore-item"></div>
-                <div class="explore-item"></div>
-                <div class="explore-item"></div>
-            </div>
+            <div class="explore-grid" id="exploreGrid"></div>
         </div>
 
-        <!-- CREATE -->
         <div id="screenCreate" class="screen">
             <div class="create-container">
-                <h2>✨ Create Post</h2>
-                <textarea id="postText" placeholder="What's on your mind? Share with the world..."></textarea>
-                <button id="createPostBtn" class="btn btn-primary">
-                    <i class="fas fa-paper-plane"></i> Post
-                </button>
+                <h2 style="margin-bottom:16px;">Create Post</h2>
+                <textarea id="postText" placeholder="What's on your mind?"></textarea>
+                <button id="createPostBtn" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Post</button>
             </div>
         </div>
 
-        <!-- MESSAGES -->
         <div id="screenMessages" class="screen">
             <div style="padding:16px;">
-                <h2 style="font-size:24px;font-weight:800;margin-bottom:16px;">💬 Messages</h2>
-                <div id="chatList" class="chat-list">
-                    <div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading chats...</div>
-                </div>
+                <h2 style="margin-bottom:16px;">Messages</h2>
+                <div id="chatList" class="chat-list"></div>
             </div>
         </div>
 
-        <!-- PROFILE -->
         <div id="screenProfile" class="screen">
             <div class="profile-header" id="profileHeader">
-                <div class="cover" id="coverContainer"></div>
-                <div class="avatar-wrapper">
-                    <img id="profileAvatar" class="avatar" src="https://ui-avatars.com/api/?name=User&background=7C3AED&color=fff&size=128" />
-                    <div class="avatar-edit" id="avatarEditBtn"><i class="fas fa-camera"></i></div>
-                </div>
+                <div class="cover"></div>
+                <img id="profileAvatar" class="avatar" src="https://ui-avatars.com/api/?name=User&background=7C3AED&color=fff" />
                 <div class="name" id="profileName">User</div>
-                <div class="username" id="profileUsername">@username</div>
                 <div class="bio" id="profileBio">Welcome to my profile!</div>
+                <button id="editProfileBtn" class="btn btn-primary" style="margin:12px auto;padding:8px 24px;font-size:13px;">
+                    <i class="fas fa-edit"></i> Edit Profile
+                </button>
+                <button id="darkModeToggle" class="btn" style="margin:8px auto;padding:8px 24px;font-size:13px;background:var(--bg);color:var(--text);border:1px solid var(--border);">
+                    <i class="fas fa-moon"></i> Dark Mode
+                </button>
                 <div class="profile-stats">
                     <div class="stat"><div class="number" id="postCount">0</div><div class="label">Posts</div></div>
                     <div class="stat"><div class="number" id="followerCount">0</div><div class="label">Followers</div></div>
                     <div class="stat"><div class="number" id="followingCount">0</div><div class="label">Following</div></div>
                 </div>
-                <div class="profile-actions">
-                    <button id="editProfileBtn" class="btn btn-primary" style="padding:8px 20px;font-size:13px;">
-                        <i class="fas fa-edit"></i> Edit Profile
-                    </button>
-                    <button id="settingsBtn" class="btn btn-outline" style="padding:8px 20px;font-size:13px;">
-                        <i class="fas fa-cog"></i>
-                    </button>
-                </div>
-                <button id="logoutBtn" style="position:absolute;top:16px;right:16px;background:var(--bg);border:none;padding:10px 14px;border-radius:10px;cursor:pointer;color:var(--text-light);font-size:16px;transition:var(--transition);">
-                    <i class="fas fa-sign-out-alt"></i>
-                </button>
+                <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i></button>
             </div>
             <div class="profile-posts" id="profilePosts"></div>
         </div>
 
-        <!-- SETTINGS -->
-        <div id="screenSettings" class="screen">
-            <div class="settings-container">
-                <h2>⚙️ Settings</h2>
-                <div class="settings-group">
-                    <h3>Account</h3>
-                    <div class="setting-item" onclick="showToast('Edit profile', 'info')">
-                        <div class="left"><i class="fas fa-user-edit"></i><div><div class="title">Edit Profile</div><div class="desc">Change your name, bio, and photo</div></div></div>
-                        <div class="right"><i class="fas fa-chevron-right"></i></div>
-                    </div>
-                    <div class="setting-item" onclick="showToast('Change password', 'info')">
-                        <div class="left"><i class="fas fa-key"></i><div><div class="title">Change Password</div><div class="desc">Update your password</div></div></div>
-                        <div class="right"><i class="fas fa-chevron-right"></i></div>
-                    </div>
-                </div>
-                <div class="settings-group">
-                    <h3>Preferences</h3>
-                    <div class="setting-item" onclick="toggleDarkMode()">
-                        <div class="left"><i class="fas fa-moon"></i><div><div class="title">Dark Mode</div><div class="desc">Toggle dark/light theme</div></div></div>
-                        <div class="right"><div class="toggle" id="darkModeToggle"><div class="dot"></div></div></div>
-                    </div>
-                </div>
-                <div class="settings-group">
-                    <h3>Privacy & Security</h3>
-                    <div class="setting-item" onclick="showToast('Privacy settings', 'info')">
-                        <div class="left"><i class="fas fa-lock"></i><div><div class="title">Privacy Settings</div><div class="desc">Manage who can see your content</div></div></div>
-                        <div class="right"><i class="fas fa-chevron-right"></i></div>
-                    </div>
-                    <div class="setting-item" onclick="showToast('Blocked users', 'info')">
-                        <div class="left"><i class="fas fa-ban"></i><div><div class="title">Blocked Users</div><div class="desc">Manage blocked accounts</div></div></div>
-                        <div class="right"><i class="fas fa-chevron-right"></i></div>
-                    </div>
-                </div>
-                <div class="settings-group">
-                    <h3>About</h3>
-                    <div class="setting-item" onclick="showToast('ConnectHub v1.0.0', 'info')">
-                        <div class="left"><i class="fas fa-info-circle"></i><div><div class="title">Version</div><div class="desc">ConnectHub v1.0.0</div></div></div>
-                        <div class="right"><i class="fas fa-chevron-right"></i></div>
-                    </div>
-                </div>
-                <button id="settingsBackBtn" class="btn btn-outline btn-full" style="margin-top:16px;">
-                    <i class="fas fa-arrow-left"></i> Back to Profile
-                </button>
-            </div>
-        </div>
-
-        <!-- NOTIFICATIONS -->
-        <div id="screenNotifications" class="screen">
-            <div style="padding:16px;">
-                <h2 style="font-size:24px;font-weight:800;margin-bottom:16px;">🔔 Notifications</h2>
-                <div id="notifContainer">
-                    <div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading notifications...</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- BOTTOM NAV -->
         <nav class="bottom-nav">
             <button class="nav-item active" data-screen="screenHome"><i class="fas fa-home"></i> Home</button>
             <button class="nav-item" data-screen="screenExplore"><i class="fas fa-compass"></i> Explore</button>
@@ -1344,16 +755,14 @@
 
     <div id="toastContainer"></div>
 
-    <!-- ============================================ -->
-    <!-- FIREBASE SDK                                 -->
-    <!-- ============================================ -->
+    <!-- ===== FIREBASE SDK ===== -->
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
 
     <script>
         // ============================================
-        // 🔥 YOUR FIREBASE CONFIG
+        // 🔥 YOUR FIREBASE CONFIG (NEW)
         // ============================================
         const firebaseConfig = {
             apiKey: "AIzaSyCl0CpUJcMMll8klL0ldN22KwbUlCgaw2Q",
@@ -1364,24 +773,27 @@
             appId: "1:427918763507:web:82ba7c8e787eaaccc2de86"
         };
 
+        // ============================================
+        // INITIALIZE FIREBASE
+        // ============================================
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
-        db.enablePersistence().catch(() => {});
+
+        db.enablePersistence().catch(err => console.warn('Persistence error:', err));
 
         // ============================================
-        // SPLASH SCREEN
+        // APP STATE
         // ============================================
-        setTimeout(() => {
-            const splash = document.getElementById('splashScreen');
-            splash.classList.add('hidden');
-            setTimeout(() => {
-                document.getElementById('authScreen').style.display = 'flex';
-            }, 300);
-        }, 5000);
+        let currentUser = null;
+        let currentUserData = null;
+        let posts = [];
+        let pendingUserCredential = null;
+        let countdownTimer = 60;
+        let countdownInterval = null;
 
         // ============================================
-        // TOAST
+        // UTILITY FUNCTIONS
         // ============================================
         function showToast(message, type = 'info') {
             const container = document.getElementById('toastContainer');
@@ -1390,262 +802,23 @@
             toast.className = `toast ${type}`;
             toast.innerHTML = `<i class="fas ${icons[type] || icons.info}"></i> ${message}`;
             container.appendChild(toast);
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateX(50px)';
-                toast.style.transition = 'all 0.3s ease';
-                setTimeout(() => toast.remove(), 300);
-            }, 3500);
+            setTimeout(() => { toast.remove(); }, 3000);
         }
 
-        // ============================================
-        // TOGGLE LOGIN / SIGNUP
-        // ============================================
-        document.getElementById('showSignup').addEventListener('click', function(e) {
-            e.preventDefault();
-            document.querySelector('.auth-card:first-child').style.display = 'none';
-            document.getElementById('signupCard').style.display = 'block';
-        });
-
-        document.getElementById('showLogin').addEventListener('click', function(e) {
-            e.preventDefault();
-            document.querySelector('.auth-card:first-child').style.display = 'block';
-            document.getElementById('signupCard').style.display = 'none';
-        });
-
-        // ============================================
-        // NAVIGATION
-        // ============================================
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', function() {
-                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-                this.classList.add('active');
-                document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-                const target = document.getElementById(this.dataset.screen);
-                if (target) target.classList.add('active');
-                if (this.dataset.screen === 'screenMessages') loadChats();
-                if (this.dataset.screen === 'screenProfile') loadProfile();
-            });
-        });
-
-        // ============================================
-        // SETTINGS NAVIGATION
-        // ============================================
-        document.getElementById('settingsBtn').addEventListener('click', () => {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById('screenSettings').classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        });
-
-        document.getElementById('settingsBackBtn').addEventListener('click', () => {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById('screenProfile').classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.querySelector('[data-screen="screenProfile"]').classList.add('active');
-        });
-
-        // ============================================
-        // DARK MODE
-        // ============================================
-        function toggleDarkMode() {
-            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-            document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
-            const toggle = document.getElementById('darkModeToggle');
-            toggle.classList.toggle('active');
+        function formatTime(timestamp) {
+            if (!timestamp) return 'Just now';
+            const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+            const now = new Date();
+            const diff = Math.floor((now - date) / 60000);
+            if (diff < 1) return 'Just now';
+            if (diff < 60) return diff + 'm ago';
+            if (diff < 1440) return Math.floor(diff / 60) + 'h ago';
+            return date.toLocaleDateString();
         }
 
-        document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
-
-        // ============================================
-        // AUTH - LOGIN
-        // ============================================
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            try {
-                showToast('Signing in...', 'info');
-                await auth.signInWithEmailAndPassword(email, password);
-                document.getElementById('authScreen').style.display = 'none';
-                document.getElementById('appContainer').style.display = 'flex';
-                loadProfile();
-                showToast('Welcome back!', 'success');
-            } catch (error) {
-                showToast(error.message, 'error');
-            }
-        });
-
-        // ============================================
-        // AUTH - GOOGLE LOGIN
-        // ============================================
-        document.getElementById('googleAuthBtn').addEventListener('click', async () => {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            try {
-                showToast('Connecting to Google...', 'info');
-                await auth.signInWithPopup(provider);
-                document.getElementById('authScreen').style.display = 'none';
-                document.getElementById('appContainer').style.display = 'flex';
-                loadProfile();
-                showToast('Welcome!', 'success');
-            } catch (error) {
-                showToast(error.message, 'error');
-            }
-        });
-
-        // ============================================
-        // AUTH - SIGNUP (FIXED)
-        // ============================================
-        document.getElementById('signupForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const name = document.getElementById('signupName').value;
-            const username = document.getElementById('signupUsername').value.trim().toLowerCase();
-            const email = document.getElementById('signupEmail').value;
-            const password = document.getElementById('signupPassword').value;
-
-            // Validate username format
-            if (!username.match(/^[a-z0-9_]{3,20}$/)) {
-                showToast('Username must be 3-20 characters (letters, numbers, underscore)', 'error');
-                return;
-            }
-
-            try {
-                // 1. Check if username already exists
-                showToast('Checking username availability...', 'info');
-                const usernameQuery = await db.collection('users')
-                    .where('username', '==', username)
-                    .get();
-                if (!usernameQuery.empty) {
-                    showToast('Username already taken. Please choose another.', 'error');
-                    return;
-                }
-
-                // 2. Create user with email/password
-                showToast('Creating account...', 'info');
-                const result = await auth.createUserWithEmailAndPassword(email, password);
-                
-                // 3. Update profile with display name
-                await result.user.updateProfile({ displayName: name });
-
-                // 4. Save user data to Firestore
-                await db.collection('users').doc(result.user.uid).set({
-                    uid: result.user.uid,
-                    name: name,
-                    username: username,
-                    email: email,
-                    bio: 'Hello, I\'m using ConnectHub!',
-                    photoURL: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=7C3AED&color=fff&size=128`,
-                    followers: [],
-                    following: [],
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-
-                // 5. Send verification email
-                await result.user.sendEmailVerification();
-                showToast('Verification email sent! Check your inbox.', 'success');
-
-                // 6. Switch to OTP screen
-                document.querySelector('.auth-card:first-child').style.display = 'none';
-                document.getElementById('signupCard').style.display = 'none';
-                document.getElementById('otpScreen').style.display = 'flex';
-                document.getElementById('otpEmailDisplay').textContent = email;
-                startEmailVerificationCheck(result.user);
-
-            } catch (error) {
-                // Handle specific Firebase errors
-                let errorMsg = error.message;
-                if (error.code === 'auth/email-already-in-use') {
-                    errorMsg = 'This email is already registered. Please sign in or use another email.';
-                } else if (error.code === 'auth/weak-password') {
-                    errorMsg = 'Password should be at least 6 characters.';
-                } else if (error.code === 'auth/invalid-email') {
-                    errorMsg = 'Please enter a valid email address.';
-                } else if (error.code === 'auth/network-request-failed') {
-                    errorMsg = 'Network error. Please check your connection.';
-                }
-                showToast(errorMsg, 'error');
-                console.error('Signup error:', error);
-            }
-        });
-
-        // ============================================
-        // OTP VERIFICATION
-        // ============================================
-        let verificationCheckInterval = null;
-        let pendingUserForVerification = null;
-
-        function startEmailVerificationCheck(user) {
-            pendingUserForVerification = user;
-            document.getElementById('otpError').style.display = 'none';
-            document.getElementById('otpSuccess').style.display = 'none';
-            document.querySelectorAll('.otp-input').forEach(inp => inp.value = '');
-            
-            if (verificationCheckInterval) clearInterval(verificationCheckInterval);
-            verificationCheckInterval = setInterval(async () => {
-                if (!pendingUserForVerification) return;
-                await pendingUserForVerification.reload();
-                if (pendingUserForVerification.emailVerified) {
-                    clearInterval(verificationCheckInterval);
-                    document.getElementById('otpSuccess').style.display = 'block';
-                    showToast('Email verified!', 'success');
-                    setTimeout(() => {
-                        document.getElementById('otpScreen').style.display = 'none';
-                        document.getElementById('appContainer').style.display = 'flex';
-                        loadProfile();
-                        pendingUserForVerification = null;
-                    }, 1500);
-                }
-            }, 3000);
+        function getChatId(user1, user2) {
+            return [user1, user2].sort().join('_');
         }
-
-        document.getElementById('verifyOtpBtn').addEventListener('click', async function() {
-            if (!pendingUserForVerification) {
-                showToast('No verification in progress.', 'error');
-                return;
-            }
-            this.disabled = true;
-            document.getElementById('otpError').style.display = 'none';
-            try {
-                await pendingUserForVerification.reload();
-                if (pendingUserForVerification.emailVerified) {
-                    document.getElementById('otpSuccess').style.display = 'block';
-                    showToast('Email verified!', 'success');
-                    setTimeout(() => {
-                        document.getElementById('otpScreen').style.display = 'none';
-                        document.getElementById('appContainer').style.display = 'flex';
-                        loadProfile();
-                        pendingUserForVerification = null;
-                    }, 1500);
-                } else {
-                    document.getElementById('otpError').style.display = 'block';
-                    document.getElementById('otpError').textContent = 'Email not verified yet. Please check your inbox or spam folder.';
-                }
-            } catch (error) {
-                document.getElementById('otpError').style.display = 'block';
-                document.getElementById('otpError').textContent = error.message || 'Verification failed.';
-            }
-            this.disabled = false;
-        });
-
-        document.getElementById('resendOtpBtn').addEventListener('click', function() {
-            if (pendingUserForVerification) {
-                pendingUserForVerification.sendEmailVerification()
-                    .then(() => {
-                        showToast('Verification email resent!', 'success');
-                        startCountdown();
-                    })
-                    .catch(err => showToast(err.message, 'error'));
-            }
-        });
-
-        document.getElementById('backToLogin').addEventListener('click', () => {
-            document.getElementById('otpScreen').style.display = 'none';
-            document.getElementById('authScreen').style.display = 'flex';
-            if (verificationCheckInterval) clearInterval(verificationCheckInterval);
-            if (pendingUserForVerification) {
-                pendingUserForVerification.delete().catch(() => {});
-                pendingUserForVerification = null;
-            }
-        });
 
         // ============================================
         // OTP INPUT HANDLING
@@ -1674,27 +847,259 @@
         });
 
         // ============================================
-        // AUTH STATE
+        // NAVIGATION
         // ============================================
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                document.getElementById('authScreen').style.display = 'none';
-                document.getElementById('signupCard').style.display = 'none';
-                document.getElementById('otpScreen').style.display = 'none';
-                document.getElementById('appContainer').style.display = 'flex';
-                loadProfile();
-                loadFeed();
-                loadExplore();
-                loadStories();
-                loadNotifications();
-                console.log('User logged in:', user.email);
-            } else {
-                document.getElementById('appContainer').style.display = 'none';
-                const splash = document.getElementById('splashScreen');
-                if (splash.classList.contains('hidden')) {
-                    document.getElementById('authScreen').style.display = 'flex';
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                this.classList.add('active');
+                document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+                document.getElementById(this.dataset.screen).classList.add('active');
+                if (this.dataset.screen === 'screenMessages') loadChats();
+                if (this.dataset.screen === 'screenProfile') loadProfile();
+            });
+        });
+
+        // ============================================
+        // OTP VERIFICATION FLOW
+        // ============================================
+        function showOTPScreen(email) {
+            document.getElementById('authScreen').style.display = 'none';
+            document.getElementById('otpScreen').style.display = 'flex';
+            document.getElementById('otpEmailDisplay').textContent = email;
+            document.getElementById('otpError').style.display = 'none';
+            document.getElementById('otpSuccess').style.display = 'none';
+            document.querySelectorAll('.otp-input').forEach(inp => inp.value = '');
+            document.getElementById('otp1').focus();
+            startCountdown();
+            sendVerificationEmail();
+        }
+
+        function sendVerificationEmail() {
+            if (!pendingUserCredential) return;
+            pendingUserCredential.user.sendEmailVerification()
+                .then(() => showToast('Verification email sent!', 'success'))
+                .catch(() => showToast('Failed to send verification email.', 'error'));
+        }
+
+        function startCountdown() {
+            countdownTimer = 60;
+            document.getElementById('resendTimer').style.display = 'block';
+            document.getElementById('resendOtpBtn').disabled = true;
+            if (countdownInterval) clearInterval(countdownInterval);
+            countdownInterval = setInterval(() => {
+                countdownTimer--;
+                document.getElementById('countdownTimer').textContent = countdownTimer;
+                if (countdownTimer <= 0) {
+                    clearInterval(countdownInterval);
+                    document.getElementById('resendTimer').style.display = 'none';
+                    document.getElementById('resendOtpBtn').disabled = false;
                 }
+            }, 1000);
+        }
+
+        document.getElementById('verifyOtpBtn').addEventListener('click', async function() {
+            const inputs = document.querySelectorAll('.otp-input');
+            const otp = Array.from(inputs).map(inp => inp.value).join('');
+            if (otp.length !== 6) {
+                document.getElementById('otpError').style.display = 'block';
+                document.getElementById('otpError').textContent = 'Please enter all 6 digits.';
+                return;
             }
+            this.disabled = true;
+            document.getElementById('otpError').style.display = 'none';
+            try {
+                await pendingUserCredential.user.reload();
+                if (pendingUserCredential.user.emailVerified) {
+                    document.getElementById('otpSuccess').style.display = 'block';
+                    showToast('Email verified!', 'success');
+                    setTimeout(() => completeLogin(pendingUserCredential), 1500);
+                    return;
+                }
+                showToast('Please click the verification link in your email.', 'info');
+                let attempts = 0;
+                const checkInterval = setInterval(async () => {
+                    attempts++;
+                    await pendingUserCredential.user.reload();
+                    if (pendingUserCredential.user.emailVerified) {
+                        clearInterval(checkInterval);
+                        document.getElementById('otpSuccess').style.display = 'block';
+                        showToast('Email verified!', 'success');
+                        setTimeout(() => completeLogin(pendingUserCredential), 1500);
+                    } else if (attempts >= 24) {
+                        clearInterval(checkInterval);
+                        document.getElementById('otpError').style.display = 'block';
+                        document.getElementById('otpError').textContent = 'Verification timeout.';
+                        this.disabled = false;
+                    }
+                }, 5000);
+            } catch (error) {
+                document.getElementById('otpError').style.display = 'block';
+                document.getElementById('otpError').textContent = error.message || 'Verification failed.';
+                this.disabled = false;
+            }
+        });
+
+        document.getElementById('resendOtpBtn').addEventListener('click', function() {
+            sendVerificationEmail();
+            startCountdown();
+            this.disabled = true;
+            showToast('New verification email sent!', 'success');
+        });
+
+        document.getElementById('backToLogin').addEventListener('click', () => {
+            document.getElementById('otpScreen').style.display = 'none';
+            document.getElementById('authScreen').style.display = 'flex';
+            if (pendingUserCredential) {
+                pendingUserCredential.user.delete().catch(() => {});
+                pendingUserCredential = null;
+            }
+        });
+
+        // ============================================
+        // COMPLETE LOGIN
+        // ============================================
+        async function completeLogin(userCredential) {
+            const user = userCredential.user;
+            currentUser = user;
+            const doc = await db.collection('users').doc(user.uid).get();
+            if (!doc.exists) {
+                await db.collection('users').doc(user.uid).set({
+                    uid: user.uid,
+                    name: user.displayName || 'User',
+                    email: user.email,
+                    bio: 'Hello, I\'m using Social App!',
+                    photoURL: `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || 'User')}&background=7C3AED&color=fff`,
+                    followers: [],
+                    following: [],
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            }
+            currentUserData = (await db.collection('users').doc(user.uid).get()).data();
+            document.getElementById('otpScreen').style.display = 'none';
+            document.getElementById('authScreen').style.display = 'none';
+            document.getElementById('appContainer').style.display = 'flex';
+            document.getElementById('profileName').textContent = currentUserData.name;
+            document.getElementById('profileAvatar').src = currentUserData.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUserData.name)}&background=7C3AED&color=fff`;
+            document.getElementById('profileBio').textContent = currentUserData.bio || 'Hello, I\'m using Social App!';
+            loadFeed();
+            loadExplore();
+            loadStories();
+            showToast('Welcome to Social App!', 'success');
+        }
+
+        // ============================================
+        // AUTH
+        // ============================================
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            try {
+                showToast('Signing in...', 'info');
+                const result = await auth.signInWithEmailAndPassword(email, password);
+                if (result.user.emailVerified) {
+                    await completeLogin(result);
+                } else {
+                    pendingUserCredential = result;
+                    showOTPScreen(email);
+                    showToast('Please verify your email first.', 'info');
+                }
+            } catch (error) {
+                showToast(error.message, 'error');
+            }
+        });
+
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            try {
+                showToast('Creating account...', 'info');
+                const result = await auth.createUserWithEmailAndPassword(email, password);
+                await result.user.updateProfile({ displayName: name });
+                await db.collection('users').doc(result.user.uid).set({
+                    uid: result.user.uid,
+                    name: name,
+                    email: email,
+                    bio: 'Hello, I\'m using Social App!',
+                    photoURL: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=7C3AED&color=fff`,
+                    followers: [],
+                    following: [],
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                pendingUserCredential = result;
+                showOTPScreen(email);
+                showToast('Verification email sent!', 'success');
+            } catch (error) {
+                showToast(error.message, 'error');
+            }
+        });
+
+        document.getElementById('googleAuthBtn').addEventListener('click', async () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            try {
+                showToast('Signing in with Google...', 'info');
+                const result = await auth.signInWithPopup(provider);
+                const doc = await db.collection('users').doc(result.user.uid).get();
+                if (!doc.exists) {
+                    await db.collection('users').doc(result.user.uid).set({
+                        uid: result.user.uid,
+                        name: result.user.displayName,
+                        email: result.user.email,
+                        bio: 'Hello, I\'m using Social App!',
+                        photoURL: result.user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(result.user.displayName)}&background=7C3AED&color=fff`,
+                        followers: [],
+                        following: [],
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }
+                await completeLogin(result);
+            } catch (error) {
+                showToast(error.message, 'error');
+            }
+        });
+
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                if (user.emailVerified || user.providerData[0]?.providerId === 'google.com') {
+                    const doc = await db.collection('users').doc(user.uid).get();
+                    if (doc.exists) {
+                        currentUser = user;
+                        currentUserData = doc.data();
+                        document.getElementById('authScreen').style.display = 'none';
+                        document.getElementById('otpScreen').style.display = 'none';
+                        document.getElementById('appContainer').style.display = 'flex';
+                        document.getElementById('profileName').textContent = currentUserData.name;
+                        document.getElementById('profileAvatar').src = currentUserData.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUserData.name)}&background=7C3AED&color=fff`;
+                        document.getElementById('profileBio').textContent = currentUserData.bio || 'Hello, I\'m using Social App!';
+                        loadFeed();
+                        loadExplore();
+                        loadStories();
+                    }
+                } else {
+                    pendingUserCredential = { user };
+                    document.getElementById('authScreen').style.display = 'none';
+                    showOTPScreen(user.email);
+                }
+            } else {
+                currentUser = null;
+                currentUserData = null;
+                document.getElementById('authScreen').style.display = 'flex';
+                document.getElementById('otpScreen').style.display = 'none';
+                document.getElementById('appContainer').style.display = 'none';
+            }
+        });
+
+        document.getElementById('showSignup').addEventListener('click', () => {
+            document.querySelector('.auth-card:first-child').style.display = 'none';
+            document.getElementById('signupCard').style.display = 'block';
+        });
+
+        document.getElementById('showLogin').addEventListener('click', () => {
+            document.querySelector('.auth-card:first-child').style.display = 'block';
+            document.getElementById('signupCard').style.display = 'none';
         });
 
         // ============================================
@@ -1710,69 +1115,24 @@
         });
 
         // ============================================
-        // LOAD PROFILE
-        // ============================================
-        function loadProfile() {
-            if (!auth.currentUser) return;
-            db.collection('users').doc(auth.currentUser.uid).get().then(doc => {
-                if (doc.exists) {
-                    const data = doc.data();
-                    document.getElementById('profileName').textContent = data.name || 'User';
-                    document.getElementById('profileUsername').textContent = '@' + (data.username || 'username');
-                    document.getElementById('profileBio').textContent = data.bio || 'Welcome to my profile!';
-                    document.getElementById('profileAvatar').src = data.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(data.name || 'User')}&background=7C3AED&color=fff&size=128`;
-                    document.getElementById('followerCount').textContent = data.followers ? data.followers.length : 0;
-                    document.getElementById('followingCount').textContent = data.following ? data.following.length : 0;
-                }
-            }).catch(() => {});
-
-            db.collection('posts').where('userId', '==', auth.currentUser.uid).onSnapshot((snapshot) => {
-                document.getElementById('postCount').textContent = snapshot.size;
-                const container = document.getElementById('profilePosts');
-                const items = [];
-                snapshot.forEach((doc) => {
-                    const data = doc.data();
-                    items.push({ id: doc.id, ...data });
-                });
-                if (items.length === 0) {
-                    container.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-light);"><i class="fas fa-camera" style="font-size:32px;display:block;margin-bottom:8px;color:var(--border);"></i><p>No posts yet</p></div>`;
-                } else {
-                    container.innerHTML = items.map(item => `
-                        <div class="post-item" onclick="showToast('View post', 'info')">
-                            <img src="${item.image || 'https://ui-avatars.com/api/?name=Post&background=7C3AED&color=fff'}" />
-                            <div class="overlay">
-                                <span><i class="fas fa-heart"></i> ${item.likes ? item.likes.length : 0}</span>
-                                <span><i class="fas fa-comment"></i> ${item.comments ? item.comments.length : 0}</span>
-                            </div>
-                        </div>
-                    `).join('');
-                }
-            });
-        }
-
-        // ============================================
         // EDIT PROFILE
         // ============================================
         document.getElementById('editProfileBtn').addEventListener('click', () => {
-            const newBio = prompt('Enter your bio:', document.getElementById('profileBio').textContent);
-            if (newBio !== null && auth.currentUser) {
-                db.collection('users').doc(auth.currentUser.uid).update({ bio: newBio });
+            const newBio = prompt('Enter your bio:', currentUserData?.bio || '');
+            if (newBio !== null && currentUser) {
+                db.collection('users').doc(currentUser.uid).update({ bio: newBio });
                 showToast('Profile updated!', 'success');
                 document.getElementById('profileBio').textContent = newBio;
             }
         });
 
         // ============================================
-        // AVATAR EDIT
+        // DARK MODE
         // ============================================
-        document.getElementById('avatarEditBtn').addEventListener('click', () => {
-            const colors = ['7C3AED', '6D28D9', '8B5CF6', '6366F1', '4F46E5', '3B82F6', '0EA5E9', '06B6D4', '10B981', 'F59E0B', 'EF4444', 'EC4899'];
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            const name = document.getElementById('profileName').textContent || 'User';
-            const newAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=${randomColor}&color=fff&size=128`;
-            db.collection('users').doc(auth.currentUser.uid).update({ photoURL: newAvatar });
-            document.getElementById('profileAvatar').src = newAvatar;
-            showToast('Avatar updated!', 'success');
+        document.getElementById('darkModeToggle').addEventListener('click', () => {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            document.getElementById('darkModeToggle').innerHTML = isDark ? '<i class="fas fa-moon"></i> Dark Mode' : '<i class="fas fa-sun"></i> Light Mode';
         });
 
         // ============================================
@@ -1785,13 +1145,10 @@
                 return;
             }
             try {
-                const user = auth.currentUser;
-                const userDoc = await db.collection('users').doc(user.uid).get();
-                const userData = userDoc.data();
                 await db.collection('posts').add({
-                    userId: user.uid,
-                    username: userData.name || 'User',
-                    userPhoto: userData.photoURL,
+                    userId: currentUser.uid,
+                    username: currentUserData.name,
+                    userPhoto: currentUserData.photoURL,
                     text: text,
                     likes: [],
                     comments: [],
@@ -1811,20 +1168,20 @@
         // ============================================
         function loadFeed() {
             db.collection('posts').orderBy('createdAt', 'desc').onSnapshot((snapshot) => {
-                const posts = [];
+                posts = [];
                 snapshot.forEach((doc) => {
                     posts.push({ id: doc.id, ...doc.data() });
                 });
-                renderFeed(posts);
+                renderFeed();
             });
         }
 
-        function renderFeed(posts) {
+        function renderFeed() {
             const container = document.getElementById('feedContainer');
             if (posts.length === 0) {
                 container.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-light);">
-                    <i class="fas fa-newspaper" style="font-size:48px;display:block;margin-bottom:16px;color:var(--border);"></i>
-                    <h3 style="color:var(--text);font-weight:700;">No posts yet</h3>
+                    <i class="fas fa-newspaper" style="font-size:48px;display:block;margin-bottom:16px;"></i>
+                    <h3>No posts yet</h3>
                     <p>Create your first post!</p>
                 </div>`;
                 return;
@@ -1832,25 +1189,24 @@
             container.innerHTML = posts.map(post => `
                 <div class="post-card">
                     <div class="post-header">
-                        <img src="${post.userPhoto || 'https://ui-avatars.com/api/?name=User&background=7C3AED&color=fff'}" onclick="showToast('View profile', 'info')" />
-                        <div class="post-user">
-                            <div class="name" onclick="showToast('View ${post.username}\'s profile', 'info')">${post.username}</div>
+                        <img src="${post.userPhoto || 'https://ui-avatars.com/api/?name=User&background=7C3AED&color=fff'}" />
+                        <div>
+                            <div class="name">${post.username}</div>
                             <div class="time">${formatTime(post.createdAt)}</div>
                         </div>
-                        <div class="more-btn" onclick="showToast('More options', 'info')"><i class="fas fa-ellipsis-h"></i></div>
                     </div>
                     ${post.text ? `<div class="post-text">${post.text}</div>` : ''}
                     <div class="post-actions">
-                        <button onclick="toggleLike('${post.id}')" class="${post.likes && post.likes.includes(auth.currentUser?.uid) ? 'liked' : ''}">
+                        <button onclick="toggleLike('${post.id}')" class="${post.likes && post.likes.includes(currentUser?.uid) ? 'liked' : ''}">
                             <i class="fas fa-heart"></i> <span class="count">${post.likes ? post.likes.length : 0}</span>
                         </button>
                         <button onclick="toggleComment('${post.id}')">
                             <i class="fas fa-comment"></i> <span class="count">${post.comments ? post.comments.length : 0}</span>
                         </button>
-                        <button onclick="sharePost('${post.id}', '${post.text}')">
-                            <i class="fas fa-share-alt"></i>
+                        <button onclick="sharePost('${post.id}')">
+                            <i class="fas fa-share"></i>
                         </button>
-                        <button onclick="showToast('Post saved!', 'success')">
+                        <button onclick="savePost('${post.id}')">
                             <i class="fas fa-bookmark"></i>
                         </button>
                     </div>
@@ -1878,31 +1234,20 @@
             `).join('');
         }
 
-        function formatTime(timestamp) {
-            if (!timestamp) return 'Just now';
-            const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
-            const now = new Date();
-            const diff = Math.floor((now - date) / 60000);
-            if (diff < 1) return 'Just now';
-            if (diff < 60) return diff + 'm';
-            if (diff < 1440) return Math.floor(diff / 60) + 'h';
-            return date.toLocaleDateString();
-        }
-
         // ============================================
         // LIKE
         // ============================================
         window.toggleLike = async (postId) => {
-            if (!auth.currentUser) return;
+            if (!currentUser) return;
             const postRef = db.collection('posts').doc(postId);
             const doc = await postRef.get();
             const data = doc.data();
             const likes = data.likes || [];
-            const index = likes.indexOf(auth.currentUser.uid);
+            const index = likes.indexOf(currentUser.uid);
             if (index > -1) {
                 likes.splice(index, 1);
             } else {
-                likes.push(auth.currentUser.uid);
+                likes.push(currentUser.uid);
             }
             await postRef.update({ likes });
         };
@@ -1913,23 +1258,20 @@
         window.addComment = async (postId) => {
             const input = document.getElementById(`commentInput-${postId}`);
             const text = input.value.trim();
-            if (!text || !auth.currentUser) return;
+            if (!text || !currentUser) return;
             const postRef = db.collection('posts').doc(postId);
             const doc = await postRef.get();
             const data = doc.data();
             const comments = data.comments || [];
-            const userDoc = await db.collection('users').doc(auth.currentUser.uid).get();
-            const userData = userDoc.data();
             comments.push({
-                userId: auth.currentUser.uid,
-                username: userData.name || 'User',
-                userPhoto: userData.photoURL,
+                userId: currentUser.uid,
+                username: currentUserData.name,
+                userPhoto: currentUserData.photoURL,
                 text: text,
                 createdAt: new Date().toISOString()
             });
             await postRef.update({ comments });
             input.value = '';
-            showToast('Comment added!', 'success');
         };
 
         window.toggleComment = (postId) => {
@@ -1938,20 +1280,24 @@
         };
 
         // ============================================
-        // SHARE
+        // SHARE & SAVE
         // ============================================
-        window.sharePost = (postId, text) => {
+        window.sharePost = (postId) => {
             const url = window.location.origin + '/?post=' + postId;
             if (navigator.share) {
-                navigator.share({ title: 'Check this post on ConnectHub!', text: text || 'Check this post!', url });
+                navigator.share({ title: 'Check this post!', url });
             } else {
-                navigator.clipboard.writeText(`${text || 'Check this post!'} ${url}`);
-                showToast('Link copied to clipboard!', 'success');
+                navigator.clipboard.writeText(url);
+                showToast('Link copied!', 'success');
             }
         };
 
+        window.savePost = (postId) => {
+            showToast('Post saved!', 'success');
+        };
+
         // ============================================
-        // LOAD EXPLORE
+        // EXPLORE
         // ============================================
         function loadExplore() {
             db.collection('posts').orderBy('createdAt', 'desc').onSnapshot((snapshot) => {
@@ -1961,87 +1307,34 @@
                     const data = doc.data();
                     if (data.image) items.push(data.image);
                 });
-                if (items.length === 0) {
-                    container.innerHTML = `
-                        <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-light);">
-                            <i class="fas fa-compass" style="font-size:48px;display:block;margin-bottom:12px;color:var(--border);"></i>
-                            <h3>Explore posts</h3>
-                            <p>Posts with images will appear here</p>
-                        </div>
-                    `;
-                } else {
-                    container.innerHTML = items.slice(0, 30).map(img => 
-                        `<img src="${img}" onclick="showToast('View post', 'info')" />`
-                    ).join('');
-                }
+                container.innerHTML = items.slice(0, 30).map(img => 
+                    `<img src="${img}" onclick="showToast('View post', 'info')" />`
+                ).join('');
             });
         }
 
-        // ============================================
-        // SEARCH
-        // ============================================
         document.getElementById('exploreSearch').addEventListener('input', async (e) => {
             const query = e.target.value.toLowerCase().trim();
-            if (!query) { loadExplore(); return; }
+            if (!query) return;
             const snapshot = await db.collection('users').get();
             const results = [];
             snapshot.forEach((doc) => {
                 const data = doc.data();
-                if (data.name.toLowerCase().includes(query) || (data.username && data.username.includes(query))) {
+                if (data.name.toLowerCase().includes(query)) {
                     results.push(data);
                 }
             });
             const container = document.getElementById('exploreGrid');
-            if (results.length === 0) {
-                container.innerHTML = `
-                    <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-light);">
-                        <i class="fas fa-user-slash" style="font-size:48px;display:block;margin-bottom:12px;color:var(--border);"></i>
-                        <h3>No users found</h3>
-                        <p>Try a different search term</p>
-                    </div>
-                `;
-            } else {
-                container.innerHTML = results.map(user => `
-                    <div style="padding:16px;background:var(--card);border-radius:var(--radius);text-align:center;box-shadow:var(--shadow);">
-                        <img src="${user.photoURL || 'https://ui-avatars.com/api/?name=U&background=7C3AED&color=fff'}" style="width:72px;height:72px;border-radius:50%;object-fit:cover;margin-bottom:8px;" />
-                        <div style="font-weight:600;">${user.name}</div>
-                        <div style="font-size:12px;color:var(--text-light);">@${user.username || 'username'}</div>
-                        <button onclick="followUser('${user.uid}')" class="btn btn-primary" style="padding:6px 20px;font-size:12px;margin-top:8px;">
-                            Follow
-                        </button>
-                    </div>
-                `).join('');
-            }
+            container.innerHTML = results.map(user => `
+                <div style="padding:12px;background:var(--card);border-radius:var(--radius);text-align:center;">
+                    <img src="${user.photoURL || 'https://ui-avatars.com/api/?name=U&background=7C3AED&color=fff'}" style="width:60px;height:60px;border-radius:50%;object-fit:cover;margin-bottom:8px;" />
+                    <div style="font-weight:600;">${user.name}</div>
+                    <button onclick="followUser('${user.uid}')" class="btn btn-primary" style="padding:6px 16px;font-size:12px;margin-top:8px;">
+                        Follow
+                    </button>
+                </div>
+            `).join('');
         });
-
-        // ============================================
-        // FOLLOW
-        // ============================================
-        window.followUser = async (userId) => {
-            if (!auth.currentUser) return;
-            if (userId === auth.currentUser.uid) {
-                showToast('You can\'t follow yourself', 'error');
-                return;
-            }
-            const userRef = db.collection('users').doc(auth.currentUser.uid);
-            const doc = await userRef.get();
-            const data = doc.data();
-            const following = data.following || [];
-            if (!following.includes(userId)) {
-                following.push(userId);
-                await userRef.update({ following });
-                const targetRef = db.collection('users').doc(userId);
-                const targetDoc = await targetRef.get();
-                const targetData = targetDoc.data();
-                const followers = targetData.followers || [];
-                if (!followers.includes(auth.currentUser.uid)) {
-                    followers.push(auth.currentUser.uid);
-                    await targetRef.update({ followers });
-                }
-                showToast('Followed!', 'success');
-                loadProfile();
-            }
-        };
 
         // ============================================
         // STORIES
@@ -2049,99 +1342,24 @@
         function loadStories() {
             db.collection('users').limit(10).onSnapshot((snapshot) => {
                 const bar = document.getElementById('storiesBar');
-                let html = `
-                    <div class="story-item" onclick="showToast('Add a story', 'info')">
-                        <div class="add-story"><i class="fas fa-plus"></i></div>
-                        <span>Add Story</span>
-                    </div>
-                `;
-                snapshot.forEach((doc) => {
+                bar.innerHTML = snapshot.docs.map(doc => {
                     const data = doc.data();
-                    if (data.uid === auth.currentUser?.uid) return;
-                    html += `
+                    return `
                         <div class="story-item" onclick="showToast('View story', 'info')">
-                            <div class="ring"><img src="${data.photoURL || 'https://ui-avatars.com/api/?name=U&background=7C3AED&color=fff'}" /></div>
+                            <img src="${data.photoURL || 'https://ui-avatars.com/api/?name=U&background=7C3AED&color=fff'}" />
                             <span>${data.name}</span>
                         </div>
                     `;
-                });
-                bar.innerHTML = html;
+                }).join('');
             });
         }
 
         // ============================================
-        // NOTIFICATIONS
-        // ============================================
-        function loadNotifications() {
-            if (!auth.currentUser) return;
-            db.collection('notifications')
-                .where('userId', '==', auth.currentUser.uid)
-                .orderBy('createdAt', 'desc')
-                .limit(50)
-                .onSnapshot((snapshot) => {
-                    const container = document.getElementById('notifContainer');
-                    if (snapshot.empty) {
-                        container.innerHTML = `
-                            <div style="text-align:center;padding:40px;color:var(--text-light);">
-                                <i class="fas fa-bell" style="font-size:48px;display:block;margin-bottom:12px;color:var(--border);"></i>
-                                <h3>No notifications</h3>
-                                <p>When someone interacts with you, you'll see it here</p>
-                            </div>
-                        `;
-                        return;
-                    }
-                    let unreadCount = 0;
-                    container.innerHTML = snapshot.docs.map(doc => {
-                        const data = doc.data();
-                        if (!data.isRead) unreadCount++;
-                        return `
-                            <div class="notif-item" onclick="markNotifRead('${doc.id}')" style="${data.isRead ? '' : 'border-left: 3px solid #7C3AED;'}">
-                                <img src="${data.fromUserPhoto || 'https://ui-avatars.com/api/?name=U&background=7C3AED&color=fff'}" />
-                                <div class="content">
-                                    <div class="text">
-                                        <strong>${data.fromUserName}</strong>
-                                        ${data.type === 'like' ? 'liked your post' : ''}
-                                        ${data.type === 'comment' ? `commented: "${data.comment}"` : ''}
-                                        ${data.type === 'follow' ? 'started following you' : ''}
-                                    </div>
-                                    <div class="time">${formatTime(data.createdAt)}</div>
-                                </div>
-                                ${!data.isRead ? '<div class="unread"></div>' : ''}
-                            </div>
-                        `;
-                    }).join('');
-                    
-                    const badge = document.getElementById('messageBadge');
-                    if (unreadCount > 0) {
-                        badge.style.display = 'flex';
-                        badge.textContent = unreadCount;
-                    } else {
-                        badge.style.display = 'none';
-                    }
-                });
-        }
-
-        window.markNotifRead = async (notifId) => {
-            await db.collection('notifications').doc(notifId).update({ isRead: true });
-        };
-
-        // ============================================
-        // MESSAGES / CHATS
+        // MESSAGES
         // ============================================
         function loadChats() {
-            if (!auth.currentUser) return;
-            db.collection('users').where('uid', '!=', auth.currentUser.uid).limit(20).onSnapshot((snapshot) => {
+            db.collection('users').where('uid', '!=', currentUser?.uid).limit(20).onSnapshot((snapshot) => {
                 const container = document.getElementById('chatList');
-                if (snapshot.empty) {
-                    container.innerHTML = `
-                        <div style="text-align:center;padding:40px;color:var(--text-light);">
-                            <i class="fas fa-comments" style="font-size:48px;display:block;margin-bottom:12px;color:var(--border);"></i>
-                            <h3>No chats yet</h3>
-                            <p>Connect with other users!</p>
-                        </div>
-                    `;
-                    return;
-                }
                 container.innerHTML = snapshot.docs.map(doc => {
                     const data = doc.data();
                     return `
@@ -2149,9 +1367,8 @@
                             <img src="${data.photoURL || 'https://ui-avatars.com/api/?name=U&background=7C3AED&color=fff'}" />
                             <div class="info">
                                 <div class="name">${data.name}</div>
-                                <div class="last-msg">💬 Click to chat</div>
+                                <div class="last-msg">Click to chat</div>
                             </div>
-                            <div class="time">online</div>
                         </div>
                     `;
                 }).join('');
@@ -2159,19 +1376,41 @@
         }
 
         window.openChat = (userId) => {
-            const message = prompt('Send a message:');
-            if (message && message.trim()) {
-                const chatId = [auth.currentUser.uid, userId].sort().join('_');
-                db.collection('messages').add({
-                    chatId: chatId,
-                    senderId: auth.currentUser.uid,
-                    senderName: document.getElementById('profileName').textContent || 'User',
-                    recipientId: userId,
-                    text: message.trim(),
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                    read: false
+            showToast('Chat feature loaded!', 'success');
+        };
+
+        // ============================================
+        // PROFILE
+        // ============================================
+        function loadProfile() {
+            if (!currentUser) return;
+            db.collection('posts').where('userId', '==', currentUser.uid).onSnapshot((snapshot) => {
+                document.getElementById('postCount').textContent = snapshot.size;
+                const container = document.getElementById('profilePosts');
+                const items = [];
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    if (data.image) items.push(data.image);
                 });
-                showToast('Message sent!', 'success');
+                container.innerHTML = items.map(img => 
+                    `<img src="${img}" />`
+                ).join('');
+            });
+        }
+
+        // ============================================
+        // FOLLOW
+        // ============================================
+        window.followUser = async (userId) => {
+            if (!currentUser) return;
+            const userRef = db.collection('users').doc(currentUser.uid);
+            const doc = await userRef.get();
+            const data = doc.data();
+            const following = data.following || [];
+            if (!following.includes(userId)) {
+                following.push(userId);
+                await userRef.update({ following });
+                showToast('Followed!', 'success');
             }
         };
 
@@ -2182,7 +1421,8 @@
             navigator.serviceWorker.register('/service-worker.js').catch(() => {});
         }
 
-        console.log('🚀 ConnectHub v1.0 loaded with fixed signup!');
+        console.log('🚀 Social Media App loaded with NEW Firebase config!');
+        console.log('📱 Text posts only (Firebase Storage not available)');
     </script>
 </body>
 </html>
