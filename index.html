@@ -12,10 +12,8 @@
     
     <style>
         /* ============================================
-           CSS (same as before, omitted for brevity)
+           CSS (same as previous, but keep it clean)
            ============================================ */
-        /* ... (all styles from previous version) ... */
-        /* Use the exact same styles as the last version */
         :root {
             --primary: #7C3AED;
             --primary-dark: #6D28D9;
@@ -961,53 +959,23 @@
         db.enablePersistence().catch(() => {});
 
         // ============================================
-        // SPLASH SCREEN LOGIC (Check auth first)
+        // DOM REFERENCES
         // ============================================
-        function showSplashAndAuth() {
-            const splash = document.getElementById('splashScreen');
-            // If user already signed in, skip splash
-            if (auth.currentUser) {
-                splash.classList.add('hidden');
-                document.getElementById('authScreen').style.display = 'none';
-                document.getElementById('signupCard').style.display = 'none';
-                document.getElementById('otpScreen').style.display = 'none';
-                document.getElementById('appContainer').style.display = 'flex';
-                // Load profile
-                loadUserProfile(auth.currentUser);
-                return;
-            }
-            // Otherwise, show splash for 5 seconds then show auth
-            setTimeout(() => {
-                splash.classList.add('hidden');
-                setTimeout(() => {
-                    document.getElementById('authScreen').style.display = 'block';
-                }, 300);
-            }, 5000);
-        }
-
-        function loadUserProfile(user) {
-            db.collection('users').doc(user.uid).get().then(doc => {
-                if (doc.exists) {
-                    const data = doc.data();
-                    document.getElementById('profileName').textContent = data.name || 'User';
-                    document.getElementById('profileUsername').textContent = '@' + (data.username || 'username');
-                    document.getElementById('profileBio').textContent = data.bio || 'Welcome to my profile!';
-                    document.getElementById('profileAvatar').src = data.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(data.name || 'User')}&background=7C3AED&color=fff&size=128`;
-                }
-            }).catch(() => {});
-        }
+        const splash = document.getElementById('splashScreen');
+        const authScreen = document.getElementById('authScreen');
+        const signupCard = document.getElementById('signupCard');
+        const otpScreen = document.getElementById('otpScreen');
+        const appContainer = document.getElementById('appContainer');
 
         // ============================================
-        // SLIDESHOW FUNCTION
+        // SLIDESHOW
         // ============================================
         function initSlideshow(containerId, dotsId) {
             const container = document.getElementById(containerId);
             if (!container) return;
-            
             const slides = container.querySelectorAll('.slide');
             const dots = document.getElementById(dotsId);
             if (!dots) return;
-            
             const dotButtons = dots.querySelectorAll('.dot');
             let currentIndex = 0;
             let slideInterval;
@@ -1075,8 +1043,8 @@
         // ============================================
         document.getElementById('showSignup').addEventListener('click', function(e) {
             e.preventDefault();
-            document.getElementById('authScreen').style.display = 'none';
-            document.getElementById('signupCard').style.display = 'block';
+            authScreen.style.display = 'none';
+            signupCard.style.display = 'block';
             if (signupSlideshow) {
                 signupSlideshow.stopSlideshow();
                 signupSlideshow.startSlideshow();
@@ -1085,8 +1053,8 @@
 
         document.getElementById('showLogin').addEventListener('click', function(e) {
             e.preventDefault();
-            document.getElementById('signupCard').style.display = 'none';
-            document.getElementById('authScreen').style.display = 'block';
+            signupCard.style.display = 'none';
+            authScreen.style.display = 'block';
             if (mainSlideshow) {
                 mainSlideshow.stopSlideshow();
                 mainSlideshow.startSlideshow();
@@ -1107,23 +1075,51 @@
         });
 
         // ============================================
-        // AUTH STATE
+        // LOAD USER PROFILE
+        // ============================================
+        function loadUserProfile(user) {
+            db.collection('users').doc(user.uid).get().then(doc => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    document.getElementById('profileName').textContent = data.name || 'User';
+                    document.getElementById('profileUsername').textContent = '@' + (data.username || 'username');
+                    document.getElementById('profileBio').textContent = data.bio || 'Welcome to my profile!';
+                    document.getElementById('profileAvatar').src = data.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(data.name || 'User')}&background=7C3AED&color=fff&size=128`;
+                }
+            }).catch(err => console.warn('Profile load error:', err));
+        }
+
+        // ============================================
+        // AUTH STATE LISTENER (Master Control)
         // ============================================
         auth.onAuthStateChanged((user) => {
+            // Always hide splash immediately when auth resolves
+            splash.classList.add('hidden');
+
             if (user) {
-                document.getElementById('authScreen').style.display = 'none';
-                document.getElementById('signupCard').style.display = 'none';
-                document.getElementById('otpScreen').style.display = 'none';
-                document.getElementById('appContainer').style.display = 'flex';
+                // Logged in: show app
+                authScreen.style.display = 'none';
+                signupCard.style.display = 'none';
+                otpScreen.style.display = 'none';
+                appContainer.style.display = 'flex';
                 loadUserProfile(user);
                 showToast('Welcome to ConnectHub!', 'success');
+                console.log('✅ User logged in:', user.email);
             } else {
-                document.getElementById('appContainer').style.display = 'none';
-                // Only show auth if splash is hidden
-                const splash = document.getElementById('splashScreen');
-                if (splash.classList.contains('hidden')) {
-                    document.getElementById('authScreen').style.display = 'block';
-                }
+                // Logged out: show auth (if splash is hidden)
+                authScreen.style.display = 'block';
+                appContainer.style.display = 'none';
+                console.log('🔓 User logged out');
+            }
+        });
+
+        // ============================================
+        // HANDLE AUTH REDIRECT RESULT (for Google)
+        // ============================================
+        auth.getRedirectResult().catch((error) => {
+            if (error) {
+                console.error('Redirect error:', error);
+                showToast(error.message, 'error');
             }
         });
 
@@ -1137,6 +1133,7 @@
             try {
                 showToast('Signing in...', 'info');
                 await auth.signInWithEmailAndPassword(email, password);
+                // Auth listener will handle app display
             } catch (error) {
                 showToast(error.message, 'error');
             }
@@ -1149,7 +1146,6 @@
             const provider = new firebase.auth.GoogleAuthProvider();
             try {
                 showToast('Connecting to Google...', 'info');
-                // Use redirect for mobile, popup for desktop
                 if (window.innerWidth < 768) {
                     await auth.signInWithRedirect(provider);
                 } else {
@@ -1165,13 +1161,6 @@
                 } else {
                     showToast(error.message, 'error');
                 }
-            }
-        });
-
-        // Handle redirect result for mobile
-        auth.getRedirectResult().catch((error) => {
-            if (error) {
-                showToast(error.message, 'error');
             }
         });
 
@@ -1207,18 +1196,19 @@
                 });
                 await result.user.sendEmailVerification();
                 showToast('Verification email sent! Check your inbox.', 'success');
-                document.getElementById('signupCard').style.display = 'none';
-                document.getElementById('otpScreen').style.display = 'flex';
+                signupCard.style.display = 'none';
+                otpScreen.style.display = 'flex';
                 document.getElementById('otpEmailDisplay').textContent = email;
                 // Start auto-check
                 startEmailVerificationCheck(result.user);
             } catch (error) {
+                console.error('Signup error:', error);
                 showToast(error.message, 'error');
             }
         });
 
         // ============================================
-        // OTP VERIFICATION (Auto-check + Manual)
+        // OTP VERIFICATION
         // ============================================
         let verificationCheckInterval = null;
         let pendingUserForVerification = null;
@@ -1238,8 +1228,8 @@
                     document.getElementById('otpSuccess').style.display = 'block';
                     showToast('Email verified!', 'success');
                     setTimeout(() => {
-                        document.getElementById('otpScreen').style.display = 'none';
-                        document.getElementById('appContainer').style.display = 'flex';
+                        otpScreen.style.display = 'none';
+                        appContainer.style.display = 'flex';
                         pendingUserForVerification = null;
                     }, 1500);
                 }
@@ -1259,8 +1249,8 @@
                     document.getElementById('otpSuccess').style.display = 'block';
                     showToast('Email verified!', 'success');
                     setTimeout(() => {
-                        document.getElementById('otpScreen').style.display = 'none';
-                        document.getElementById('appContainer').style.display = 'flex';
+                        otpScreen.style.display = 'none';
+                        appContainer.style.display = 'flex';
                         pendingUserForVerification = null;
                     }, 1500);
                 } else {
@@ -1286,8 +1276,8 @@
         });
 
         document.getElementById('backToLogin').addEventListener('click', () => {
-            document.getElementById('otpScreen').style.display = 'none';
-            document.getElementById('authScreen').style.display = 'block';
+            otpScreen.style.display = 'none';
+            authScreen.style.display = 'block';
             if (verificationCheckInterval) clearInterval(verificationCheckInterval);
             if (pendingUserForVerification) {
                 pendingUserForVerification.delete().catch(() => {});
@@ -1302,15 +1292,13 @@
             try {
                 await auth.signOut();
                 showToast('Signed out', 'info');
-                document.getElementById('appContainer').style.display = 'none';
-                document.getElementById('authScreen').style.display = 'block';
             } catch (error) {
                 showToast(error.message, 'error');
             }
         });
 
         // ============================================
-        // CREATE POST
+        // CREATE POST (demo)
         // ============================================
         document.getElementById('createPostBtn').addEventListener('click', function() {
             const text = document.getElementById('postText').value.trim();
@@ -1324,12 +1312,10 @@
         });
 
         // ============================================
-        // START APP
+        // SPLASH HANDLING: Show splash initially, but auth listener will hide it
         // ============================================
-        // Check auth and show splash or app
-        showSplashAndAuth();
-
-        console.log('🚀 ConnectHub with splash fix!');
+        // splash is shown by default, no need to hide immediately
+        console.log('🚀 App starting...');
     </script>
 </body>
 </html>
