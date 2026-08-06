@@ -12,14 +12,13 @@
     
     <style>
         /* ============================================
-           COMPLETE REDESIGNED CSS
+           COMPLETE CSS (Includes Splash Screen)
            ============================================ */
         :root {
             --primary: #7C3AED;
             --primary-dark: #6D28D9;
             --primary-light: #A78BFA;
             --primary-gradient: linear-gradient(135deg, #7C3AED, #6D28D9);
-            --secondary: #8B5CF6;
             --bg: #F8FAFC;
             --card: #FFFFFF;
             --text: #0F172A;
@@ -57,7 +56,69 @@
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
 
         /* ============================================
-           AUTH SCREEN WITH LOGO
+           SPLASH SCREEN
+           ============================================ */
+        #splashScreen {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            background: linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease;
+        }
+        #splashScreen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .splash-logo {
+            width: 120px;
+            height: 120px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        .splash-logo i {
+            font-size: 60px;
+            color: white;
+        }
+        .splash-text {
+            margin-top: 24px;
+            font-size: 32px;
+            font-weight: 900;
+            color: white;
+            letter-spacing: 2px;
+        }
+        .splash-text span {
+            opacity: 0.8;
+        }
+        .splash-loader {
+            margin-top: 40px;
+            width: 48px;
+            height: 48px;
+            border: 4px solid rgba(255,255,255,0.2);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ============================================
+           AUTH SCREEN
            ============================================ */
         .auth-container {
             display: flex;
@@ -99,7 +160,6 @@
 
         .auth-header { text-align: center; margin-bottom: 32px; }
         
-        /* ===== NEW LOGO ===== */
         .auth-logo {
             width: 80px;
             height: 80px;
@@ -139,9 +199,6 @@
             margin-top: 4px;
         }
 
-        /* ============================================
-           FORM ELEMENTS
-           ============================================ */
         .auth-form { display: flex; flex-direction: column; gap: 16px; }
         .form-group { display: flex; flex-direction: column; gap: 6px; }
         .form-group label {
@@ -1025,305 +1082,109 @@
             font-size: 24px;
             color: var(--primary);
         }
+
+        /* ============================================
+           SPLASH SCREEN (additional styling)
+           ============================================ */
+        #splashScreen {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            background: linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease;
+        }
+        #splashScreen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .splash-logo {
+            width: 120px;
+            height: 120px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: pulse 1.5s ease-in-out infinite;
+            backdrop-filter: blur(10px);
+        }
+        .splash-logo i {
+            font-size: 60px;
+            color: white;
+        }
+        .splash-text {
+            margin-top: 24px;
+            font-size: 32px;
+            font-weight: 900;
+            color: white;
+            letter-spacing: 2px;
+        }
+        .splash-text span {
+            opacity: 0.8;
+        }
+        .splash-loader {
+            margin-top: 40px;
+            width: 48px;
+            height: 48px;
+            border: 4px solid rgba(255,255,255,0.2);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        .splash-sub {
+            margin-top: 16px;
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+            font-weight: 400;
+        }
     </style>
 </head>
 <body>
     <!-- ============================================ -->
-    <!-- AUTH SCREEN                                  -->
+    <!-- SPLASH SCREEN                                -->
     <!-- ============================================ -->
-    <div id="authScreen" class="auth-container">
-        <div class="auth-card">
-            <div class="auth-header">
-                <div class="auth-logo">
-                    <i class="fas fa-connectdevelop"></i>
-                    <div class="logo-dot"></div>
-                </div>
-                <h1>Connect<span>Hub</span></h1>
-                <p class="auth-subtitle">Connect, share, and discover</p>
-            </div>
-
-            <form id="loginForm" class="auth-form">
-                <div class="form-group">
-                    <label for="loginEmail"><i class="fas fa-envelope"></i> Email</label>
-                    <input type="email" id="loginEmail" placeholder="you@example.com" required />
-                </div>
-                <div class="form-group">
-                    <label for="loginPassword"><i class="fas fa-lock"></i> Password</label>
-                    <input type="password" id="loginPassword" placeholder="••••••••" required />
-                </div>
-                <button type="submit" class="btn btn-primary btn-full">
-                    <i class="fas fa-sign-in-alt"></i> Sign In
-                </button>
-            </form>
-
-            <div class="auth-divider"><span>or</span></div>
-
-            <button id="googleAuthBtn" class="btn btn-google btn-full">
-                <i class="fab fa-google"></i> Continue with Google
-            </button>
-
-            <div class="auth-footer">
-                Don't have an account? <a id="showSignup">Sign Up</a>
-            </div>
+    <div id="splashScreen">
+        <div class="splash-logo">
+            <i class="fas fa-connectdevelop"></i>
         </div>
-
-        <div class="auth-card" id="signupCard" style="display: none;">
-            <div class="auth-header">
-                <div class="auth-logo">
-                    <i class="fas fa-user-plus"></i>
-                    <div class="logo-dot"></div>
-                </div>
-                <h1>Join Connect<span>Hub</span></h1>
-                <p class="auth-subtitle">Create your account</p>
-            </div>
-
-            <form id="signupForm" class="auth-form">
-                <div class="form-group">
-                    <label for="signupName"><i class="fas fa-user"></i> Full Name</label>
-                    <input type="text" id="signupName" placeholder="John Doe" required />
-                </div>
-                <div class="form-group">
-                    <label for="signupUsername"><i class="fas fa-at"></i> Username</label>
-                    <input type="text" id="signupUsername" placeholder="johndoe" required />
-                    <small style="color:var(--text-light);font-size:11px;">Unique username (letters, numbers, underscore)</small>
-                </div>
-                <div class="form-group">
-                    <label for="signupEmail"><i class="fas fa-envelope"></i> Email</label>
-                    <input type="email" id="signupEmail" placeholder="you@example.com" required />
-                </div>
-                <div class="form-group">
-                    <label for="signupPassword"><i class="fas fa-lock"></i> Password</label>
-                    <input type="password" id="signupPassword" placeholder="Min 6 characters" required minlength="6" />
-                </div>
-                <button type="submit" class="btn btn-primary btn-full">
-                    <i class="fas fa-user-plus"></i> Create Account
-                </button>
-            </form>
-
-            <div class="auth-footer">
-                Already have an account? <a id="showLogin">Sign In</a>
-            </div>
-        </div>
+        <div class="splash-text">Connect<span>Hub</span></div>
+        <div class="splash-loader"></div>
+        <div class="splash-sub">Connecting people...</div>
     </div>
 
     <!-- ============================================ -->
-    <!-- OTP SCREEN                                   -->
+    <!-- AUTH SCREEN (Login)                          -->
     <!-- ============================================ -->
-    <div id="otpScreen" class="otp-container">
-        <div class="otp-card">
-            <div class="icon"><i class="fas fa-envelope-open-text"></i></div>
-            <h2>Verify Your Email</h2>
-            <p>We've sent a verification link to <strong id="otpEmailDisplay">your@email.com</strong></p>
-            <p style="font-size:13px;color:var(--text-light);">Please check your inbox and spam folder.</p>
-
-            <div class="otp-input-group" id="otpInputGroup">
-                <input type="text" maxlength="1" id="otp1" class="otp-input" autofocus />
-                <input type="text" maxlength="1" id="otp2" class="otp-input" />
-                <input type="text" maxlength="1" id="otp3" class="otp-input" />
-                <input type="text" maxlength="1" id="otp4" class="otp-input" />
-                <input type="text" maxlength="1" id="otp5" class="otp-input" />
-                <input type="text" maxlength="1" id="otp6" class="otp-input" />
-            </div>
-
-            <div id="otpError" class="error-message"><i class="fas fa-exclamation-circle"></i> Invalid verification code.</div>
-            <div id="otpSuccess" class="success-message"><i class="fas fa-check-circle"></i> Email verified! Redirecting...</div>
-
-            <button id="verifyOtpBtn" class="btn btn-primary btn-full"><i class="fas fa-check"></i> Verify Email</button>
-            <button id="resendOtpBtn" class="btn btn-outline btn-full" style="margin-top:12px;"><i class="fas fa-redo"></i> Resend Verification</button>
-
-            <div class="resend-timer" id="resendTimer">Resend available in <span id="countdownTimer">60</span> seconds</div>
-            <div class="auth-footer" style="margin-top:16px;"><a id="backToLogin">← Back to Sign In</a></div>
-        </div>
+    <div id="authScreen" class="auth-container" style="display:none;">
+        <!-- ... (rest of the auth screen same as before) ... -->
     </div>
 
     <!-- ============================================ -->
-    <!-- MAIN APP                                     -->
+    <!-- OTP SCREEN                                  -->
     <!-- ============================================ -->
-    <div id="appContainer" class="app-container">
-        <!-- HOME -->
-        <div id="screenHome" class="screen active">
-            <div class="stories-bar" id="storiesBar">
-                <!-- Stories rendered here -->
-            </div>
-            <div id="feedContainer"></div>
-        </div>
-
-        <!-- EXPLORE -->
-        <div id="screenExplore" class="screen">
-            <div style="padding:16px;">
-                <div class="search-wrapper" style="display:flex;align-items:center;background:var(--card);border-radius:12px;padding:0 16px;box-shadow:var(--shadow);">
-                    <i class="fas fa-search" style="color:var(--text-light);"></i>
-                    <input type="text" id="exploreSearch" placeholder="Search users..." style="border:none;background:transparent;padding:12px;font-size:14px;width:100%;outline:none;color:var(--text);" />
-                </div>
-            </div>
-            <div class="explore-grid" id="exploreGrid"></div>
-        </div>
-
-        <!-- CREATE -->
-        <div id="screenCreate" class="screen">
-            <div class="create-container">
-                <h2>✨ Create Post</h2>
-                <textarea id="postText" placeholder="What's on your mind? Share with the world..."></textarea>
-                <button id="createPostBtn" class="btn btn-primary">
-                    <i class="fas fa-paper-plane"></i> Post
-                </button>
-            </div>
-        </div>
-
-        <!-- MESSAGES -->
-        <div id="screenMessages" class="screen">
-            <div style="padding:16px;">
-                <h2 style="font-size:24px;font-weight:800;margin-bottom:16px;">💬 Messages</h2>
-                <div id="chatList" class="chat-list">
-                    <div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading chats...</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- PROFILE -->
-        <div id="screenProfile" class="screen">
-            <div class="profile-header" id="profileHeader">
-                <div class="cover" id="coverContainer">
-                    <img id="coverImage" src="" style="display:none;" />
-                </div>
-                <div class="avatar-wrapper">
-                    <img id="profileAvatar" class="avatar" src="https://ui-avatars.com/api/?name=User&background=7C3AED&color=fff&size=128" />
-                    <div class="avatar-edit" id="avatarEditBtn"><i class="fas fa-camera"></i></div>
-                </div>
-                <div class="name" id="profileName">User</div>
-                <div class="username" id="profileUsername">@username</div>
-                <div class="bio" id="profileBio">Welcome to my profile!</div>
-                <div class="profile-stats">
-                    <div class="stat" onclick="showToast('Posts count', 'info')">
-                        <div class="number" id="postCount">0</div>
-                        <div class="label">Posts</div>
-                    </div>
-                    <div class="stat" id="followersStat">
-                        <div class="number" id="followerCount">0</div>
-                        <div class="label">Followers</div>
-                    </div>
-                    <div class="stat" id="followingStat">
-                        <div class="number" id="followingCount">0</div>
-                        <div class="label">Following</div>
-                    </div>
-                </div>
-                <div class="profile-actions">
-                    <button id="editProfileBtn" class="btn btn-primary" style="padding:8px 20px;font-size:13px;">
-                        <i class="fas fa-edit"></i> Edit Profile
-                    </button>
-                    <button id="settingsBtn" class="btn btn-outline" style="padding:8px 20px;font-size:13px;">
-                        <i class="fas fa-cog"></i>
-                    </button>
-                </div>
-                <button id="logoutBtn" style="position:absolute;top:16px;right:16px;background:var(--bg);border:none;padding:10px 14px;border-radius:10px;cursor:pointer;color:var(--text-light);font-size:16px;transition:var(--transition);">
-                    <i class="fas fa-sign-out-alt"></i>
-                </button>
-            </div>
-            <div class="profile-posts" id="profilePosts"></div>
-        </div>
-
-        <!-- SETTINGS -->
-        <div id="screenSettings" class="screen">
-            <div class="settings-container">
-                <h2>⚙️ Settings</h2>
-                
-                <!-- Account Settings -->
-                <div class="settings-group">
-                    <h3>Account</h3>
-                    <div class="setting-item" onclick="showToast('Edit profile', 'info')">
-                        <div class="left"><i class="fas fa-user-edit"></i><div><div class="title">Edit Profile</div><div class="desc">Change your name, bio, and photo</div></div></div>
-                        <div class="right"><i class="fas fa-chevron-right"></i></div>
-                    </div>
-                    <div class="setting-item" onclick="showToast('Change password', 'info')">
-                        <div class="left"><i class="fas fa-key"></i><div><div class="title">Change Password</div><div class="desc">Update your password</div></div></div>
-                        <div class="right"><i class="fas fa-chevron-right"></i></div>
-                    </div>
-                    <div class="setting-item" onclick="showToast('Email settings', 'info')">
-                        <div class="left"><i class="fas fa-envelope"></i><div><div class="title">Email Preferences</div><div class="desc">Manage email notifications</div></div></div>
-                        <div class="right"><i class="fas fa-chevron-right"></i></div>
-                    </div>
-                </div>
-
-                <!-- Preferences -->
-                <div class="settings-group">
-                    <h3>Preferences</h3>
-                    <div class="setting-item" onclick="toggleDarkMode()">
-                        <div class="left"><i class="fas fa-moon"></i><div><div class="title">Dark Mode</div><div class="desc">Toggle dark/light theme</div></div></div>
-                        <div class="right"><div class="toggle" id="darkModeToggle"><div class="dot"></div></div></div>
-                    </div>
-                    <div class="setting-item" onclick="showToast('Language settings', 'info')">
-                        <div class="left"><i class="fas fa-language"></i><div><div class="title">Language</div><div class="desc">Change app language</div></div></div>
-                        <div class="right">English <i class="fas fa-chevron-right"></i></div>
-                    </div>
-                </div>
-
-                <!-- Privacy -->
-                <div class="settings-group">
-                    <h3>Privacy & Security</h3>
-                    <div class="setting-item" onclick="showToast('Privacy settings', 'info')">
-                        <div class="left"><i class="fas fa-lock"></i><div><div class="title">Privacy Settings</div><div class="desc">Manage who can see your content</div></div></div>
-                        <div class="right"><i class="fas fa-chevron-right"></i></div>
-                    </div>
-                    <div class="setting-item" onclick="showToast('Blocked users', 'info')">
-                        <div class="left"><i class="fas fa-ban"></i><div><div class="title">Blocked Users</div><div class="desc">Manage blocked accounts</div></div></div>
-                        <div class="right"><i class="fas fa-chevron-right"></i></div>
-                    </div>
-                    <div class="setting-item" onclick="showToast('Data & storage', 'info')">
-                        <div class="left"><i class="fas fa-database"></i><div><div class="title">Data & Storage</div><div class="desc">Manage your data</div></div></div>
-                        <div class="right"><i class="fas fa-chevron-right"></i></div>
-                    </div>
-                </div>
-
-                <!-- About -->
-                <div class="settings-group">
-                    <h3>About</h3>
-                    <div class="setting-item" onclick="showToast('ConnectHub v1.0.0', 'info')">
-                        <div class="left"><i class="fas fa-info-circle"></i><div><div class="title">Version</div><div class="desc">ConnectHub v1.0.0</div></div></div>
-                        <div class="right"><i class="fas fa-chevron-right"></i></div>
-                    </div>
-                </div>
-
-                <button id="settingsBackBtn" class="btn btn-outline btn-full" style="margin-top:16px;">
-                    <i class="fas fa-arrow-left"></i> Back to Profile
-                </button>
-            </div>
-        </div>
-
-        <!-- NOTIFICATIONS -->
-        <div id="screenNotifications" class="screen">
-            <div style="padding:16px;">
-                <h2 style="font-size:24px;font-weight:800;margin-bottom:16px;">🔔 Notifications</h2>
-                <div id="notifContainer">
-                    <div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading notifications...</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- BOTTOM NAV -->
-        <nav class="bottom-nav">
-            <button class="nav-item active" data-screen="screenHome">
-                <i class="fas fa-home"></i> Home
-            </button>
-            <button class="nav-item" data-screen="screenExplore">
-                <i class="fas fa-compass"></i> Explore
-            </button>
-            <button class="nav-item" data-screen="screenCreate">
-                <i class="fas fa-plus-circle"></i> Create
-            </button>
-            <button class="nav-item" data-screen="screenMessages">
-                <i class="fas fa-envelope"></i> Messages
-                <span class="badge" id="messageBadge" style="display:none;">0</span>
-            </button>
-            <button class="nav-item" data-screen="screenProfile">
-                <i class="fas fa-user"></i> Profile
-            </button>
-        </nav>
+    <div id="otpScreen" class="otp-container" style="display:none;">
+        <!-- ... OTP screen ... -->
     </div>
 
+    <!-- ============================================ -->
+    <!-- MAIN APP                                    -->
+    <!-- ============================================ -->
+    <div id="appContainer" class="app-container" style="display:none;">
+        <!-- ... bottom nav and screens ... -->
+    </div>
+
+    <!-- ============================================ -->
+    <!-- TOAST CONTAINER                             -->
+    <!-- ============================================ -->
     <div id="toastContainer"></div>
 
     <!-- ============================================ -->
-    <!-- FIREBASE SDK                                 -->
+    <!-- FIREBASE SDK                                -->
     <!-- ============================================ -->
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
@@ -1331,7 +1192,15 @@
 
     <script>
         // ============================================
-        // 🔥 YOUR FIREBASE CONFIG
+        // SPLASH SCREEN - HIDE AFTER 5 SECONDS
+        // ============================================
+        setTimeout(() => {
+            document.getElementById('splashScreen').classList.add('hidden');
+            document.getElementById('authScreen').style.display = 'flex';
+        }, 5000);
+
+        // ============================================
+        // 🔥 FIREBASE CONFIG
         // ============================================
         const firebaseConfig = {
             apiKey: "AIzaSyCl0CpUJcMMll8klL0ldN22KwbUlCgaw2Q",
@@ -1348,921 +1217,11 @@
         db.enablePersistence().catch(() => {});
 
         // ============================================
-        // APP STATE
+        // (Rest of your app logic - same as before)
         // ============================================
-        let currentUser = null;
-        let currentUserData = null;
-        let pendingUserCredential = null;
-        let countdownTimer = 60;
-        let countdownInterval = null;
-
-        // ============================================
-        // UTILITY FUNCTIONS
-        // ============================================
-        function showToast(message, type = 'info') {
-            const container = document.getElementById('toastContainer');
-            const icons = { success: 'fa-check-circle', error: 'fa-exclamation-circle', info: 'fa-info-circle' };
-            const colors = { success: '#10B981', error: '#EF4444', info: '#7C3AED' };
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            toast.innerHTML = `<i class="fas ${icons[type] || icons.info}"></i> ${message}`;
-            container.appendChild(toast);
-            setTimeout(() => { toast.remove(); }, 3000);
-        }
-
-        function formatTime(timestamp) {
-            if (!timestamp) return 'Just now';
-            const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
-            const now = new Date();
-            const diff = Math.floor((now - date) / 60000);
-            if (diff < 1) return 'Just now';
-            if (diff < 60) return diff + 'm';
-            if (diff < 1440) return Math.floor(diff / 60) + 'h';
-            if (diff < 43200) return Math.floor(diff / 1440) + 'd';
-            return date.toLocaleDateString();
-        }
-
-        function getChatId(user1, user2) {
-            return [user1, user2].sort().join('_');
-        }
-
-        // ============================================
-        // OTP INPUT
-        // ============================================
-        document.querySelectorAll('.otp-input').forEach((input, index, inputs) => {
-            input.addEventListener('input', function() {
-                if (this.value.length === 1 && index < inputs.length - 1) {
-                    inputs[index + 1].focus();
-                }
-                const allFilled = Array.from(inputs).every(inp => inp.value.length === 1);
-                if (allFilled) document.getElementById('verifyOtpBtn').click();
-            });
-            input.addEventListener('keydown', function(e) {
-                if (e.key === 'Backspace' && this.value.length === 0 && index > 0) {
-                    inputs[index - 1].focus();
-                }
-                if (e.key === 'Enter') document.getElementById('verifyOtpBtn').click();
-            });
-            input.addEventListener('input', function() {
-                this.value = this.value.replace(/[^0-9]/g, '');
-            });
-        });
-
-        // ============================================
-        // NAVIGATION
-        // ============================================
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', function() {
-                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-                this.classList.add('active');
-                document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-                const target = document.getElementById(this.dataset.screen);
-                if (target) target.classList.add('active');
-                if (this.dataset.screen === 'screenMessages') loadChats();
-                if (this.dataset.screen === 'screenProfile') loadProfile();
-            });
-        });
-
-        // ============================================
-        // OTP VERIFICATION
-        // ============================================
-        function showOTPScreen(email) {
-            document.getElementById('authScreen').style.display = 'none';
-            document.getElementById('otpScreen').style.display = 'flex';
-            document.getElementById('otpEmailDisplay').textContent = email;
-            document.getElementById('otpError').style.display = 'none';
-            document.getElementById('otpSuccess').style.display = 'none';
-            document.querySelectorAll('.otp-input').forEach(inp => inp.value = '');
-            document.getElementById('otp1').focus();
-            startCountdown();
-            sendVerificationEmail();
-        }
-
-        function sendVerificationEmail() {
-            if (!pendingUserCredential) return;
-            pendingUserCredential.user.sendEmailVerification()
-                .then(() => showToast('Verification email sent!', 'success'))
-                .catch(() => showToast('Failed to send verification.', 'error'));
-        }
-
-        function startCountdown() {
-            countdownTimer = 60;
-            document.getElementById('resendTimer').style.display = 'block';
-            document.getElementById('resendOtpBtn').disabled = true;
-            if (countdownInterval) clearInterval(countdownInterval);
-            countdownInterval = setInterval(() => {
-                countdownTimer--;
-                document.getElementById('countdownTimer').textContent = countdownTimer;
-                if (countdownTimer <= 0) {
-                    clearInterval(countdownInterval);
-                    document.getElementById('resendTimer').style.display = 'none';
-                    document.getElementById('resendOtpBtn').disabled = false;
-                }
-            }, 1000);
-        }
-
-        document.getElementById('verifyOtpBtn').addEventListener('click', async function() {
-            const inputs = document.querySelectorAll('.otp-input');
-            const otp = Array.from(inputs).map(inp => inp.value).join('');
-            if (otp.length !== 6) {
-                document.getElementById('otpError').style.display = 'block';
-                document.getElementById('otpError').textContent = 'Please enter all 6 digits.';
-                return;
-            }
-            this.disabled = true;
-            document.getElementById('otpError').style.display = 'none';
-            try {
-                await pendingUserCredential.user.reload();
-                if (pendingUserCredential.user.emailVerified) {
-                    document.getElementById('otpSuccess').style.display = 'block';
-                    showToast('Email verified!', 'success');
-                    setTimeout(() => completeLogin(pendingUserCredential), 1500);
-                    return;
-                }
-                showToast('Please click the verification link in your email.', 'info');
-                let attempts = 0;
-                const checkInterval = setInterval(async () => {
-                    attempts++;
-                    await pendingUserCredential.user.reload();
-                    if (pendingUserCredential.user.emailVerified) {
-                        clearInterval(checkInterval);
-                        document.getElementById('otpSuccess').style.display = 'block';
-                        showToast('Email verified!', 'success');
-                        setTimeout(() => completeLogin(pendingUserCredential), 1500);
-                    } else if (attempts >= 24) {
-                        clearInterval(checkInterval);
-                        document.getElementById('otpError').style.display = 'block';
-                        document.getElementById('otpError').textContent = 'Verification timeout. Check your email.';
-                        this.disabled = false;
-                    }
-                }, 5000);
-            } catch (error) {
-                document.getElementById('otpError').style.display = 'block';
-                document.getElementById('otpError').textContent = error.message || 'Verification failed.';
-                this.disabled = false;
-            }
-        });
-
-        document.getElementById('resendOtpBtn').addEventListener('click', function() {
-            sendVerificationEmail();
-            startCountdown();
-            this.disabled = true;
-            showToast('New verification email sent!', 'success');
-        });
-
-        document.getElementById('backToLogin').addEventListener('click', () => {
-            document.getElementById('otpScreen').style.display = 'none';
-            document.getElementById('authScreen').style.display = 'flex';
-            if (pendingUserCredential) {
-                pendingUserCredential.user.delete().catch(() => {});
-                pendingUserCredential = null;
-            }
-        });
-
-        // ============================================
-        // COMPLETE LOGIN
-        // ============================================
-        async function completeLogin(userCredential) {
-            const user = userCredential.user;
-            currentUser = user;
-            const doc = await db.collection('users').doc(user.uid).get();
-            if (!doc.exists) {
-                await db.collection('users').doc(user.uid).set({
-                    uid: user.uid,
-                    name: user.displayName || 'User',
-                    username: user.displayName ? user.displayName.toLowerCase().replace(/\s/g, '') : 'user_' + user.uid.slice(0, 6),
-                    email: user.email,
-                    bio: 'Hello, I\'m using ConnectHub!',
-                    photoURL: `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || 'User')}&background=7C3AED&color=fff&size=128`,
-                    followers: [],
-                    following: [],
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-            }
-            currentUserData = (await db.collection('users').doc(user.uid).get()).data();
-            document.getElementById('otpScreen').style.display = 'none';
-            document.getElementById('authScreen').style.display = 'none';
-            document.getElementById('appContainer').style.display = 'flex';
-            updateProfileUI();
-            loadFeed();
-            loadExplore();
-            loadStories();
-            loadNotifications();
-            showToast('Welcome to ConnectHub!', 'success');
-        }
-
-        function updateProfileUI() {
-            if (!currentUserData) return;
-            document.getElementById('profileName').textContent = currentUserData.name;
-            document.getElementById('profileUsername').textContent = '@' + (currentUserData.username || 'username');
-            document.getElementById('profileBio').textContent = currentUserData.bio || 'Hello, I\'m using ConnectHub!';
-            document.getElementById('profileAvatar').src = currentUserData.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUserData.name)}&background=7C3AED&color=fff&size=128`;
-            document.getElementById('followerCount').textContent = currentUserData.followers ? currentUserData.followers.length : 0;
-            document.getElementById('followingCount').textContent = currentUserData.following ? currentUserData.following.length : 0;
-        }
-
-        // ============================================
-        // AUTH
-        // ============================================
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            try {
-                showToast('Signing in...', 'info');
-                const result = await auth.signInWithEmailAndPassword(email, password);
-                if (result.user.emailVerified) {
-                    await completeLogin(result);
-                } else {
-                    pendingUserCredential = result;
-                    showOTPScreen(email);
-                    showToast('Please verify your email first.', 'info');
-                }
-            } catch (error) {
-                showToast(error.message, 'error');
-            }
-        });
-
-        document.getElementById('signupForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const name = document.getElementById('signupName').value;
-            const username = document.getElementById('signupUsername').value.trim().toLowerCase();
-            const email = document.getElementById('signupEmail').value;
-            const password = document.getElementById('signupPassword').value;
-
-            // Validate username
-            if (!username.match(/^[a-z0-9_]{3,20}$/)) {
-                showToast('Username must be 3-20 characters (letters, numbers, underscore)', 'error');
-                return;
-            }
-
-            // Check if username exists
-            const usernameCheck = await db.collection('users').where('username', '==', username).get();
-            if (!usernameCheck.empty) {
-                showToast('Username already taken. Please choose another.', 'error');
-                return;
-            }
-
-            try {
-                showToast('Creating account...', 'info');
-                const result = await auth.createUserWithEmailAndPassword(email, password);
-                await result.user.updateProfile({ displayName: name });
-                await db.collection('users').doc(result.user.uid).set({
-                    uid: result.user.uid,
-                    name: name,
-                    username: username,
-                    email: email,
-                    bio: 'Hello, I\'m using ConnectHub!',
-                    photoURL: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=7C3AED&color=fff&size=128`,
-                    followers: [],
-                    following: [],
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                pendingUserCredential = result;
-                showOTPScreen(email);
-                showToast('Verification email sent!', 'success');
-            } catch (error) {
-                showToast(error.message, 'error');
-            }
-        });
-
-        document.getElementById('googleAuthBtn').addEventListener('click', async () => {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            try {
-                showToast('Signing in with Google...', 'info');
-                const result = await auth.signInWithPopup(provider);
-                const doc = await db.collection('users').doc(result.user.uid).get();
-                if (!doc.exists) {
-                    await db.collection('users').doc(result.user.uid).set({
-                        uid: result.user.uid,
-                        name: result.user.displayName,
-                        username: result.user.displayName.toLowerCase().replace(/\s/g, '') + '_' + result.user.uid.slice(0, 4),
-                        email: result.user.email,
-                        bio: 'Hello, I\'m using ConnectHub!',
-                        photoURL: result.user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(result.user.displayName)}&background=7C3AED&color=fff&size=128`,
-                        followers: [],
-                        following: [],
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                }
-                await completeLogin(result);
-            } catch (error) {
-                showToast(error.message, 'error');
-            }
-        });
-
-        auth.onAuthStateChanged(async (user) => {
-            if (user) {
-                if (user.emailVerified || user.providerData[0]?.providerId === 'google.com') {
-                    const doc = await db.collection('users').doc(user.uid).get();
-                    if (doc.exists) {
-                        currentUser = user;
-                        currentUserData = doc.data();
-                        document.getElementById('authScreen').style.display = 'none';
-                        document.getElementById('otpScreen').style.display = 'none';
-                        document.getElementById('appContainer').style.display = 'flex';
-                        updateProfileUI();
-                        loadFeed();
-                        loadExplore();
-                        loadStories();
-                        loadNotifications();
-                    }
-                } else {
-                    pendingUserCredential = { user };
-                    document.getElementById('authScreen').style.display = 'none';
-                    showOTPScreen(user.email);
-                }
-            } else {
-                currentUser = null;
-                currentUserData = null;
-                document.getElementById('authScreen').style.display = 'flex';
-                document.getElementById('otpScreen').style.display = 'none';
-                document.getElementById('appContainer').style.display = 'none';
-            }
-        });
-
-        document.getElementById('showSignup').addEventListener('click', () => {
-            document.querySelector('.auth-card:first-child').style.display = 'none';
-            document.getElementById('signupCard').style.display = 'block';
-        });
-
-        document.getElementById('showLogin').addEventListener('click', () => {
-            document.querySelector('.auth-card:first-child').style.display = 'block';
-            document.getElementById('signupCard').style.display = 'none';
-        });
-
-        // ============================================
-        // LOGOUT
-        // ============================================
-        document.getElementById('logoutBtn').addEventListener('click', async () => {
-            try {
-                await auth.signOut();
-                showToast('Signed out', 'info');
-            } catch (error) {
-                showToast(error.message, 'error');
-            }
-        });
-
-        // ============================================
-        // SETTINGS NAVIGATION
-        // ============================================
-        document.getElementById('settingsBtn').addEventListener('click', () => {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById('screenSettings').classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        });
-
-        document.getElementById('settingsBackBtn').addEventListener('click', () => {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById('screenProfile').classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.querySelector('[data-screen="screenProfile"]').classList.add('active');
-        });
-
-        // ============================================
-        // DARK MODE TOGGLE
-        // ============================================
-        function toggleDarkMode() {
-            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-            document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
-            const toggle = document.getElementById('darkModeToggle');
-            toggle.classList.toggle('active');
-        }
-
-        document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
-
-        // ============================================
-        // EDIT PROFILE
-        // ============================================
-        document.getElementById('editProfileBtn').addEventListener('click', () => {
-            const newName = prompt('Enter your full name:', currentUserData?.name || '');
-            if (newName && newName !== currentUserData?.name) {
-                db.collection('users').doc(currentUser.uid).update({ name: newName });
-                currentUserData.name = newName;
-                updateProfileUI();
-                showToast('Profile updated!', 'success');
-            }
-            const newBio = prompt('Enter your bio:', currentUserData?.bio || '');
-            if (newBio !== null && newBio !== currentUserData?.bio) {
-                db.collection('users').doc(currentUser.uid).update({ bio: newBio });
-                currentUserData.bio = newBio;
-                updateProfileUI();
-                showToast('Bio updated!', 'success');
-            }
-        });
-
-        // ============================================
-        // AVATAR EDIT
-        // ============================================
-        document.getElementById('avatarEditBtn').addEventListener('click', () => {
-            // Using avatar API to generate new avatar with different background
-            const colors = ['7C3AED', '6D28D9', '8B5CF6', '6366F1', '4F46E5', '3B82F6', '0EA5E9', '06B6D4', '10B981', 'F59E0B', 'EF4444', 'EC4899'];
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            const name = currentUserData?.name || 'User';
-            const newAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=${randomColor}&color=fff&size=128`;
-            db.collection('users').doc(currentUser.uid).update({ photoURL: newAvatar });
-            currentUserData.photoURL = newAvatar;
-            updateProfileUI();
-            showToast('Avatar updated!', 'success');
-        });
-
-        // ============================================
-        // CREATE POST
-        // ============================================
-        document.getElementById('createPostBtn').addEventListener('click', async () => {
-            const text = document.getElementById('postText').value.trim();
-            if (!text) {
-                showToast('Please write something', 'error');
-                return;
-            }
-            try {
-                await db.collection('posts').add({
-                    userId: currentUser.uid,
-                    username: currentUserData.name,
-                    userPhoto: currentUserData.photoURL,
-                    text: text,
-                    likes: [],
-                    comments: [],
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                document.getElementById('postText').value = '';
-                showToast('Post created!', 'success');
-                loadFeed();
-                document.querySelector('[data-screen="screenHome"]').click();
-            } catch (error) {
-                showToast(error.message, 'error');
-            }
-        });
-
-        // ============================================
-        // STORIES
-        // ============================================
-        function loadStories() {
-            db.collection('users').limit(15).onSnapshot((snapshot) => {
-                const bar = document.getElementById('storiesBar');
-                let html = `
-                    <div class="story-item" onclick="addStory()">
-                        <div class="add-story"><i class="fas fa-plus"></i></div>
-                        <span>Add Story</span>
-                    </div>
-                `;
-                snapshot.forEach((doc) => {
-                    const data = doc.data();
-                    if (data.uid === currentUser?.uid) return;
-                    html += `
-                        <div class="story-item" onclick="showToast('View ${data.name}\'s story', 'info')">
-                            <div class="ring"><img src="${data.photoURL || 'https://ui-avatars.com/api/?name=U&background=7C3AED&color=fff'}" /></div>
-                            <span>${data.name}</span>
-                        </div>
-                    `;
-                });
-                bar.innerHTML = html;
-            });
-        }
-
-        function addStory() {
-            const story = prompt('What\'s your story? (text or click OK for image placeholder)');
-            if (story !== null) {
-                db.collection('stories').add({
-                    userId: currentUser.uid,
-                    username: currentUserData.name,
-                    userPhoto: currentUserData.photoURL,
-                    text: story || '📸 New story!',
-                    viewers: [],
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000)
-                });
-                showToast('Story added!', 'success');
-            }
-        }
-
-        // ============================================
-        // LOAD FEED
-        // ============================================
-        function loadFeed() {
-            db.collection('posts').orderBy('createdAt', 'desc').onSnapshot((snapshot) => {
-                const posts = [];
-                snapshot.forEach((doc) => {
-                    posts.push({ id: doc.id, ...doc.data() });
-                });
-                renderFeed(posts);
-            });
-        }
-
-        function renderFeed(posts) {
-            const container = document.getElementById('feedContainer');
-            if (posts.length === 0) {
-                container.innerHTML = `<div style="text-align:center;padding:60px 20px;color:var(--text-light);">
-                    <i class="fas fa-newspaper" style="font-size:64px;display:block;margin-bottom:16px;color:var(--border);"></i>
-                    <h3 style="color:var(--text);font-weight:700;">No posts yet</h3>
-                    <p>Create your first post or follow others!</p>
-                </div>`;
-                return;
-            }
-            container.innerHTML = posts.map(post => `
-                <div class="post-card">
-                    <div class="post-header">
-                        <img src="${post.userPhoto || 'https://ui-avatars.com/api/?name=User&background=7C3AED&color=fff'}" onclick="showToast('View profile', 'info')" />
-                        <div class="post-user">
-                            <div class="name" onclick="showToast('View ${post.username}\'s profile', 'info')">${post.username}</div>
-                            <div class="time">${formatTime(post.createdAt)}</div>
-                        </div>
-                        <div class="more-btn" onclick="showToast('More options', 'info')"><i class="fas fa-ellipsis-h"></i></div>
-                    </div>
-                    ${post.text ? `<div class="post-text">${post.text}</div>` : ''}
-                    <div class="post-actions">
-                        <button onclick="toggleLike('${post.id}')" class="${post.likes && post.likes.includes(currentUser?.uid) ? 'liked' : ''}">
-                            <i class="fas fa-heart"></i> <span class="count">${post.likes ? post.likes.length : 0}</span>
-                        </button>
-                        <button onclick="toggleComment('${post.id}')">
-                            <i class="fas fa-comment"></i> <span class="count">${post.comments ? post.comments.length : 0}</span>
-                        </button>
-                        <button onclick="sharePost('${post.id}', '${post.text}')">
-                            <i class="fas fa-share-alt"></i>
-                        </button>
-                        <button onclick="showToast('Post saved!', 'success')">
-                            <i class="fas fa-bookmark"></i>
-                        </button>
-                    </div>
-                    <div class="post-comments" id="comments-${post.id}">
-                        ${renderComments(post)}
-                        <div class="comment-input">
-                            <input type="text" id="commentInput-${post.id}" placeholder="Write a comment..." />
-                            <button onclick="addComment('${post.id}')">Post</button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function renderComments(post) {
-            if (!post.comments || post.comments.length === 0) return '';
-            return post.comments.slice(0, 3).map(c => `
-                <div class="comment-item">
-                    <img src="${c.userPhoto || 'https://ui-avatars.com/api/?name=U&background=7C3AED&color=fff'}" />
-                    <div class="content">
-                        <div class="name">${c.username}</div>
-                        <div class="text">${c.text}</div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // ============================================
-        // LIKE
-        // ============================================
-        window.toggleLike = async (postId) => {
-            if (!currentUser) return;
-            const postRef = db.collection('posts').doc(postId);
-            const doc = await postRef.get();
-            const data = doc.data();
-            const likes = data.likes || [];
-            const index = likes.indexOf(currentUser.uid);
-            if (index > -1) {
-                likes.splice(index, 1);
-            } else {
-                likes.push(currentUser.uid);
-                // Create notification
-                await db.collection('notifications').add({
-                    userId: data.userId,
-                    type: 'like',
-                    fromUserId: currentUser.uid,
-                    fromUserName: currentUserData.name,
-                    fromUserPhoto: currentUserData.photoURL,
-                    postId: postId,
-                    isRead: false,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-            }
-            await postRef.update({ likes });
-        };
-
-        // ============================================
-        // COMMENT
-        // ============================================
-        window.addComment = async (postId) => {
-            const input = document.getElementById(`commentInput-${postId}`);
-            const text = input.value.trim();
-            if (!text || !currentUser) return;
-            const postRef = db.collection('posts').doc(postId);
-            const doc = await postRef.get();
-            const data = doc.data();
-            const comments = data.comments || [];
-            comments.push({
-                userId: currentUser.uid,
-                username: currentUserData.name,
-                userPhoto: currentUserData.photoURL,
-                text: text,
-                createdAt: new Date().toISOString()
-            });
-            await postRef.update({ comments });
-            // Create notification
-            await db.collection('notifications').add({
-                userId: data.userId,
-                type: 'comment',
-                fromUserId: currentUser.uid,
-                fromUserName: currentUserData.name,
-                fromUserPhoto: currentUserData.photoURL,
-                postId: postId,
-                comment: text,
-                isRead: false,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            });
-            input.value = '';
-            showToast('Comment added!', 'success');
-        };
-
-        window.toggleComment = (postId) => {
-            const el = document.getElementById(`comments-${postId}`);
-            el.style.display = el.style.display === 'none' ? 'block' : 'none';
-        };
-
-        // ============================================
-        // SHARE
-        // ============================================
-        window.sharePost = (postId, text) => {
-            const url = window.location.origin + '/?post=' + postId;
-            if (navigator.share) {
-                navigator.share({ title: 'Check this post on ConnectHub!', text: text || 'Check this post!', url });
-            } else {
-                navigator.clipboard.writeText(`${text || 'Check this post!'} ${url}`);
-                showToast('Link copied to clipboard!', 'success');
-            }
-        };
-
-        // ============================================
-        // EXPLORE
-        // ============================================
-        function loadExplore() {
-            db.collection('posts').orderBy('createdAt', 'desc').onSnapshot((snapshot) => {
-                const container = document.getElementById('exploreGrid');
-                const items = [];
-                snapshot.forEach((doc) => {
-                    const data = doc.data();
-                    if (data.image) items.push(data.image);
-                });
-                if (items.length === 0) {
-                    container.innerHTML = `
-                        <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-light);">
-                            <i class="fas fa-compass" style="font-size:48px;display:block;margin-bottom:12px;color:var(--border);"></i>
-                            <h3>Explore posts</h3>
-                            <p>Posts with images will appear here</p>
-                        </div>
-                    `;
-                } else {
-                    container.innerHTML = items.slice(0, 30).map(img => 
-                        `<img src="${img}" onclick="showToast('View post', 'info')" />`
-                    ).join('');
-                }
-            });
-        }
-
-        // ============================================
-        // SEARCH
-        // ============================================
-        document.getElementById('exploreSearch').addEventListener('input', async (e) => {
-            const query = e.target.value.toLowerCase().trim();
-            if (!query) { loadExplore(); return; }
-            const snapshot = await db.collection('users').get();
-            const results = [];
-            snapshot.forEach((doc) => {
-                const data = doc.data();
-                if (data.name.toLowerCase().includes(query) || (data.username && data.username.includes(query))) {
-                    results.push(data);
-                }
-            });
-            const container = document.getElementById('exploreGrid');
-            if (results.length === 0) {
-                container.innerHTML = `
-                    <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-light);">
-                        <i class="fas fa-user-slash" style="font-size:48px;display:block;margin-bottom:12px;color:var(--border);"></i>
-                        <h3>No users found</h3>
-                        <p>Try a different search term</p>
-                    </div>
-                `;
-            } else {
-                container.innerHTML = results.map(user => `
-                    <div style="padding:16px;background:var(--card);border-radius:var(--radius);text-align:center;box-shadow:var(--shadow);">
-                        <img src="${user.photoURL || 'https://ui-avatars.com/api/?name=U&background=7C3AED&color=fff'}" style="width:72px;height:72px;border-radius:50%;object-fit:cover;margin-bottom:8px;" />
-                        <div style="font-weight:600;">${user.name}</div>
-                        <div style="font-size:12px;color:var(--text-light);">@${user.username || 'username'}</div>
-                        <button onclick="followUser('${user.uid}')" class="btn btn-primary" style="padding:6px 20px;font-size:12px;margin-top:8px;">
-                            Follow
-                        </button>
-                    </div>
-                `).join('');
-            }
-        });
-
-        // ============================================
-        // FOLLOW
-        // ============================================
-        window.followUser = async (userId) => {
-            if (!currentUser) return;
-            if (userId === currentUser.uid) {
-                showToast('You can\'t follow yourself', 'error');
-                return;
-            }
-            const userRef = db.collection('users').doc(currentUser.uid);
-            const doc = await userRef.get();
-            const data = doc.data();
-            const following = data.following || [];
-            if (!following.includes(userId)) {
-                following.push(userId);
-                await userRef.update({ following });
-                // Add to target user's followers
-                const targetRef = db.collection('users').doc(userId);
-                const targetDoc = await targetRef.get();
-                const targetData = targetDoc.data();
-                const followers = targetData.followers || [];
-                if (!followers.includes(currentUser.uid)) {
-                    followers.push(currentUser.uid);
-                    await targetRef.update({ followers });
-                }
-                // Create notification
-                await db.collection('notifications').add({
-                    userId: userId,
-                    type: 'follow',
-                    fromUserId: currentUser.uid,
-                    fromUserName: currentUserData.name,
-                    fromUserPhoto: currentUserData.photoURL,
-                    isRead: false,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                showToast('Followed!', 'success');
-                loadProfile();
-            } else {
-                showToast('Already following', 'info');
-            }
-        };
-
-        // ============================================
-        // LOAD PROFILE
-        // ============================================
-        function loadProfile() {
-            if (!currentUser) return;
-            db.collection('posts').where('userId', '==', currentUser.uid).onSnapshot((snapshot) => {
-                document.getElementById('postCount').textContent = snapshot.size;
-                const container = document.getElementById('profilePosts');
-                const items = [];
-                snapshot.forEach((doc) => {
-                    const data = doc.data();
-                    items.push({ id: doc.id, ...data });
-                });
-                if (items.length === 0) {
-                    container.innerHTML = `
-                        <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-light);">
-                            <i class="fas fa-camera" style="font-size:32px;display:block;margin-bottom:8px;color:var(--border);"></i>
-                            <p>No posts yet</p>
-                        </div>
-                    `;
-                } else {
-                    container.innerHTML = items.map(item => `
-                        <div class="post-item" onclick="showToast('View post', 'info')">
-                            <img src="${item.image || 'https://ui-avatars.com/api/?name=Post&background=7C3AED&color=fff'}" />
-                            <div class="overlay">
-                                <span><i class="fas fa-heart"></i> ${item.likes ? item.likes.length : 0}</span>
-                                <span><i class="fas fa-comment"></i> ${item.comments ? item.comments.length : 0}</span>
-                            </div>
-                        </div>
-                    `).join('');
-                }
-            });
-
-            // Update follower counts
-            db.collection('users').doc(currentUser.uid).onSnapshot((doc) => {
-                if (doc.exists) {
-                    currentUserData = doc.data();
-                    updateProfileUI();
-                }
-            });
-        }
-
-        // ============================================
-        // MESSAGES / CHATS
-        // ============================================
-        function loadChats() {
-            db.collection('users').where('uid', '!=', currentUser?.uid).limit(20).onSnapshot((snapshot) => {
-                const container = document.getElementById('chatList');
-                if (snapshot.empty) {
-                    container.innerHTML = `
-                        <div style="text-align:center;padding:40px;color:var(--text-light);">
-                            <i class="fas fa-comments" style="font-size:48px;display:block;margin-bottom:12px;color:var(--border);"></i>
-                            <h3>No chats yet</h3>
-                            <p>Connect with other users!</p>
-                        </div>
-                    `;
-                    return;
-                }
-                container.innerHTML = snapshot.docs.map(doc => {
-                    const data = doc.data();
-                    return `
-                        <div class="chat-item" onclick="openChat('${data.uid}')">
-                            <img src="${data.photoURL || 'https://ui-avatars.com/api/?name=U&background=7C3AED&color=fff'}" />
-                            <div class="info">
-                                <div class="name">${data.name}</div>
-                                <div class="last-msg">💬 Click to chat</div>
-                            </div>
-                            <div class="time">online</div>
-                        </div>
-                    `;
-                }).join('');
-            });
-        }
-
-        window.openChat = (userId) => {
-            // Simple chat implementation - opens a prompt for now
-            const message = prompt('Send a message:');
-            if (message && message.trim()) {
-                const chatId = getChatId(currentUser.uid, userId);
-                db.collection('messages').add({
-                    chatId: chatId,
-                    senderId: currentUser.uid,
-                    senderName: currentUserData.name,
-                    recipientId: userId,
-                    text: message.trim(),
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                    read: false
-                });
-                showToast('Message sent!', 'success');
-            }
-        };
-
-        // ============================================
-        // NOTIFICATIONS
-        // ============================================
-        function loadNotifications() {
-            if (!currentUser) return;
-            db.collection('notifications')
-                .where('userId', '==', currentUser.uid)
-                .orderBy('createdAt', 'desc')
-                .limit(50)
-                .onSnapshot((snapshot) => {
-                    const container = document.getElementById('notifContainer');
-                    if (snapshot.empty) {
-                        container.innerHTML = `
-                            <div style="text-align:center;padding:40px;color:var(--text-light);">
-                                <i class="fas fa-bell" style="font-size:48px;display:block;margin-bottom:12px;color:var(--border);"></i>
-                                <h3>No notifications</h3>
-                                <p>When someone interacts with you, you'll see it here</p>
-                            </div>
-                        `;
-                        return;
-                    }
-                    let unreadCount = 0;
-                    container.innerHTML = snapshot.docs.map(doc => {
-                        const data = doc.data();
-                        if (!data.isRead) unreadCount++;
-                        const icons = {
-                            like: 'fa-heart',
-                            comment: 'fa-comment',
-                            follow: 'fa-user-plus'
-                        };
-                        const colors = {
-                            like: '#EF4444',
-                            comment: '#3B82F6',
-                            follow: '#10B981'
-                        };
-                        return `
-                            <div class="notif-item" onclick="markNotifRead('${doc.id}')" style="${data.isRead ? '' : 'border-left: 3px solid #7C3AED;'}">
-                                <img src="${data.fromUserPhoto || 'https://ui-avatars.com/api/?name=U&background=7C3AED&color=fff'}" />
-                                <div class="content">
-                                    <div class="text">
-                                        <strong>${data.fromUserName}</strong>
-                                        ${data.type === 'like' ? 'liked your post' : ''}
-                                        ${data.type === 'comment' ? `commented: "${data.comment}"` : ''}
-                                        ${data.type === 'follow' ? 'started following you' : ''}
-                                    </div>
-                                    <div class="time">${formatTime(data.createdAt)}</div>
-                                </div>
-                                ${!data.isRead ? '<div class="unread"></div>' : ''}
-                            </div>
-                        `;
-                    }).join('');
-                    
-                    const badge = document.getElementById('messageBadge');
-                    if (unreadCount > 0) {
-                        badge.style.display = 'flex';
-                        badge.textContent = unreadCount;
-                    } else {
-                        badge.style.display = 'none';
-                    }
-                });
-        }
-
-        window.markNotifRead = async (notifId) => {
-            await db.collection('notifications').doc(notifId).update({ isRead: true });
-        };
-
-        // ============================================
-        // SERVICE WORKER
-        // ============================================
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/service-worker.js').catch(() => {});
-        }
-
-        console.log('🚀 ConnectHub loaded!');
-        console.log('✅ All features working!');
+        // ... (keep all your existing JavaScript code here) ...
+        // We'll combine all later, but for now you can paste your full JS
+        console.log('ConnectHub started with splash screen!');
     </script>
 </body>
 </html>
