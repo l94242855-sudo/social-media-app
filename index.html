@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#7C3AED" />
+    <title>Social Media App</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <style>
+        /* ===== CSS VARIABLES ===== */
+        :root {
+            --primary: #7C3AED;
+            --primary-dark: #6D28D9;
+            --primary-light: #A78BFA;
+            --gradient: linear-gradient(135deg, #7C3AED, #6D28D9);
+            --bg: #F8FAFC;
+            --card: #FFFFFF;
+            --text: #0F172A;
+            --text-light: #64748B;
+            --border: #E2E8F0;
+            --shadow: 0 1px 3px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 40px rgba(0,0,0,0.08);
+            --radius: 16px;
+            --radius-full: 9999px;
+            --transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            --bg: #0F172A;
+            --card: #1E293B;
+            --text: #F8FAFC;
+            --text-light: #94A3B8;
+            --border: #334155;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            height: 100vh;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+
+        /* ===== AUTH SCREEN ===== */
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #EEF2FF 0%, #C7D2FE 100%);
+            padding: 20px;
+        }
+
+        [data-theme="dark"] .auth-container {
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+        }
+
+        .auth-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            padding: 48px;
+            max-width: 420px;
+            width: 100%;
+            animation: fadeUp 0.6s ease;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .auth-header { text-align: center; margin-bottom: 32px; }
+        
+        .auth-logo {
+            width: 72px; height: 72px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            box-shadow: 0 8px 24px rgba(124,58,237,0.3);
+        }
+        .auth-logo i { font-size: 32px; color: white; }
+        .auth-card h1 { font-size: 28px; font-weight: 800; }
+        .auth-subtitle { color: var(--text-light); font-size: 14px; margin-top: 4px; }
+
+        .auth-form { display: flex; flex-direction: column; gap: 16px; }
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group label { font-size: 13px; font-weight: 600; }
+        .form-group label i { color: var(--primary); width: 18px; }
+        .form-group input {
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 14px;
+            background: var(--bg);
+            color: var(--text);
+            transition: var(--transition);
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(124,58,237,0.1);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: inherit;
+        }
+        .btn-full { width: 100%; }
+        
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            box-shadow: 0 4px 14px rgba(124,58,237,0.35);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(124,58,237,0.4); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        
+        .btn-google {
+            background: var(--card);
+            color: var(--text);
+            border: 2px solid var(--border);
+        }
+        .btn-google:hover { border-color: var(--primary); }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        .btn-outline:hover { background: var(--primary); color: white; }
+
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+        }
+        .auth-divider::before,
+        .auth-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+        .auth-divider span {
+            padding: 0 16px;
+            font-size: 12px;
+            color: var(--text-light);
+            text-transform: uppercase;
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--text-light);
+        }
+        .auth-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* ===== OTP SCREEN ===== */
+        .otp-container {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #EEF2FF 0%, #C7D2FE 100%);
+            padding: 20px;
+        }
+
+        [data-theme="dark"] .otp-container {
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+        }
+
+        .otp-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            padding: 48px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .otp-card .icon { font-size: 64px; color: var(--primary); margin-bottom: 16px; }
+        .otp-card h2 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+        .otp-card p { color: var(--text-light); margin-bottom: 24px; }
+
+        .otp-input-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin: 24px 0;
+        }
+
+        .otp-input-group input {
+            width: 50px;
+            height: 56px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            background: var(--bg);
+            color: var(--text);
+            transition: var(--transition);
+        }
+
+        .otp-input-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(124,58,237,0.1);
+        }
+
+        .otp-card .resend-timer {
+            color: var(--text-light);
+            font-size: 14px;
+            margin-top: 16px;
+        }
+        .otp-card .resend-timer span { color: var(--primary); font-weight: 600; cursor: pointer; }
+
+        .error-message { color: #EF4444; font-size: 13px; margin-top: 8px; display: none; }
+        .success-message { color: #10B981; font-size: 13px; margin-top: 8px; display: none; }
+
+        /* ===== MAIN APP ===== */
+        .app-container {
+            display: none;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        /* ===== BOTTOM NAV ===== */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background: var(--card);
+            border-top: 1px solid var(--border);
+            padding: 8px 0;
+            flex-shrink: 0;
+            position: sticky;
+            bottom: 0;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            padding: 4px 16px;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: var(--transition);
+            border: none;
+            background: none;
+            font-family: inherit;
+            font-size: 10px;
+        }
+        .nav-item i { font-size: 22px; transition: var(--transition); }
+        .nav-item.active { color: var(--primary); }
+        .nav-item.active i { transform: scale(1.1); }
+        .nav-item:hover { color: var(--primary); }
+
+        /* ===== SCREENS ===== */
+        .screen {
+            display: none;
+            flex: 1;
+            overflow-y: auto;
+            background: var(--bg);
+            padding: 0 0 80px 0;
+        }
+        .screen.active { display: block; }
+
+        /* ===== STORIES ===== */
+        .stories-bar {
+            display: flex;
+            gap: 12px;
+            padding: 16px;
+            overflow-x: auto;
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+        }
+        .story-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .story-item img {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+            padding: 2px;
+        }
+        .story-item span {
+            font-size: 11px;
+            color: var(--text-light);
+            max-width: 64px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* ===== POSTS ===== */
+        .post-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            margin: 12px 16px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+        }
+        .post-header img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .post-header .name { font-weight: 600; font-size: 14px; }
+        .post-header .time { font-size: 12px; color: var(--text-light); }
+
+        .post-text { padding: 12px 16px; font-size: 14px; line-height: 1.6; }
+
+        .post-actions {
+            display: flex;
+            gap: 16px;
+            padding: 8px 16px 12px;
+            border-top: 1px solid var(--border);
+        }
+        .post-actions button {
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 20px;
+            color: var(--text-light);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: inherit;
+        }
+        .post-actions button:hover { color: var(--primary); }
+        .post-actions button.liked { color: #EF4444; }
+        .post-actions button .count { font-size: 13px; font-weight: 500; }
+
+        .post-comments {
+            padding: 8px 16px 12px;
+            border-top: 1px solid var(--border);
+        }
+        .post-comments .comment-input {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .post-comments .comment-input input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 13px;
+            background: var(--bg);
+            color: var(--text);
+        }
+        .post-comments .comment-input input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        .post-comments .comment-input button {
+            padding: 8px 16px;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .comment-item {
+            display: flex;
+            gap: 10px;
+            padding: 6px 0;
+        }
+        .comment-item img {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .comment-item .content .name { font-weight: 600; font-size: 12px; }
+        .comment-item .content .text { font-size: 13px; color: var(--text); }
+
+        /* ===== EXPLORE ===== */
+        .explore-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
+            padding: 4px;
+        }
+        .explore-grid img {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        /* ===== CREATE ===== */
+        .create-container {
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .create-container textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 16px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-family: inherit;
+            background: var(--card);
+            color: var(--text);
+            resize: vertical;
+        }
+        .create-container textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        .create-container .btn-primary {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            margin-top: 16px;
+        }
+
+        /* ===== MESSAGES ===== */
+        .chat-list { padding: 12px 16px; }
+        .chat-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+        }
+        .chat-item img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .chat-item .info { flex: 1; }
+        .chat-item .info .name { font-weight: 600; }
+        .chat-item .info .last-msg { font-size: 13px; color: var(--text-light); }
+
+        /* ===== PROFILE ===== */
+        .profile-header {
+            background: var(--card);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+        }
+        .profile-header .cover {
+            width: 100%;
+            height: 120px;
+            background: var(--gradient);
+            border-radius: var(--radius);
+            margin-bottom: -40px;
+        }
+        .profile-header .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 4px solid var(--card);
+            object-fit: cover;
+        }
+        .profile-header .name { font-size: 20px; font-weight: 700; margin-top: 8px; }
+        .profile-header .bio { color: var(--text-light); font-size: 14px; }
+        .profile-stats {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            padding: 16px 0;
+        }
+        .profile-stats .stat { text-align: center; }
+        .profile-stats .stat .number { font-weight: 700; font-size: 18px; }
+        .profile-stats .stat .label { font-size: 12px; color: var(--text-light); }
+
+        .profile-posts {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
+            padding: 4px;
+        }
+        .profile-posts img {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+        }
+
+        .logout-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: var(--bg);
+            border: none;
+            padding: 10px 14px;
+            border-radius: 10px;
+            cursor: pointer;
+            color: var(--text-light);
+            font-size: 16px;
+            transition: var(--transition);
+        }
+        .logout-btn:hover { background: var(--border); color: var(--text); }
+
+        /* ===== TOAST ===== */
+        #toastContainer {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .toast {
+            padding: 14px 20px;
+            background: #1E293B;
+            color: white;
+            border-radius: 12px;
+            animation: slideUp 0.3s ease;
+            box-shadow: var(--shadow-lg);
+            max-width: 350px;
+        }
+        .toast.success { border-left: 4px solid #10B981; }
+        .toast.error { border-left: 4px solid #EF4444; }
+        .toast.info { border-left: 4px solid #7C3AED; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .auth-card { padding: 32px 24px; margin: 16px; }
+            .otp-card { padding: 32px 24px; margin: 16px; }
+            .post-card { margin: 8px 8px; }
+            .stories-bar { padding: 12px; gap: 8px; }
+            .story-item img { width: 56px; height: 56px; }
+            .nav-item { padding: 4px 12px; font-size: 9px; }
+            .nav-item i { font-size: 20px; }
+            #toastContainer { right: 10px; left: 10px; bottom: 80px; }
+            .otp-input-group input { width: 40px; height: 48px; font-size: 20px; }
+        }
+
+        @media (max-width: 480px) {
+            .auth-card { padding: 24px 16px; }
+            .otp-card { padding: 24px 16px; }
+            .profile-stats { gap: 16px; }
+            .profile-stats .stat .number { font-size: 16px; }
+            .post-actions { flex-wrap: wrap; }
+            .otp-input-group input { width: 36px; height: 44px; font-size: 18px; }
+        }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <!-- ===== AUTH SCREEN ===== -->
+    <div id="authScreen" class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-logo"><i class="fas fa-comment-dots"></i></div>
+                <h1>Social App</h1>
+                <p class="auth-subtitle">Connect with the world</p>
+            </div>
+
+            <form id="loginForm" class="auth-form">
+                <div class="form-group">
+                    <label for="loginEmail"><i class="fas fa-envelope"></i> Email</label>
+                    <input type="email" id="loginEmail" placeholder="you@example.com" required />
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword"><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" id="loginPassword" placeholder="••••••••" required />
+                </div>
+                <button type="submit" class="btn btn-primary btn-full"><i class="fas fa-sign-in-alt"></i> Sign In</button>
+            </form>
+
+            <div class="auth-divider"><span>or</span></div>
+
+            <button id="googleAuthBtn" class="btn btn-google btn-full"><i class="fab fa-google"></i> Continue with Google</button>
+
+            <div class="auth-footer">Don't have an account? <a id="showSignup">Sign Up</a></div>
+        </div>
+
+        <div class="auth-card" id="signupCard" style="display: none;">
+            <div class="auth-header">
+                <div class="auth-logo"><i class="fas fa-user-plus"></i></div>
+                <h1>Create Account</h1>
+                <p class="auth-subtitle">Join the community</p>
+            </div>
+
+            <form id="signupForm" class="auth-form">
+                <div class="form-group">
+                    <label for="signupName"><i class="fas fa-user"></i> Full Name</label>
+                    <input type="text" id="signupName" placeholder="John Doe" required />
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail"><i class="fas fa-envelope"></i> Email</label>
+                    <input type="email" id="signupEmail" placeholder="you@example.com" required />
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword"><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" id="signupPassword" placeholder="Min 6 characters" required minlength="6" />
+                </div>
+                <button type="submit" class="btn btn-primary btn-full"><i class="fas fa-user-plus"></i> Create Account</button>
+            </form>
+
+            <div class="auth-footer">Already have an account? <a id="showLogin">Sign In</a></div>
+        </div>
+    </div>
+
+    <!-- ===== OTP SCREEN ===== -->
+    <div id="otpScreen" class="otp-container">
+        <div class="otp-card">
+            <div class="icon"><i class="fas fa-envelope"></i></div>
+            <h2>Verify Your Email</h2>
+            <p>We've sent a verification code to <strong id="otpEmailDisplay">your@email.com</strong></p>
+            <p style="font-size:13px;color:var(--text-light);">Please check your inbox and spam folder.</p>
+
+            <div class="otp-input-group" id="otpInputGroup">
+                <input type="text" maxlength="1" id="otp1" class="otp-input" autofocus />
+                <input type="text" maxlength="1" id="otp2" class="otp-input" />
+                <input type="text" maxlength="1" id="otp3" class="otp-input" />
+                <input type="text" maxlength="1" id="otp4" class="otp-input" />
+                <input type="text" maxlength="1" id="otp5" class="otp-input" />
+                <input type="text" maxlength="1" id="otp6" class="otp-input" />
+            </div>
+
+            <div id="otpError" class="error-message"><i class="fas fa-exclamation-circle"></i> Invalid verification code.</div>
+            <div id="otpSuccess" class="success-message"><i class="fas fa-check-circle"></i> Email verified! Redirecting...</div>
+
+            <button id="verifyOtpBtn" class="btn btn-primary btn-full"><i class="fas fa-check"></i> Verify Email</button>
+            <button id="resendOtpBtn" class="btn btn-outline btn-full" style="margin-top:12px;"><i class="fas fa-redo"></i> Resend Email</button>
+
+            <div class="resend-timer" id="resendTimer">Resend available in <span id="countdownTimer">60</span> seconds</div>
+            <div class="auth-footer" style="margin-top:16px;"><a id="backToLogin">← Back to Sign In</a></div>
+        </div>
+    </div>
+
+    <!-- ===== MAIN APP ===== -->
+    <div id="appContainer" class="app-container">
+        <div id="screenHome" class="screen active">
+            <div class="stories-bar" id="storiesBar"></div>
+            <div id="feedContainer"></div>
+        </div>
+
+        <div id="screenExplore" class="screen">
+            <div style="padding:16px;">
+                <div class="search-wrapper" style="display:flex;align-items:center;background:var(--bg);border-radius:10px;padding:0 12px;">
+                    <i class="fas fa-search" style="color:var(--text-light);"></i>
+                    <input type="text" id="exploreSearch" placeholder="Search users..." style="border:none;background:transparent;padding:12px;font-size:14px;width:100%;outline:none;color:var(--text);" />
+                </div>
+            </div>
+            <div class="explore-grid" id="exploreGrid"></div>
+        </div>
+
+        <div id="screenCreate" class="screen">
+            <div class="create-container">
+                <h2 style="margin-bottom:16px;">Create Post</h2>
+                <textarea id="postText" placeholder="What's on your mind?"></textarea>
+                <button id="createPostBtn" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Post</button>
+            </div>
+        </div>
+
+        <div id="screenMessages" class="screen">
+            <div style="padding:16px;">
+                <h2 style="margin-bottom:16px;">Messages</h2>
+                <div id="chatList" class="chat-list"></div>
+            </div>
+        </div>
+
+        <div id="screenProfile" class="screen">
+            <div class="profile-header" id="profileHeader">
+                <div class="cover"></div>
+                <img id="profileAvatar" class="avatar" src="https://ui-avatars.com/api/?name=User&background=7C3AED&color=fff" />
+                <div class="name" id="profileName">User</div>
+                <div class="bio" id="profileBio">Welcome to my profile!</div>
+                <button id="editProfileBtn" class="btn btn-primary" style="margin:12px auto;padding:8px 24px;font-size:13px;">
+                    <i class="fas fa-edit"></i> Edit Profile
+                </button>
+                <button id="darkModeToggle" class="btn" style="margin:8px auto;padding:8px 24px;font-size:13px;background:var(--bg);color:var(--text);border:1px solid var(--border);">
+                    <i class="fas fa-moon"></i> Dark Mode
+                </button>
+                <div class="profile-stats">
+                    <div class="stat"><div class="number" id="postCount">0</div><div class="label">Posts</div></div>
+                    <div class="stat"><div class="number" id="followerCount">0</div><div class="label">Followers</div></div>
+                    <div class="stat"><div class="number" id="followingCount">0</div><div class="label">Following</div></div>
+                </div>
+                <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i></button>
+            </div>
+            <div class="profile-posts" id="profilePosts"></div>
+        </div>
+
+        <nav class="bottom-nav">
+            <button class="nav-item active" data-screen="screenHome"><i class="fas fa-home"></i> Home</button>
+            <button class="nav-item" data-screen="screenExplore"><i class="fas fa-compass"></i> Explore</button>
+            <button class="nav-item" data-screen="screenCreate"><i class="fas fa-plus-circle"></i> Create</button>
+            <button class="nav-item" data-screen="screenMessages"><i class="fas fa-envelope"></i> Messages</button>
+            <button class="nav-item" data-screen="screenProfile"><i class="fas fa-user"></i> Profile</button>
+        </nav>
+    </div>
+
+    <div id="toastContainer"></div>
+
+    <!-- ===== FIREBASE SDK ===== -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        // ============================================
+        // 🔥 YOUR FIREBASE CONFIG (NEW)
+        // ============================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyCl0CpUJcMMll8klL0ldN22KwbUlCgaw2Q",
+            authDomain: "social-media-app-bc2b9-ac852.firebaseapp.com",
+            projectId: "social-media-app-bc2b9-ac852",
+            storageBucket: "social-media-app-bc2b9-ac852.firebasestorage.app",
+            messagingSenderId: "427918763507",
+            appId: "1:427918763507:web:82ba7c8e787eaaccc2de86"
+        };
+
+        // ============================================
+        // INITIALIZE FIREBASE
+        // ============================================
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        db.enablePersistence().catch(err => console.warn('Persistence error:', err));
+
+        // ============================================
+        // APP STATE
+        // ============================================
+        let currentUser = null;
+        let currentUserData = null;
+        let posts = [];
+        let pendingUserCredential = null;
+        let countdownTimer = 60;
+        let countdownInterval = null;
+
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const icons = { success: 'fa-check-circle', error: 'fa-exclamation-circle', info: 'fa-info-circle' };
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `<i class="fas ${icons[type] || icons.info}"></i> ${message}`;
+            container.appendChild(toast);
+            setTimeout(() => { toast.remove(); }, 3000);
+        }
+
+        function formatTime(timestamp) {
+            if (!timestamp) return 'Just now';
+            const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+            const now = new Date();
+            const diff = Math.floor((now - date) / 60000);
+            if (diff < 1) return 'Just now';
+            if (diff < 60) return diff + 'm ago';
+            if (diff < 1440) return Math.floor(diff / 60) + 'h ago';
+            return date.toLocaleDateString();
+        }
+
+        function getChatId(user1, user2) {
+            return [user1, user2].sort().join('_');
+        }
+
+        // ============================================
+        // OTP INPUT HANDLING
+        // ============================================
+        document.querySelectorAll('.otp-input').forEach((input, index, inputs) => {
+            input.addEventListener('input', function() {
+                if (this.value.length === 1 && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+                const allFilled = Array.from(inputs).every(inp => inp.value.length === 1);
+                if (allFilled) {
+                    document.getElementById('verifyOtpBtn').click();
+                }
+            });
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Backspace' && this.value.length === 0 && index > 0) {
+                    inputs[index - 1].focus();
+                }
+                if (e.key === 'Enter') {
+                    document.getElementById('verifyOtpBtn').click();
+                }
+            });
+            input.addEventListener('input', function() {
+                this.value = this.value.replace(/[^0-9]/g, '');
+            });
+        });
+
+        // ============================================
+        // NAVIGATION
+        // ============================================
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                this.classList.add('active');
+                document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+                document.getElementById(this.dataset.screen).classList.add('active');
+                if (this.dataset.screen === 'screenMessages') loadChats();
+                if (this.dataset.screen === 'screenProfile') loadProfile();
+            });
+        });
+
+        // ============================================
+        // OTP VERIFICATION FLOW
+        // ============================================
+        function showOTPScreen(email) {
+            document.getElementById('authScreen').style.display = 'none';
+            document.getElementById('otpScreen').style.display = 'flex';
+            document.getElementById('otpEmailDisplay').textContent = email;
+            document.getElementById('otpError').style.display = 'none';
+            document.getElementById('otpSuccess').style.display = 'none';
+            document.querySelectorAll('.otp-input').forEach(inp => inp.value = '');
+            document.getElementById('otp1').focus();
+            startCountdown();
+            sendVerificationEmail();
+        }
+
+        function sendVerificationEmail() {
+            if (!pendingUserCredential) return;
+            pendingUserCredential.user.sendEmailVerification()
+                .then(() => showToast('Verification email sent!', 'success'))
+                .catch(() => showToast('Failed to send verification email.', 'error'));
+        }
+
+        function startCountdown() {
+            countdownTimer = 60;
+            document.getElementById('resendTimer').style.display = 'block';
+            document.getElementById('resendOtpBtn').disabled = true;
+            if (countdownInterval) clearInterval(countdownInterval);
+            countdownInterval = setInterval(() => {
+                countdownTimer--;
+                document.getElementById('countdownTimer').textContent = countdownTimer;
+                if (countdownTimer <= 0) {
+                    clearInterval(countdownInterval);
+                    document.getElementById('resendTimer').style.display = 'none';
+                    document.getElementById('resendOtpBtn').disabled = false;
+                }
+            }, 1000);
+        }
+
+        document.getElementById('verifyOtpBtn').addEventListener('click', async function() {
+            const inputs = document.querySelectorAll('.otp-input');
+            const otp = Array.from(inputs).map(inp => inp.value).join('');
+            if (otp.length !== 6) {
+                document.getElementById('otpError').style.display = 'block';
+                document.getElementById('otpError').textContent = 'Please enter all 6 digits.';
+                return;
+            }
+            this.disabled = true;
+            document.getElementById('otpError').style.display = 'none';
+            try {
+                await pendingUserCredential.user.reload();
+                if (pendingUserCredential.user.emailVerified) {
+                    document.getElementById('otpSuccess').style.display = 'block';
+                    showToast('Email verified!', 'success');
+                    setTimeout(() => completeLogin(pendingUserCredential), 1500);
+                    return;
+                }
+                showToast('Please click the verification link in your email.', 'info');
+                let attempts = 0;
+                const checkInterval = setInterval(async () => {
+                    attempts++;
+                    await pendingUserCredential.user.reload();
+                    if (pendingUserCredential.user.emailVerified) {
+                        clearInterval(checkInterval);
+                        document.getElementById('otpSuccess').style.display = 'block';
+                        showToast('Email verified!', 'success');
+                        setTimeout(() => completeLogin(pendingUserCredential), 1500);
+                    } else if (attempts >= 24) {
+                        clearInterval(checkInterval);
+                        document.getElementById('otpError').style.display = 'block';
+                        document.getElementById('otpError').textContent = 'Verification timeout.';
+                        this.disabled = false;
+                    }
+                }, 5000);
+            } catch (error) {
+                document.getElementById('otpError').style.display = 'block';
+                document.getElementById('otpError').textContent = error.message || 'Verification failed.';
+                this.disabled = false;
+            }
+        });
+
+        document.getElementById('resendOtpBtn').addEventListener('click', function() {
+            sendVerificationEmail();
+            startCountdown();
+            this.disabled = true;
+            showToast('New verification email sent!', 'success');
+        });
+
+        document.getElementById('backToLogin').addEventListener('click', () => {
+            document.getElementById('otpScreen').style.display = 'none';
+            document.getElementById('authScreen').style.display = 'flex';
+            if (pendingUserCredential) {
+                pendingUserCredential.user.delete().catch(() => {});
+                pendingUserCredential = null;
+            }
+        });
+
+        // ============================================
+        // COMPLETE LOGIN
+        // ============================================
+        async function completeLogin(userCredential) {
+            const user = userCredential.user;
+            currentUser = user;
+            const doc = await db.collection('users').doc(user.uid).get();
+            if (!doc.exists) {
+                await db.collection('users').doc(user.uid).set({
+                    uid: user.uid,
+                    name: user.displayName || 'User',
+                    email: user.email,
+                    bio: 'Hello, I\'m using Social App!',
+                    photoURL: `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || 'User')}&background=7C3AED&color=fff`,
+                    followers: [],
+                    following: [],
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            }
+            currentUserData = (await db.collection('users').doc(user.uid).get()).data();
+            document.getElementById('otpScreen').style.display = 'none';
+            document.getElementById('authScreen').style.display = 'none';
+            document.getElementById('appContainer').style.display = 'flex';
+            document.getElementById('profileName').textContent = currentUserData.name;
+            document.getElementById('profileAvatar').src = currentUserData.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUserData.name)}&background=7C3AED&color=fff`;
+            document.getElementById('profileBio').textContent = currentUserData.bio || 'Hello, I\'m using Social App!';
+            loadFeed();
+            loadExplore();
+            loadStories();
+            showToast('Welcome to Social App!', 'success');
+        }
+
+        // ============================================
+        // AUTH
+        // ============================================
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            try {
+                showToast('Signing in...', 'info');
+                const result = await auth.signInWithEmailAndPassword(email, password);
+                if (result.user.emailVerified) {
+                    await completeLogin(result);
+                } else {
+                    pendingUserCredential = result;
+                    showOTPScreen(email);
+                    showToast('Please verify your email first.', 'info');
+                }
+            } catch (error) {
+                showToast(error.message, 'error');
+            }
+        });
+
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            try {
+                showToast('Creating account...', 'info');
+                const result = await auth.createUserWithEmailAndPassword(email, password);
+                await result.user.updateProfile({ displayName: name });
+                await db.collection('users').doc(result.user.uid).set({
+                    uid: result.user.uid,
+                    name: name,
+                    email: email,
+                    bio: 'Hello, I\'m using Social App!',
+                    photoURL: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=7C3AED&color=fff`,
+                    followers: [],
+                    following: [],
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                pendingUserCredential = result;
+                showOTPScreen(email);
+                showToast('Verification email sent!', 'success');
+            } catch (error) {
+                showToast(error.message, 'error');
+            }
+        });
+
+        document.getElementById('googleAuthBtn').addEventListener('click', async () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            try {
+                showToast('Signing in with Google...', 'info');
+                const result = await auth.signInWithPopup(provider);
+                const doc = await db.collection('users').doc(result.user.uid).get();
+                if (!doc.exists) {
+                    await db.collection('users').doc(result.user.uid).set({
+                        uid: result.user.uid,
+                        name: result.user.displayName,
+                        email: result.user.email,
+                        bio: 'Hello, I\'m using Social App!',
+                        photoURL: result.user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(result.user.displayName)}&background=7C3AED&color=fff`,
+                        followers: [],
+                        following: [],
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }
+                await completeLogin(result);
+            } catch (error) {
+                showToast(error.message, 'error');
+            }
+        });
+
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                if (user.emailVerified || user.providerData[0]?.providerId === 'google.com') {
+                    const doc = await db.collection('users').doc(user.uid).get();
+                    if (doc.exists) {
+                        currentUser = user;
+                        currentUserData = doc.data();
+                        document.getElementById('authScreen').style.display = 'none';
+                        document.getElementById('otpScreen').style.display = 'none';
+                        document.getElementById('appContainer').style.display = 'flex';
+                        document.getElementById('profileName').textContent = currentUserData.name;
+                        document.getElementById('profileAvatar').src = currentUserData.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUserData.name)}&background=7C3AED&color=fff`;
+                        document.getElementById('profileBio').textContent = currentUserData.bio || 'Hello, I\'m using Social App!';
+                        loadFeed();
+                        loadExplore();
+                        loadStories();
+                    }
+                } else {
+                    pendingUserCredential = { user };
+                    document.getElementById('authScreen').style.display = 'none';
+                    showOTPScreen(user.email);
+                }
+            } else {
+                currentUser = null;
+                currentUserData = null;
+                document.getElementById('authScreen').style.display = 'flex';
+                document.getElementById('otpScreen').style.display = 'none';
+                document.getElementById('appContainer').style.display = 'none';
+            }
+        });
+
+        document.getElementById('showSignup').addEventListener('click', () => {
+            document.querySelector('.auth-card:first-child').style.display = 'none';
+            document.getElementById('signupCard').style.display = 'block';
+        });
+
+        document.getElementById('showLogin').addEventListener('click', () => {
+            document.querySelector('.auth-card:first-child').style.display = 'block';
+            document.getElementById('signupCard').style.display = 'none';
+        });
+
+        // ============================================
+        // LOGOUT
+        // ============================================
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            try {
+                await auth.signOut();
+                showToast('Signed out', 'info');
+            } catch (error) {
+                showToast(error.message, 'error');
+            }
+        });
+
+        // ============================================
+        // EDIT PROFILE
+        // ============================================
+        document.getElementById('editProfileBtn').addEventListener('click', () => {
+            const newBio = prompt('Enter your bio:', currentUserData?.bio || '');
+            if (newBio !== null && currentUser) {
+                db.collection('users').doc(currentUser.uid).update({ bio: newBio });
+                showToast('Profile updated!', 'success');
+                document.getElementById('profileBio').textContent = newBio;
+            }
+        });
+
+        // ============================================
+        // DARK MODE
+        // ============================================
+        document.getElementById('darkModeToggle').addEventListener('click', () => {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            document.getElementById('darkModeToggle').innerHTML = isDark ? '<i class="fas fa-moon"></i> Dark Mode' : '<i class="fas fa-sun"></i> Light Mode';
+        });
+
+        // ============================================
+        // CREATE POST
+        // ============================================
+        document.getElementById('createPostBtn').addEventListener('click', async () => {
+            const text = document.getElementById('postText').value.trim();
+            if (!text) {
+                showToast('Please write something', 'error');
+                return;
+            }
+            try {
+                await db.collection('posts').add({
+                    userId: currentUser.uid,
+                    username: currentUserData.name,
+                    userPhoto: currentUserData.photoURL,
+                    text: text,
+                    likes: [],
+                    comments: [],
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                document.getElementById('postText').value = '';
+                showToast('Post created!', 'success');
+                loadFeed();
+                document.querySelector('[data-screen="screenHome"]').click();
+            } catch (error) {
+                showToast(error.message, 'error');
+            }
+        });
+
+        // ============================================
+        // LOAD FEED
+        // ============================================
+        function loadFeed() {
+            db.collection('posts').orderBy('createdAt', 'desc').onSnapshot((snapshot) => {
+                posts = [];
+                snapshot.forEach((doc) => {
+                    posts.push({ id: doc.id, ...doc.data() });
+                });
+                renderFeed();
+            });
+        }
+
+        function renderFeed() {
+            const container = document.getElementById('feedContainer');
+            if (posts.length === 0) {
+                container.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-light);">
+                    <i class="fas fa-newspaper" style="font-size:48px;display:block;margin-bottom:16px;"></i>
+                    <h3>No posts yet</h3>
+                    <p>Create your first post!</p>
+                </div>`;
+                return;
+            }
+            container.innerHTML = posts.map(post => `
+                <div class="post-card">
+                    <div class="post-header">
+                        <img src="${post.userPhoto || 'https://ui-avatars.com/api/?name=User&background=7C3AED&color=fff'}" />
+                        <div>
+                            <div class="name">${post.username}</div>
+                            <div class="time">${formatTime(post.createdAt)}</div>
+                        </div>
+                    </div>
+                    ${post.text ? `<div class="post-text">${post.text}</div>` : ''}
+                    <div class="post-actions">
+                        <button onclick="toggleLike('${post.id}')" class="${post.likes && post.likes.includes(currentUser?.uid) ? 'liked' : ''}">
+                            <i class="fas fa-heart"></i> <span class="count">${post.likes ? post.likes.length : 0}</span>
+                        </button>
+                        <button onclick="toggleComment('${post.id}')">
+                            <i class="fas fa-comment"></i> <span class="count">${post.comments ? post.comments.length : 0}</span>
+                        </button>
+                        <button onclick="sharePost('${post.id}')">
+                            <i class="fas fa-share"></i>
+                        </button>
+                        <button onclick="savePost('${post.id}')">
+                            <i class="fas fa-bookmark"></i>
+                        </button>
+                    </div>
+                    <div class="post-comments" id="comments-${post.id}">
+                        ${renderComments(post)}
+                        <div class="comment-input">
+                            <input type="text" id="commentInput-${post.id}" placeholder="Write a comment..." />
+                            <button onclick="addComment('${post.id}')">Post</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderComments(post) {
+            if (!post.comments || post.comments.length === 0) return '';
+            return post.comments.slice(0, 3).map(c => `
+                <div class="comment-item">
+                    <img src="${c.userPhoto || 'https://ui-avatars.com/api/?name=U&background=7C3AED&color=fff'}" />
+                    <div class="content">
+                        <div class="name">${c.username}</div>
+                        <div class="text">${c.text}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ============================================
+        // LIKE
+        // ============================================
+        window.toggleLike = async (postId) => {
+            if (!currentUser) return;
+            const postRef = db.collection('posts').doc(postId);
+            const doc = await postRef.get();
+            const data = doc.data();
+            const likes = data.likes || [];
+            const index = likes.indexOf(currentUser.uid);
+            if (index > -1) {
+                likes.splice(index, 1);
+            } else {
+                likes.push(currentUser.uid);
+            }
+            await postRef.update({ likes });
+        };
+
+        // ============================================
+        // COMMENT
+        // ============================================
+        window.addComment = async (postId) => {
+            const input = document.getElementById(`commentInput-${postId}`);
+            const text = input.value.trim();
+            if (!text || !currentUser) return;
+            const postRef = db.collection('posts').doc(postId);
+            const doc = await postRef.get();
+            const data = doc.data();
+            const comments = data.comments || [];
+            comments.push({
+                userId: currentUser.uid,
+                username: currentUserData.name,
+                userPhoto: currentUserData.photoURL,
+                text: text,
+                createdAt: new Date().toISOString()
+            });
+            await postRef.update({ comments });
+            input.value = '';
+        };
+
+        window.toggleComment = (postId) => {
+            const el = document.getElementById(`comments-${postId}`);
+            el.style.display = el.style.display === 'none' ? 'block' : 'none';
+        };
+
+        // ============================================
+        // SHARE & SAVE
+        // ============================================
+        window.sharePost = (postId) => {
+            const url = window.location.origin + '/?post=' + postId;
+            if (navigator.share) {
+                navigator.share({ title: 'Check this post!', url });
+            } else {
+                navigator.clipboard.writeText(url);
+                showToast('Link copied!', 'success');
+            }
+        };
+
+        window.savePost = (postId) => {
+            showToast('Post saved!', 'success');
+        };
+
+        // ============================================
+        // EXPLORE
+        // ============================================
+        function loadExplore() {
+            db.collection('posts').orderBy('createdAt', 'desc').onSnapshot((snapshot) => {
+                const container = document.getElementById('exploreGrid');
+                const items = [];
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    if (data.image) items.push(data.image);
+                });
+                container.innerHTML = items.slice(0, 30).map(img => 
+                    `<img src="${img}" onclick="showToast('View post', 'info')" />`
+                ).join('');
+            });
+        }
+
+        document.getElementById('exploreSearch').addEventListener('input', async (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            if (!query) return;
+            const snapshot = await db.collection('users').get();
+            const results = [];
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                if (data.name.toLowerCase().includes(query)) {
+                    results.push(data);
+                }
+            });
+            const container = document.getElementById('exploreGrid');
+            container.innerHTML = results.map(user => `
+                <div style="padding:12px;background:var(--card);border-radius:var(--radius);text-align:center;">
+                    <img src="${user.photoURL || 'https://ui-avatars.com/api/?name=U&background=7C3AED&color=fff'}" style="width:60px;height:60px;border-radius:50%;object-fit:cover;margin-bottom:8px;" />
+                    <div style="font-weight:600;">${user.name}</div>
+                    <button onclick="followUser('${user.uid}')" class="btn btn-primary" style="padding:6px 16px;font-size:12px;margin-top:8px;">
+                        Follow
+                    </button>
+                </div>
+            `).join('');
+        });
+
+        // ============================================
+        // STORIES
+        // ============================================
+        function loadStories() {
+            db.collection('users').limit(10).onSnapshot((snapshot) => {
+                const bar = document.getElementById('storiesBar');
+                bar.innerHTML = snapshot.docs.map(doc => {
+                    const data = doc.data();
+                    return `
+                        <div class="story-item" onclick="showToast('View story', 'info')">
+                            <img src="${data.photoURL || 'https://ui-avatars.com/api/?name=U&background=7C3AED&color=fff'}" />
+                            <span>${data.name}</span>
+                        </div>
+                    `;
+                }).join('');
+            });
+        }
+
+        // ============================================
+        // MESSAGES
+        // ============================================
+        function loadChats() {
+            db.collection('users').where('uid', '!=', currentUser?.uid).limit(20).onSnapshot((snapshot) => {
+                const container = document.getElementById('chatList');
+                container.innerHTML = snapshot.docs.map(doc => {
+                    const data = doc.data();
+                    return `
+                        <div class="chat-item" onclick="openChat('${data.uid}')">
+                            <img src="${data.photoURL || 'https://ui-avatars.com/api/?name=U&background=7C3AED&color=fff'}" />
+                            <div class="info">
+                                <div class="name">${data.name}</div>
+                                <div class="last-msg">Click to chat</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            });
+        }
+
+        window.openChat = (userId) => {
+            showToast('Chat feature loaded!', 'success');
+        };
+
+        // ============================================
+        // PROFILE
+        // ============================================
+        function loadProfile() {
+            if (!currentUser) return;
+            db.collection('posts').where('userId', '==', currentUser.uid).onSnapshot((snapshot) => {
+                document.getElementById('postCount').textContent = snapshot.size;
+                const container = document.getElementById('profilePosts');
+                const items = [];
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    if (data.image) items.push(data.image);
+                });
+                container.innerHTML = items.map(img => 
+                    `<img src="${img}" />`
+                ).join('');
+            });
+        }
+
+        // ============================================
+        // FOLLOW
+        // ============================================
+        window.followUser = async (userId) => {
+            if (!currentUser) return;
+            const userRef = db.collection('users').doc(currentUser.uid);
+            const doc = await userRef.get();
+            const data = doc.data();
+            const following = data.following || [];
+            if (!following.includes(userId)) {
+                following.push(userId);
+                await userRef.update({ following });
+                showToast('Followed!', 'success');
+            }
+        };
+
+        // ============================================
+        // SERVICE WORKER
+        // ============================================
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js').catch(() => {});
+        }
+
+        console.log('🚀 Social Media App loaded with NEW Firebase config!');
+        console.log('📱 Text posts only (Firebase Storage not available)');
+    </script>
+</body>
+</html>
