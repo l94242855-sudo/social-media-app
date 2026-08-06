@@ -12,7 +12,7 @@
     
     <style>
         /* ============================================
-           COMPLETE CSS (Includes Splash Screen)
+           CSS VARIABLES & RESET
            ============================================ */
         :root {
             --primary: #7C3AED;
@@ -87,10 +87,7 @@
             animation: pulse 1.5s ease-in-out infinite;
             backdrop-filter: blur(10px);
         }
-        .splash-logo i {
-            font-size: 60px;
-            color: white;
-        }
+        .splash-logo i { font-size: 60px; color: white; }
         .splash-text {
             margin-top: 24px;
             font-size: 32px;
@@ -124,27 +121,125 @@
         }
 
         /* ============================================
-           AUTH SCREEN
+           AUTH CONTAINER (with Slideshow Background)
            ============================================ */
         .auth-container {
+            display: none;
+            position: relative;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* ============================================
+           SLIDESHOW BACKGROUND
+           ============================================ */
+        .slideshow-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+
+        .slideshow-bg .slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 1.2s ease-in-out;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .slideshow-bg .slide.active {
+            opacity: 1;
+        }
+
+        .slideshow-bg .slide-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+        }
+
+        /* ============================================
+           GLASSMORPHISM TEXT OVERLAY (on slideshow)
+           ============================================ */
+        .slideshow-text {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 500px;
+            padding: 20px 28px;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: var(--radius);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            text-align: center;
+            color: white;
+            z-index: 2;
+        }
+
+        .slideshow-text h2 {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .slideshow-text p {
+            font-size: 13px;
+            font-weight: 400;
+            opacity: 0.9;
+            line-height: 1.5;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.15);
+        }
+
+        /* ============================================
+           SLIDE DOTS
+           ============================================ */
+        .slide-dots {
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+            display: flex;
+            gap: 8px;
+            z-index: 2;
+        }
+
+        .slide-dots .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.4);
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            padding: 0;
+        }
+
+        .slide-dots .dot.active {
+            background: white;
+            transform: scale(1.2);
+        }
+
+        .slide-dots .dot:hover {
+            background: rgba(255,255,255,0.8);
+        }
+
+        /* ============================================
+           AUTH CARD (centered on top of slideshow)
+           ============================================ */
+        .auth-overlay {
+            position: relative;
+            z-index: 1;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background: linear-gradient(135deg, #EEF2FF 0%, #C7D2FE 50%, #A78BFA 100%);
             padding: 20px;
-            position: relative;
-        }
-
-        [data-theme="dark"] .auth-container {
-            background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #2D1B4E 100%);
-        }
-
-        .auth-container::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
 
         .auth-card {
@@ -154,9 +249,13 @@
             padding: 48px;
             max-width: 420px;
             width: 100%;
-            position: relative;
-            z-index: 1;
             animation: fadeUp 0.6s ease;
+            backdrop-filter: blur(4px);
+            background: rgba(255, 255, 255, 0.92);
+        }
+
+        [data-theme="dark"] .auth-card {
+            background: rgba(30, 41, 59, 0.92);
         }
 
         @keyframes fadeUp {
@@ -167,10 +266,10 @@
         .auth-header { text-align: center; margin-bottom: 32px; }
         
         .auth-logo {
-            width: 80px;
-            height: 80px;
+            width: 72px;
+            height: 72px;
             background: var(--primary-gradient);
-            border-radius: 24px;
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -180,7 +279,7 @@
             transition: var(--transition);
         }
         .auth-logo:hover { transform: scale(1.05) rotate(-5deg); }
-        .auth-logo i { font-size: 36px; color: white; }
+        .auth-logo i { font-size: 32px; color: white; }
         .auth-logo .logo-dot {
             position: absolute;
             width: 12px;
@@ -262,6 +361,13 @@
         }
         .btn-google:hover { border-color: var(--primary); }
 
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        .btn-outline:hover { background: var(--primary); color: white; }
+
         .auth-divider {
             display: flex;
             align-items: center;
@@ -296,7 +402,9 @@
         }
         .auth-footer a:hover { text-decoration: underline; }
 
-        /* OTP SCREEN */
+        /* ============================================
+           OTP SCREEN (same as before)
+           ============================================ */
         .otp-container {
             display: none;
             justify-content: center;
@@ -349,7 +457,9 @@
         .error-message { color: #EF4444; font-size: 13px; margin-top: 8px; display: none; }
         .success-message { color: #10B981; font-size: 13px; margin-top: 8px; display: none; }
 
-        /* MAIN APP */
+        /* ============================================
+           MAIN APP
+           ============================================ */
         .app-container {
             display: none;
             height: 100vh;
@@ -357,7 +467,6 @@
             background: var(--bg);
         }
 
-        /* BOTTOM NAV */
         .bottom-nav {
             display: flex;
             justify-content: space-around;
@@ -415,7 +524,85 @@
         }
         .screen.active { display: block; }
 
-        /* TOAST */
+        /* Simple feed styles */
+        .stories-bar {
+            display: flex;
+            gap: 12px;
+            padding: 16px;
+            overflow-x: auto;
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+        }
+        .story-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .story-item .ring {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            padding: 3px;
+            background: var(--primary-gradient);
+        }
+        .story-item .ring img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--card);
+        }
+        .story-item .add-story {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            border: 2px dashed var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--primary);
+            background: var(--bg);
+        }
+        .story-item span {
+            font-size: 11px;
+            color: var(--text-light);
+            max-width: 64px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .post-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            margin: 12px 16px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+        }
+        .post-header img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .post-header .post-user { flex: 1; }
+        .post-header .post-user .name { font-weight: 600; font-size: 14px; }
+        .post-header .post-user .time { font-size: 12px; color: var(--text-light); }
+        .post-text { padding: 12px 16px; font-size: 14px; line-height: 1.6; }
+
+        /* ============================================
+           TOAST
+           ============================================ */
         #toastContainer {
             position: fixed;
             bottom: 80px;
@@ -440,26 +627,52 @@
         .toast.success { border-left: 4px solid #10B981; }
         .toast.error { border-left: 4px solid #EF4444; }
         .toast.info { border-left: 4px solid #7C3AED; }
+
         @keyframes slideUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* RESPONSIVE */
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
         @media (max-width: 768px) {
             .auth-card { padding: 32px 24px; margin: 16px; }
             .otp-card { padding: 32px 24px; margin: 16px; }
             .nav-item { padding: 4px 10px; font-size: 8px; }
             .nav-item i { font-size: 18px; }
             #toastContainer { right: 10px; left: 10px; bottom: 80px; }
-            .otp-input-group input { width: 40px; height: 48px; font-size: 20px; }
+            .slideshow-text h2 { font-size: 20px; }
+            .slideshow-text p { font-size: 12px; }
+            .slideshow-text { padding: 16px 20px; bottom: 30px; }
         }
+
         @media (max-width: 480px) {
             .auth-card { padding: 24px 16px; }
             .otp-card { padding: 24px 16px; }
-            .otp-input-group input { width: 36px; height: 44px; font-size: 18px; }
+            .slideshow-text h2 { font-size: 18px; }
+            .slideshow-text p { font-size: 12px; }
         }
+
         .hidden { display: none !important; }
+
+        .profile-posts {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
+            padding: 4px;
+        }
+        .profile-posts .post-item {
+            aspect-ratio: 1;
+            overflow: hidden;
+            cursor: pointer;
+            background: var(--border);
+        }
+        .profile-posts .post-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
     </style>
 </head>
 <body>
@@ -477,79 +690,80 @@
     </div>
 
     <!-- ============================================ -->
-    <!-- AUTH SCREEN                                  -->
+    <!-- AUTH SCREEN (with Slideshow Background)      -->
     <!-- ============================================ -->
-    <div id="authScreen" class="auth-container" style="display: none;">
-        <div class="auth-card">
-            <div class="auth-header">
-                <div class="auth-logo">
-                    <i class="fas fa-connectdevelop"></i>
-                    <div class="logo-dot"></div>
-                </div>
-                <h1>Connect<span>Hub</span></h1>
-                <p class="auth-subtitle">Connect, share, and discover</p>
+    <div id="authScreen" class="auth-container">
+
+        <!-- Slideshow Background -->
+        <div class="slideshow-bg" id="slideshowBg">
+            <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1200&h=800&fit=crop');">
+                <div class="slide-overlay"></div>
+            </div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1200&h=800&fit=crop');">
+                <div class="slide-overlay"></div>
+            </div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1529156069898-4993e3bae3b1?w=1200&h=800&fit=crop');">
+                <div class="slide-overlay"></div>
+            </div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1200&h=800&fit=crop');">
+                <div class="slide-overlay"></div>
+            </div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=1200&h=800&fit=crop');">
+                <div class="slide-overlay"></div>
             </div>
 
-            <form id="loginForm" class="auth-form">
-                <div class="form-group">
-                    <label for="loginEmail"><i class="fas fa-envelope"></i> Email</label>
-                    <input type="email" id="loginEmail" placeholder="you@example.com" required />
-                </div>
-                <div class="form-group">
-                    <label for="loginPassword"><i class="fas fa-lock"></i> Password</label>
-                    <input type="password" id="loginPassword" placeholder="••••••••" required />
-                </div>
-                <button type="submit" class="btn btn-primary btn-full">
-                    <i class="fas fa-sign-in-alt"></i> Sign In
-                </button>
-            </form>
+            <!-- Glassmorphism Text Overlay -->
+            <div class="slideshow-text">
+                <h2>✨ Welcome to the Circle</h2>
+                <p>Join a vibrant community of friends, share your moments, and create lasting memories.</p>
+            </div>
 
-            <div class="auth-divider"><span>or</span></div>
-
-            <button id="googleAuthBtn" class="btn btn-google btn-full">
-                <i class="fab fa-google"></i> Continue with Google
-            </button>
-
-            <div class="auth-footer">
-                Don't have an account? <a id="showSignup">Sign Up</a>
+            <!-- Slide Dots -->
+            <div class="slide-dots" id="slideDots">
+                <button class="dot active" data-index="0"></button>
+                <button class="dot" data-index="1"></button>
+                <button class="dot" data-index="2"></button>
+                <button class="dot" data-index="3"></button>
+                <button class="dot" data-index="4"></button>
             </div>
         </div>
 
-        <div class="auth-card" id="signupCard" style="display: none;">
-            <div class="auth-header">
-                <div class="auth-logo">
-                    <i class="fas fa-user-plus"></i>
-                    <div class="logo-dot"></div>
+        <!-- Auth Card Overlay -->
+        <div class="auth-overlay">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <div class="auth-logo">
+                        <i class="fas fa-connectdevelop"></i>
+                        <div class="logo-dot"></div>
+                    </div>
+                    <h1>Connect<span>Hub</span></h1>
+                    <p class="auth-subtitle">Connect, share, and discover</p>
                 </div>
-                <h1>Join Connect<span>Hub</span></h1>
-                <p class="auth-subtitle">Create your account</p>
-            </div>
 
-            <form id="signupForm" class="auth-form">
-                <div class="form-group">
-                    <label for="signupName"><i class="fas fa-user"></i> Full Name</label>
-                    <input type="text" id="signupName" placeholder="John Doe" required />
-                </div>
-                <div class="form-group">
-                    <label for="signupUsername"><i class="fas fa-at"></i> Username</label>
-                    <input type="text" id="signupUsername" placeholder="johndoe" required />
-                    <small style="color:var(--text-light);font-size:11px;">Unique username (letters, numbers, underscore)</small>
-                </div>
-                <div class="form-group">
-                    <label for="signupEmail"><i class="fas fa-envelope"></i> Email</label>
-                    <input type="email" id="signupEmail" placeholder="you@example.com" required />
-                </div>
-                <div class="form-group">
-                    <label for="signupPassword"><i class="fas fa-lock"></i> Password</label>
-                    <input type="password" id="signupPassword" placeholder="Min 6 characters" required minlength="6" />
-                </div>
-                <button type="submit" class="btn btn-primary btn-full">
-                    <i class="fas fa-user-plus"></i> Create Account
+                <!-- Login Form -->
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="loginEmail"><i class="fas fa-envelope"></i> Email</label>
+                        <input type="email" id="loginEmail" placeholder="you@example.com" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword"><i class="fas fa-lock"></i> Password</label>
+                        <input type="password" id="loginPassword" placeholder="••••••••" required />
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i class="fas fa-sign-in-alt"></i> Sign In
+                    </button>
+                </form>
+
+                <div class="auth-divider"><span>or</span></div>
+
+                <button id="googleAuthBtn" class="btn btn-google btn-full">
+                    <i class="fab fa-google"></i> Continue with Google
                 </button>
-            </form>
 
-            <div class="auth-footer">
-                Already have an account? <a id="showLogin">Sign In</a>
+                <div class="auth-footer">
+                    Don't have an account? <a id="showSignup">Sign Up</a>
+                </div>
             </div>
         </div>
     </div>
@@ -585,13 +799,103 @@
     </div>
 
     <!-- ============================================ -->
+    <!-- SIGNUP CARD (Hidden, shown by toggle)        -->
+    <!-- ============================================ -->
+    <div id="signupCard" class="auth-container" style="display:none;">
+        <div class="slideshow-bg" id="signupSlideshowBg">
+            <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1200&h=800&fit=crop');">
+                <div class="slide-overlay"></div>
+            </div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1200&h=800&fit=crop');">
+                <div class="slide-overlay"></div>
+            </div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1529156069898-4993e3bae3b1?w=1200&h=800&fit=crop');">
+                <div class="slide-overlay"></div>
+            </div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1200&h=800&fit=crop');">
+                <div class="slide-overlay"></div>
+            </div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=1200&h=800&fit=crop');">
+                <div class="slide-overlay"></div>
+            </div>
+
+            <div class="slideshow-text">
+                <h2>✨ Join the Circle</h2>
+                <p>Create your account and start connecting with amazing people.</p>
+            </div>
+
+            <div class="slide-dots" id="signupSlideDots">
+                <button class="dot active" data-index="0"></button>
+                <button class="dot" data-index="1"></button>
+                <button class="dot" data-index="2"></button>
+                <button class="dot" data-index="3"></button>
+                <button class="dot" data-index="4"></button>
+            </div>
+        </div>
+
+        <div class="auth-overlay">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <div class="auth-logo">
+                        <i class="fas fa-user-plus"></i>
+                        <div class="logo-dot"></div>
+                    </div>
+                    <h1>Join Connect<span>Hub</span></h1>
+                    <p class="auth-subtitle">Create your account</p>
+                </div>
+
+                <form id="signupForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="signupName"><i class="fas fa-user"></i> Full Name</label>
+                        <input type="text" id="signupName" placeholder="John Doe" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="signupUsername"><i class="fas fa-at"></i> Username</label>
+                        <input type="text" id="signupUsername" placeholder="johndoe" required />
+                        <small style="color:var(--text-light);font-size:11px;">Unique username (letters, numbers, underscore)</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupEmail"><i class="fas fa-envelope"></i> Email</label>
+                        <input type="email" id="signupEmail" placeholder="you@example.com" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="signupPassword"><i class="fas fa-lock"></i> Password</label>
+                        <input type="password" id="signupPassword" placeholder="Min 6 characters" required minlength="6" />
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i class="fas fa-user-plus"></i> Create Account
+                    </button>
+                </form>
+
+                <div class="auth-footer">
+                    Already have an account? <a id="showLogin">Sign In</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
     <!-- MAIN APP                                     -->
     <!-- ============================================ -->
     <div id="appContainer" class="app-container">
-        <!-- HOME -->
         <div id="screenHome" class="screen active">
             <div class="stories-bar" id="storiesBar">
-                <div style="padding:20px;color:var(--text-light);">Loading stories...</div>
+                <div class="story-item" onclick="showToast('Add a story', 'info')">
+                    <div class="add-story"><i class="fas fa-plus"></i></div>
+                    <span>Add Story</span>
+                </div>
+                <div class="story-item">
+                    <div class="ring"><img src="https://ui-avatars.com/api/?name=A&background=7C3AED&color=fff" /></div>
+                    <span>Alice</span>
+                </div>
+                <div class="story-item">
+                    <div class="ring"><img src="https://ui-avatars.com/api/?name=B&background=8B5CF6&color=fff" /></div>
+                    <span>Bob</span>
+                </div>
+                <div class="story-item">
+                    <div class="ring"><img src="https://ui-avatars.com/api/?name=C&background=6D28D9&color=fff" /></div>
+                    <span>Charlie</span>
+                </div>
             </div>
             <div id="feedContainer">
                 <div style="text-align:center;padding:40px;color:var(--text-light);">
@@ -602,116 +906,56 @@
             </div>
         </div>
 
-        <!-- EXPLORE -->
         <div id="screenExplore" class="screen">
             <div style="padding:16px;">
-                <div class="search-wrapper" style="display:flex;align-items:center;background:var(--card);border-radius:12px;padding:0 16px;box-shadow:var(--shadow);">
-                    <i class="fas fa-search" style="color:var(--text-light);"></i>
-                    <input type="text" id="exploreSearch" placeholder="Search users..." style="border:none;background:transparent;padding:12px;font-size:14px;width:100%;outline:none;color:var(--text);" />
-                </div>
+                <h2 style="font-size:20px;font-weight:700;">🔍 Explore</h2>
             </div>
-            <div class="explore-grid" id="exploreGrid"></div>
+            <div class="explore-grid" id="exploreGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:4px;">
+                <div style="aspect-ratio:1;background:var(--border);border-radius:8px;"></div>
+                <div style="aspect-ratio:1;background:var(--border);border-radius:8px;"></div>
+                <div style="aspect-ratio:1;background:var(--border);border-radius:8px;"></div>
+                <div style="aspect-ratio:1;background:var(--border);border-radius:8px;"></div>
+                <div style="aspect-ratio:1;background:var(--border);border-radius:8px;"></div>
+                <div style="aspect-ratio:1;background:var(--border);border-radius:8px;"></div>
+            </div>
         </div>
 
-        <!-- CREATE -->
         <div id="screenCreate" class="screen">
-            <div class="create-container">
-                <h2>✨ Create Post</h2>
-                <textarea id="postText" placeholder="What's on your mind? Share with the world..."></textarea>
-                <button id="createPostBtn" class="btn btn-primary">
+            <div style="padding:20px;max-width:600px;margin:0 auto;">
+                <h2 style="margin-bottom:16px;">✨ Create Post</h2>
+                <textarea id="postText" placeholder="What's on your mind?" style="width:100%;min-height:150px;padding:16px;border:2px solid var(--border);border-radius:16px;font-family:inherit;font-size:14px;background:var(--card);color:var(--text);resize:vertical;"></textarea>
+                <button id="createPostBtn" class="btn btn-primary" style="width:100%;margin-top:16px;padding:14px;">
                     <i class="fas fa-paper-plane"></i> Post
                 </button>
             </div>
         </div>
 
-        <!-- MESSAGES -->
         <div id="screenMessages" class="screen">
             <div style="padding:16px;">
-                <h2 style="font-size:24px;font-weight:800;margin-bottom:16px;">💬 Messages</h2>
-                <div id="chatList" class="chat-list">
-                    <div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading chats...</div>
+                <h2 style="margin-bottom:16px;">💬 Messages</h2>
+                <div id="chatList">
+                    <div style="text-align:center;padding:40px;color:var(--text-light);">
+                        <i class="fas fa-comments" style="font-size:48px;display:block;margin-bottom:12px;color:var(--border);"></i>
+                        <h3>No messages yet</h3>
+                        <p>Start a conversation!</p>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- PROFILE -->
         <div id="screenProfile" class="screen">
-            <div class="profile-header" id="profileHeader">
-                <div class="cover" id="coverContainer"></div>
-                <div class="avatar-wrapper">
-                    <img id="profileAvatar" class="avatar" src="https://ui-avatars.com/api/?name=User&background=7C3AED&color=fff&size=128" />
-                    <div class="avatar-edit" id="avatarEditBtn"><i class="fas fa-camera"></i></div>
-                </div>
-                <div class="name" id="profileName">User</div>
-                <div class="username" id="profileUsername">@username</div>
-                <div class="bio" id="profileBio">Welcome to my profile!</div>
-                <div class="profile-stats">
-                    <div class="stat"><div class="number" id="postCount">0</div><div class="label">Posts</div></div>
-                    <div class="stat"><div class="number" id="followerCount">0</div><div class="label">Followers</div></div>
-                    <div class="stat"><div class="number" id="followingCount">0</div><div class="label">Following</div></div>
-                </div>
-                <div class="profile-actions">
-                    <button id="editProfileBtn" class="btn btn-primary" style="padding:8px 20px;font-size:13px;">
-                        <i class="fas fa-edit"></i> Edit Profile
-                    </button>
-                    <button id="settingsBtn" class="btn btn-outline" style="padding:8px 20px;font-size:13px;">
-                        <i class="fas fa-cog"></i>
-                    </button>
-                </div>
-                <button id="logoutBtn" style="position:absolute;top:16px;right:16px;background:var(--bg);border:none;padding:10px 14px;border-radius:10px;cursor:pointer;color:var(--text-light);font-size:16px;transition:var(--transition);">
-                    <i class="fas fa-sign-out-alt"></i>
+            <div style="text-align:center;padding:20px;background:var(--card);border-bottom:1px solid var(--border);">
+                <img id="profileAvatar" src="https://ui-avatars.com/api/?name=User&background=7C3AED&color=fff&size=128" style="width:80px;height:80px;border-radius:50%;border:4px solid var(--card);margin-top:-40px;" />
+                <div style="font-size:20px;font-weight:700;margin-top:8px;" id="profileName">User</div>
+                <div style="color:var(--text-light);" id="profileUsername">@username</div>
+                <div style="color:var(--text-light);margin-top:4px;" id="profileBio">Welcome to my profile!</div>
+                <button id="logoutBtn" style="margin-top:12px;padding:8px 24px;background:var(--bg);border:1px solid var(--border);border-radius:8px;cursor:pointer;font-family:inherit;font-weight:600;">
+                    <i class="fas fa-sign-out-alt"></i> Logout
                 </button>
             </div>
             <div class="profile-posts" id="profilePosts"></div>
         </div>
 
-        <!-- SETTINGS -->
-        <div id="screenSettings" class="screen">
-            <div class="settings-container">
-                <h2>⚙️ Settings</h2>
-                <div class="settings-group">
-                    <h3>Account</h3>
-                    <div class="setting-item" onclick="showToast('Edit profile', 'info')">
-                        <div class="left"><i class="fas fa-user-edit"></i><div><div class="title">Edit Profile</div><div class="desc">Change your name, bio, and photo</div></div></div>
-                        <div class="right"><i class="fas fa-chevron-right"></i></div>
-                    </div>
-                    <div class="setting-item" onclick="showToast('Change password', 'info')">
-                        <div class="left"><i class="fas fa-key"></i><div><div class="title">Change Password</div><div class="desc">Update your password</div></div></div>
-                        <div class="right"><i class="fas fa-chevron-right"></i></div>
-                    </div>
-                </div>
-                <div class="settings-group">
-                    <h3>Preferences</h3>
-                    <div class="setting-item" onclick="toggleDarkMode()">
-                        <div class="left"><i class="fas fa-moon"></i><div><div class="title">Dark Mode</div><div class="desc">Toggle dark/light theme</div></div></div>
-                        <div class="right"><div class="toggle" id="darkModeToggle"><div class="dot"></div></div></div>
-                    </div>
-                </div>
-                <div class="settings-group">
-                    <h3>Privacy & Security</h3>
-                    <div class="setting-item" onclick="showToast('Privacy settings', 'info')">
-                        <div class="left"><i class="fas fa-lock"></i><div><div class="title">Privacy Settings</div><div class="desc">Manage who can see your content</div></div></div>
-                        <div class="right"><i class="fas fa-chevron-right"></i></div>
-                    </div>
-                    <div class="setting-item" onclick="showToast('Blocked users', 'info')">
-                        <div class="left"><i class="fas fa-ban"></i><div><div class="title">Blocked Users</div><div class="desc">Manage blocked accounts</div></div></div>
-                        <div class="right"><i class="fas fa-chevron-right"></i></div>
-                    </div>
-                </div>
-                <div class="settings-group">
-                    <h3>About</h3>
-                    <div class="setting-item" onclick="showToast('ConnectHub v1.0.0', 'info')">
-                        <div class="left"><i class="fas fa-info-circle"></i><div><div class="title">Version</div><div class="desc">ConnectHub v1.0.0</div></div></div>
-                        <div class="right"><i class="fas fa-chevron-right"></i></div>
-                    </div>
-                </div>
-                <button id="settingsBackBtn" class="btn btn-outline btn-full" style="margin-top:16px;">
-                    <i class="fas fa-arrow-left"></i> Back to Profile
-                </button>
-            </div>
-        </div>
-
-        <!-- BOTTOM NAV -->
         <nav class="bottom-nav">
             <button class="nav-item active" data-screen="screenHome"><i class="fas fa-home"></i> Home</button>
             <button class="nav-item" data-screen="screenExplore"><i class="fas fa-compass"></i> Explore</button>
@@ -721,6 +965,9 @@
         </nav>
     </div>
 
+    <!-- ============================================ -->
+    <!-- TOAST CONTAINER                              -->
+    <!-- ============================================ -->
     <div id="toastContainer"></div>
 
     <!-- ============================================ -->
@@ -737,14 +984,115 @@
         setTimeout(() => {
             const splash = document.getElementById('splashScreen');
             splash.classList.add('hidden');
-            // Show auth screen after splash hides
             setTimeout(() => {
-                document.getElementById('authScreen').style.display = 'flex';
+                document.getElementById('authScreen').style.display = 'block';
             }, 300);
         }, 5000);
 
         // ============================================
-        // 🔥 FIREBASE CONFIG
+        // SLIDESHOW FUNCTION
+        // ============================================
+        function initSlideshow(containerId, dotsId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            const slides = container.querySelectorAll('.slide');
+            const dots = document.getElementById(dotsId);
+            if (!dots) return;
+            
+            const dotButtons = dots.querySelectorAll('.dot');
+            let currentIndex = 0;
+            let slideInterval;
+
+            function goToSlide(index) {
+                slides.forEach(s => s.classList.remove('active'));
+                dotButtons.forEach(d => d.classList.remove('active'));
+                slides[index].classList.add('active');
+                dotButtons[index].classList.add('active');
+                currentIndex = index;
+            }
+
+            function nextSlide() {
+                const next = (currentIndex + 1) % slides.length;
+                goToSlide(next);
+            }
+
+            function startSlideshow() {
+                slideInterval = setInterval(nextSlide, 4000);
+            }
+
+            function stopSlideshow() {
+                clearInterval(slideInterval);
+            }
+
+            // Click on dots
+            dotButtons.forEach(dot => {
+                dot.addEventListener('click', function() {
+                    stopSlideshow();
+                    goToSlide(parseInt(this.dataset.index));
+                    startSlideshow();
+                });
+            });
+
+            // Start slideshow
+            startSlideshow();
+
+            // Pause on hover
+            container.addEventListener('mouseenter', stopSlideshow);
+            container.addEventListener('mouseleave', startSlideshow);
+
+            return { goToSlide, nextSlide, startSlideshow, stopSlideshow };
+        }
+
+        // Initialize both slideshows
+        const mainSlideshow = initSlideshow('slideshowBg', 'slideDots');
+        const signupSlideshow = initSlideshow('signupSlideshowBg', 'signupSlideDots');
+
+        // ============================================
+        // TOAST
+        // ============================================
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const icons = { success: 'fa-check-circle', error: 'fa-exclamation-circle', info: 'fa-info-circle' };
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `<i class="fas ${icons[type] || icons.info}"></i> ${message}`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(50px)';
+                toast.style.transition = 'all 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        // ============================================
+        // TOGGLE LOGIN / SIGNUP
+        // ============================================
+        document.getElementById('showSignup').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('authScreen').style.display = 'none';
+            document.getElementById('signupCard').style.display = 'block';
+            // Restart signup slideshow
+            if (signupSlideshow) {
+                signupSlideshow.stopSlideshow();
+                signupSlideshow.startSlideshow();
+            }
+        });
+
+        document.getElementById('showLogin').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('signupCard').style.display = 'none';
+            document.getElementById('authScreen').style.display = 'block';
+            // Restart main slideshow
+            if (mainSlideshow) {
+                mainSlideshow.stopSlideshow();
+                mainSlideshow.startSlideshow();
+            }
+        });
+
+        // ============================================
+        // FIREBASE CONFIG
         // ============================================
         const firebaseConfig = {
             apiKey: "AIzaSyCl0CpUJcMMll8klL0ldN22KwbUlCgaw2Q",
@@ -761,19 +1109,6 @@
         db.enablePersistence().catch(() => {});
 
         // ============================================
-        // TOAST
-        // ============================================
-        function showToast(message, type = 'info') {
-            const container = document.getElementById('toastContainer');
-            const icons = { success: 'fa-check-circle', error: 'fa-exclamation-circle', info: 'fa-info-circle' };
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            toast.innerHTML = `<i class="fas ${icons[type] || icons.info}"></i> ${message}`;
-            container.appendChild(toast);
-            setTimeout(() => { toast.remove(); }, 3000);
-        }
-
-        // ============================================
         // NAVIGATION
         // ============================================
         document.querySelectorAll('.nav-item').forEach(item => {
@@ -787,42 +1122,22 @@
         });
 
         // ============================================
-        // SETTINGS NAVIGATION
+        // AUTH STATE
         // ============================================
-        document.getElementById('settingsBtn').addEventListener('click', () => {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById('screenSettings').classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        });
-
-        document.getElementById('settingsBackBtn').addEventListener('click', () => {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById('screenProfile').classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.querySelector('[data-screen="screenProfile"]').classList.add('active');
-        });
-
-        // ============================================
-        // DARK MODE
-        // ============================================
-        function toggleDarkMode() {
-            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-            document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
-            const toggle = document.getElementById('darkModeToggle');
-            toggle.classList.toggle('active');
-        }
-
-        // ============================================
-        // AUTH - TOGGLE SIGNUP/LOGIN
-        // ============================================
-        document.getElementById('showSignup').addEventListener('click', () => {
-            document.querySelector('.auth-card:first-child').style.display = 'none';
-            document.getElementById('signupCard').style.display = 'block';
-        });
-
-        document.getElementById('showLogin').addEventListener('click', () => {
-            document.querySelector('.auth-card:first-child').style.display = 'block';
-            document.getElementById('signupCard').style.display = 'none';
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                document.getElementById('authScreen').style.display = 'none';
+                document.getElementById('signupCard').style.display = 'none';
+                document.getElementById('appContainer').style.display = 'flex';
+                console.log('User logged in:', user.email);
+                showToast('Welcome to ConnectHub!', 'success');
+            } else {
+                const splash = document.getElementById('splashScreen');
+                if (splash.classList.contains('hidden')) {
+                    document.getElementById('authScreen').style.display = 'block';
+                }
+                document.getElementById('appContainer').style.display = 'none';
+            }
         });
 
         // ============================================
@@ -835,9 +1150,6 @@
             try {
                 showToast('Signing in...', 'info');
                 await auth.signInWithEmailAndPassword(email, password);
-                showToast('Welcome back!', 'success');
-                document.getElementById('authScreen').style.display = 'none';
-                document.getElementById('appContainer').style.display = 'flex';
             } catch (error) {
                 showToast(error.message, 'error');
             }
@@ -851,9 +1163,47 @@
             try {
                 showToast('Signing in with Google...', 'info');
                 await auth.signInWithPopup(provider);
-                showToast('Welcome!', 'success');
-                document.getElementById('authScreen').style.display = 'none';
-                document.getElementById('appContainer').style.display = 'flex';
+            } catch (error) {
+                showToast(error.message, 'error');
+            }
+        });
+
+        // ============================================
+        // SIGNUP
+        // ============================================
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('signupName').value;
+            const username = document.getElementById('signupUsername').value.trim().toLowerCase();
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+
+            if (!username.match(/^[a-z0-9_]{3,20}$/)) {
+                showToast('Username must be 3-20 characters (letters, numbers, underscore)', 'error');
+                return;
+            }
+
+            try {
+                showToast('Creating account...', 'info');
+                const result = await auth.createUserWithEmailAndPassword(email, password);
+                await result.user.updateProfile({ displayName: name });
+                await db.collection('users').doc(result.user.uid).set({
+                    uid: result.user.uid,
+                    name: name,
+                    username: username,
+                    email: email,
+                    bio: 'Hello, I\'m using ConnectHub!',
+                    photoURL: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=7C3AED&color=fff&size=128`,
+                    followers: [],
+                    following: [],
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                await result.user.sendEmailVerification();
+                showToast('Verification email sent! Check your inbox.', 'success');
+                // Show OTP screen
+                document.getElementById('signupCard').style.display = 'none';
+                document.getElementById('otpScreen').style.display = 'flex';
+                document.getElementById('otpEmailDisplay').textContent = email;
             } catch (error) {
                 showToast(error.message, 'error');
             }
@@ -867,31 +1217,101 @@
                 await auth.signOut();
                 showToast('Signed out', 'info');
                 document.getElementById('appContainer').style.display = 'none';
-                document.getElementById('authScreen').style.display = 'flex';
+                document.getElementById('authScreen').style.display = 'block';
             } catch (error) {
                 showToast(error.message, 'error');
             }
         });
 
         // ============================================
-        // AUTH STATE
+        // OTP VERIFICATION
         // ============================================
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                document.getElementById('authScreen').style.display = 'none';
-                document.getElementById('appContainer').style.display = 'flex';
-                console.log('User logged in:', user.email);
-            } else {
-                // Only show auth if splash is gone
-                const splash = document.getElementById('splashScreen');
-                if (splash.classList.contains('hidden')) {
-                    document.getElementById('authScreen').style.display = 'flex';
+        let pendingUserCredential = null;
+        let countdownTimer = 60;
+        let countdownInterval = null;
+
+        document.querySelectorAll('.otp-input').forEach((input, index, inputs) => {
+            input.addEventListener('input', function() {
+                if (this.value.length === 1 && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
                 }
-                document.getElementById('appContainer').style.display = 'none';
+                const allFilled = Array.from(inputs).every(inp => inp.value.length === 1);
+                if (allFilled) {
+                    document.getElementById('verifyOtpBtn').click();
+                }
+            });
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Backspace' && this.value.length === 0 && index > 0) {
+                    inputs[index - 1].focus();
+                }
+                if (e.key === 'Enter') {
+                    document.getElementById('verifyOtpBtn').click();
+                }
+            });
+            input.addEventListener('input', function() {
+                this.value = this.value.replace(/[^0-9]/g, '');
+            });
+        });
+
+        document.getElementById('verifyOtpBtn').addEventListener('click', async function() {
+            const inputs = document.querySelectorAll('.otp-input');
+            const otp = Array.from(inputs).map(inp => inp.value).join('');
+            if (otp.length !== 6) {
+                document.getElementById('otpError').style.display = 'block';
+                document.getElementById('otpError').textContent = 'Please enter all 6 digits.';
+                return;
+            }
+            this.disabled = true;
+            document.getElementById('otpError').style.display = 'none';
+            
+            // Since we use email verification, we check if email is verified
+            try {
+                const user = auth.currentUser;
+                if (user) {
+                    await user.reload();
+                    if (user.emailVerified) {
+                        document.getElementById('otpSuccess').style.display = 'block';
+                        showToast('Email verified!', 'success');
+                        setTimeout(() => {
+                            document.getElementById('otpScreen').style.display = 'none';
+                            document.getElementById('appContainer').style.display = 'flex';
+                        }, 1500);
+                    } else {
+                        document.getElementById('otpError').style.display = 'block';
+                        document.getElementById('otpError').textContent = 'Email not verified yet. Please check your inbox.';
+                        this.disabled = false;
+                    }
+                }
+            } catch (error) {
+                document.getElementById('otpError').style.display = 'block';
+                document.getElementById('otpError').textContent = error.message || 'Verification failed.';
+                this.disabled = false;
             }
         });
 
-        console.log('🚀 ConnectHub loaded with splash screen!');
+        document.getElementById('backToLogin').addEventListener('click', () => {
+            document.getElementById('otpScreen').style.display = 'none';
+            document.getElementById('authScreen').style.display = 'block';
+            if (auth.currentUser) {
+                auth.currentUser.delete().catch(() => {});
+            }
+        });
+
+        // ============================================
+        // CREATE POST (simple demo)
+        // ============================================
+        document.getElementById('createPostBtn').addEventListener('click', function() {
+            const text = document.getElementById('postText').value.trim();
+            if (!text) {
+                showToast('Please write something', 'error');
+                return;
+            }
+            showToast('Post created! 🎉', 'success');
+            document.getElementById('postText').value = '';
+            document.querySelector('[data-screen="screenHome"]').click();
+        });
+
+        console.log('🚀 ConnectHub loaded with slideshow!');
     </script>
 </body>
 </html>
