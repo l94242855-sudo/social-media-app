@@ -160,7 +160,7 @@
         }
 
         /* ============================================
-           GLASSMORPHISM TEXT OVERLAY (on slideshow)
+           GLASSMORPHISM TEXT OVERLAY
            ============================================ */
         .slideshow-text {
             position: absolute;
@@ -230,7 +230,7 @@
         }
 
         /* ============================================
-           AUTH CARD (centered on top of slideshow)
+           AUTH CARD (centered on top)
            ============================================ */
         .auth-overlay {
             position: relative;
@@ -403,7 +403,7 @@
         .auth-footer a:hover { text-decoration: underline; }
 
         /* ============================================
-           OTP SCREEN (same as before)
+           OTP SCREEN
            ============================================ */
         .otp-container {
             display: none;
@@ -673,6 +673,17 @@
             height: 100%;
             object-fit: cover;
         }
+        .explore-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
+            padding: 4px;
+        }
+        .explore-grid .explore-item {
+            aspect-ratio: 1;
+            background: var(--border);
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body>
@@ -690,7 +701,7 @@
     </div>
 
     <!-- ============================================ -->
-    <!-- AUTH SCREEN (with Slideshow Background)      -->
+    <!-- AUTH SCREEN (Login)                          -->
     <!-- ============================================ -->
     <div id="authScreen" class="auth-container">
 
@@ -712,13 +723,13 @@
                 <div class="slide-overlay"></div>
             </div>
 
-            <!-- Glassmorphism Text Overlay -->
+            <!-- Glassmorphism Text -->
             <div class="slideshow-text">
                 <h2>✨ Welcome to the Circle</h2>
                 <p>Join a vibrant community of friends, share your moments, and create lasting memories.</p>
             </div>
 
-            <!-- Slide Dots -->
+            <!-- Dots -->
             <div class="slide-dots" id="slideDots">
                 <button class="dot active" data-index="0"></button>
                 <button class="dot" data-index="1"></button>
@@ -728,7 +739,7 @@
             </div>
         </div>
 
-        <!-- Auth Card Overlay -->
+        <!-- Auth Card -->
         <div class="auth-overlay">
             <div class="auth-card">
                 <div class="auth-header">
@@ -740,7 +751,6 @@
                     <p class="auth-subtitle">Connect, share, and discover</p>
                 </div>
 
-                <!-- Login Form -->
                 <form id="loginForm" class="auth-form">
                     <div class="form-group">
                         <label for="loginEmail"><i class="fas fa-envelope"></i> Email</label>
@@ -769,39 +779,10 @@
     </div>
 
     <!-- ============================================ -->
-    <!-- OTP SCREEN                                   -->
-    <!-- ============================================ -->
-    <div id="otpScreen" class="otp-container">
-        <div class="otp-card">
-            <div class="icon"><i class="fas fa-envelope-open-text"></i></div>
-            <h2>Verify Your Email</h2>
-            <p>We've sent a verification link to <strong id="otpEmailDisplay">your@email.com</strong></p>
-            <p style="font-size:13px;color:var(--text-light);">Please check your inbox and spam folder.</p>
-
-            <div class="otp-input-group" id="otpInputGroup">
-                <input type="text" maxlength="1" id="otp1" class="otp-input" autofocus />
-                <input type="text" maxlength="1" id="otp2" class="otp-input" />
-                <input type="text" maxlength="1" id="otp3" class="otp-input" />
-                <input type="text" maxlength="1" id="otp4" class="otp-input" />
-                <input type="text" maxlength="1" id="otp5" class="otp-input" />
-                <input type="text" maxlength="1" id="otp6" class="otp-input" />
-            </div>
-
-            <div id="otpError" class="error-message"><i class="fas fa-exclamation-circle"></i> Invalid verification code.</div>
-            <div id="otpSuccess" class="success-message"><i class="fas fa-check-circle"></i> Email verified! Redirecting...</div>
-
-            <button id="verifyOtpBtn" class="btn btn-primary btn-full"><i class="fas fa-check"></i> Verify Email</button>
-            <button id="resendOtpBtn" class="btn btn-outline btn-full" style="margin-top:12px;"><i class="fas fa-redo"></i> Resend Verification</button>
-
-            <div class="resend-timer" id="resendTimer">Resend available in <span id="countdownTimer">60</span> seconds</div>
-            <div class="auth-footer" style="margin-top:16px;"><a id="backToLogin">← Back to Sign In</a></div>
-        </div>
-    </div>
-
-    <!-- ============================================ -->
-    <!-- SIGNUP CARD (Hidden, shown by toggle)        -->
+    <!-- SIGNUP SCREEN                                -->
     <!-- ============================================ -->
     <div id="signupCard" class="auth-container" style="display:none;">
+        <!-- Slideshow -->
         <div class="slideshow-bg" id="signupSlideshowBg">
             <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1200&h=800&fit=crop');">
                 <div class="slide-overlay"></div>
@@ -875,6 +856,36 @@
     </div>
 
     <!-- ============================================ -->
+    <!-- OTP SCREEN                                   -->
+    <!-- ============================================ -->
+    <div id="otpScreen" class="otp-container">
+        <div class="otp-card">
+            <div class="icon"><i class="fas fa-envelope-open-text"></i></div>
+            <h2>Verify Your Email</h2>
+            <p>We've sent a verification link to <strong id="otpEmailDisplay">your@email.com</strong></p>
+            <p style="font-size:13px;color:var(--text-light);">Please check your inbox and spam folder.</p>
+
+            <div class="otp-input-group" id="otpInputGroup">
+                <input type="text" maxlength="1" id="otp1" class="otp-input" autofocus />
+                <input type="text" maxlength="1" id="otp2" class="otp-input" />
+                <input type="text" maxlength="1" id="otp3" class="otp-input" />
+                <input type="text" maxlength="1" id="otp4" class="otp-input" />
+                <input type="text" maxlength="1" id="otp5" class="otp-input" />
+                <input type="text" maxlength="1" id="otp6" class="otp-input" />
+            </div>
+
+            <div id="otpError" class="error-message"><i class="fas fa-exclamation-circle"></i> Invalid verification code.</div>
+            <div id="otpSuccess" class="success-message"><i class="fas fa-check-circle"></i> Email verified! Redirecting...</div>
+
+            <button id="verifyOtpBtn" class="btn btn-primary btn-full"><i class="fas fa-check"></i> Verify Email</button>
+            <button id="resendOtpBtn" class="btn btn-outline btn-full" style="margin-top:12px;"><i class="fas fa-redo"></i> Resend Verification</button>
+
+            <div class="resend-timer" id="resendTimer">Resend available in <span id="countdownTimer">60</span> seconds</div>
+            <div class="auth-footer" style="margin-top:16px;"><a id="backToLogin">← Back to Sign In</a></div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
     <!-- MAIN APP                                     -->
     <!-- ============================================ -->
     <div id="appContainer" class="app-container">
@@ -910,13 +921,13 @@
             <div style="padding:16px;">
                 <h2 style="font-size:20px;font-weight:700;">🔍 Explore</h2>
             </div>
-            <div class="explore-grid" id="exploreGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:4px;">
-                <div style="aspect-ratio:1;background:var(--border);border-radius:8px;"></div>
-                <div style="aspect-ratio:1;background:var(--border);border-radius:8px;"></div>
-                <div style="aspect-ratio:1;background:var(--border);border-radius:8px;"></div>
-                <div style="aspect-ratio:1;background:var(--border);border-radius:8px;"></div>
-                <div style="aspect-ratio:1;background:var(--border);border-radius:8px;"></div>
-                <div style="aspect-ratio:1;background:var(--border);border-radius:8px;"></div>
+            <div class="explore-grid" id="exploreGrid">
+                <div class="explore-item"></div>
+                <div class="explore-item"></div>
+                <div class="explore-item"></div>
+                <div class="explore-item"></div>
+                <div class="explore-item"></div>
+                <div class="explore-item"></div>
             </div>
         </div>
 
@@ -1018,6 +1029,7 @@
             }
 
             function startSlideshow() {
+                if (slideInterval) clearInterval(slideInterval);
                 slideInterval = setInterval(nextSlide, 4000);
             }
 
@@ -1025,7 +1037,6 @@
                 clearInterval(slideInterval);
             }
 
-            // Click on dots
             dotButtons.forEach(dot => {
                 dot.addEventListener('click', function() {
                     stopSlideshow();
@@ -1034,17 +1045,15 @@
                 });
             });
 
-            // Start slideshow
-            startSlideshow();
-
-            // Pause on hover
             container.addEventListener('mouseenter', stopSlideshow);
             container.addEventListener('mouseleave', startSlideshow);
+
+            // Start
+            startSlideshow();
 
             return { goToSlide, nextSlide, startSlideshow, stopSlideshow };
         }
 
-        // Initialize both slideshows
         const mainSlideshow = initSlideshow('slideshowBg', 'slideDots');
         const signupSlideshow = initSlideshow('signupSlideshowBg', 'signupSlideDots');
 
@@ -1073,7 +1082,6 @@
             e.preventDefault();
             document.getElementById('authScreen').style.display = 'none';
             document.getElementById('signupCard').style.display = 'block';
-            // Restart signup slideshow
             if (signupSlideshow) {
                 signupSlideshow.stopSlideshow();
                 signupSlideshow.startSlideshow();
@@ -1084,7 +1092,6 @@
             e.preventDefault();
             document.getElementById('signupCard').style.display = 'none';
             document.getElementById('authScreen').style.display = 'block';
-            // Restart main slideshow
             if (mainSlideshow) {
                 mainSlideshow.stopSlideshow();
                 mainSlideshow.startSlideshow();
@@ -1128,9 +1135,19 @@
             if (user) {
                 document.getElementById('authScreen').style.display = 'none';
                 document.getElementById('signupCard').style.display = 'none';
+                document.getElementById('otpScreen').style.display = 'none';
                 document.getElementById('appContainer').style.display = 'flex';
-                console.log('User logged in:', user.email);
                 showToast('Welcome to ConnectHub!', 'success');
+                // Load user profile
+                db.collection('users').doc(user.uid).get().then(doc => {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        document.getElementById('profileName').textContent = data.name || 'User';
+                        document.getElementById('profileUsername').textContent = '@' + (data.username || 'username');
+                        document.getElementById('profileBio').textContent = data.bio || 'Welcome to my profile!';
+                        document.getElementById('profileAvatar').src = data.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(data.name || 'User')}&background=7C3AED&color=fff&size=128`;
+                    }
+                });
             } else {
                 const splash = document.getElementById('splashScreen');
                 if (splash.classList.contains('hidden')) {
@@ -1156,14 +1173,35 @@
         });
 
         // ============================================
-        // GOOGLE LOGIN
+        // GOOGLE LOGIN (FIXED)
         // ============================================
         document.getElementById('googleAuthBtn').addEventListener('click', async () => {
             const provider = new firebase.auth.GoogleAuthProvider();
             try {
-                showToast('Signing in with Google...', 'info');
-                await auth.signInWithPopup(provider);
+                showToast('Connecting to Google...', 'info');
+                // Use signInWithRedirect for mobile, but fallback to popup
+                if (window.innerWidth < 768) {
+                    await auth.signInWithRedirect(provider);
+                } else {
+                    await auth.signInWithPopup(provider);
+                }
             } catch (error) {
+                // If redirect fails, try popup
+                if (error.code === 'auth/operation-not-supported-in-this-environment') {
+                    try {
+                        await auth.signInWithPopup(provider);
+                    } catch (popupError) {
+                        showToast(popupError.message, 'error');
+                    }
+                } else {
+                    showToast(error.message, 'error');
+                }
+            }
+        });
+
+        // Handle redirect result (for mobile)
+        auth.getRedirectResult().catch((error) => {
+            if (error) {
                 showToast(error.message, 'error');
             }
         });
@@ -1204,8 +1242,92 @@
                 document.getElementById('signupCard').style.display = 'none';
                 document.getElementById('otpScreen').style.display = 'flex';
                 document.getElementById('otpEmailDisplay').textContent = email;
+                // Start auto-check for verification
+                startEmailVerificationCheck(result.user);
             } catch (error) {
                 showToast(error.message, 'error');
+            }
+        });
+
+        // ============================================
+        // OTP VERIFICATION (Auto-check + Manual)
+        // ============================================
+        let verificationCheckInterval = null;
+        let pendingUserForVerification = null;
+
+        function startEmailVerificationCheck(user) {
+            pendingUserForVerification = user;
+            document.getElementById('otpError').style.display = 'none';
+            document.getElementById('otpSuccess').style.display = 'none';
+            document.querySelectorAll('.otp-input').forEach(inp => inp.value = '');
+            
+            // Auto-check every 3 seconds
+            if (verificationCheckInterval) clearInterval(verificationCheckInterval);
+            verificationCheckInterval = setInterval(async () => {
+                if (!pendingUserForVerification) return;
+                await pendingUserForVerification.reload();
+                if (pendingUserForVerification.emailVerified) {
+                    clearInterval(verificationCheckInterval);
+                    document.getElementById('otpSuccess').style.display = 'block';
+                    showToast('Email verified!', 'success');
+                    setTimeout(() => {
+                        document.getElementById('otpScreen').style.display = 'none';
+                        document.getElementById('appContainer').style.display = 'flex';
+                        pendingUserForVerification = null;
+                    }, 1500);
+                }
+            }, 3000);
+        }
+
+        // Manual verify button (check status)
+        document.getElementById('verifyOtpBtn').addEventListener('click', async function() {
+            if (!pendingUserForVerification) {
+                showToast('No verification in progress.', 'error');
+                return;
+            }
+            this.disabled = true;
+            document.getElementById('otpError').style.display = 'none';
+            try {
+                await pendingUserForVerification.reload();
+                if (pendingUserForVerification.emailVerified) {
+                    document.getElementById('otpSuccess').style.display = 'block';
+                    showToast('Email verified!', 'success');
+                    setTimeout(() => {
+                        document.getElementById('otpScreen').style.display = 'none';
+                        document.getElementById('appContainer').style.display = 'flex';
+                        pendingUserForVerification = null;
+                    }, 1500);
+                } else {
+                    document.getElementById('otpError').style.display = 'block';
+                    document.getElementById('otpError').textContent = 'Email not verified yet. Please check your inbox or spam folder.';
+                }
+            } catch (error) {
+                document.getElementById('otpError').style.display = 'block';
+                document.getElementById('otpError').textContent = error.message || 'Verification failed.';
+            }
+            this.disabled = false;
+        });
+
+        // Resend verification
+        document.getElementById('resendOtpBtn').addEventListener('click', function() {
+            if (pendingUserForVerification) {
+                pendingUserForVerification.sendEmailVerification()
+                    .then(() => {
+                        showToast('Verification email resent!', 'success');
+                        startCountdown();
+                    })
+                    .catch(err => showToast(err.message, 'error'));
+            }
+        });
+
+        // Back to login
+        document.getElementById('backToLogin').addEventListener('click', () => {
+            document.getElementById('otpScreen').style.display = 'none';
+            document.getElementById('authScreen').style.display = 'block';
+            if (verificationCheckInterval) clearInterval(verificationCheckInterval);
+            if (pendingUserForVerification) {
+                pendingUserForVerification.delete().catch(() => {});
+                pendingUserForVerification = null;
             }
         });
 
@@ -1224,81 +1346,7 @@
         });
 
         // ============================================
-        // OTP VERIFICATION
-        // ============================================
-        let pendingUserCredential = null;
-        let countdownTimer = 60;
-        let countdownInterval = null;
-
-        document.querySelectorAll('.otp-input').forEach((input, index, inputs) => {
-            input.addEventListener('input', function() {
-                if (this.value.length === 1 && index < inputs.length - 1) {
-                    inputs[index + 1].focus();
-                }
-                const allFilled = Array.from(inputs).every(inp => inp.value.length === 1);
-                if (allFilled) {
-                    document.getElementById('verifyOtpBtn').click();
-                }
-            });
-            input.addEventListener('keydown', function(e) {
-                if (e.key === 'Backspace' && this.value.length === 0 && index > 0) {
-                    inputs[index - 1].focus();
-                }
-                if (e.key === 'Enter') {
-                    document.getElementById('verifyOtpBtn').click();
-                }
-            });
-            input.addEventListener('input', function() {
-                this.value = this.value.replace(/[^0-9]/g, '');
-            });
-        });
-
-        document.getElementById('verifyOtpBtn').addEventListener('click', async function() {
-            const inputs = document.querySelectorAll('.otp-input');
-            const otp = Array.from(inputs).map(inp => inp.value).join('');
-            if (otp.length !== 6) {
-                document.getElementById('otpError').style.display = 'block';
-                document.getElementById('otpError').textContent = 'Please enter all 6 digits.';
-                return;
-            }
-            this.disabled = true;
-            document.getElementById('otpError').style.display = 'none';
-            
-            // Since we use email verification, we check if email is verified
-            try {
-                const user = auth.currentUser;
-                if (user) {
-                    await user.reload();
-                    if (user.emailVerified) {
-                        document.getElementById('otpSuccess').style.display = 'block';
-                        showToast('Email verified!', 'success');
-                        setTimeout(() => {
-                            document.getElementById('otpScreen').style.display = 'none';
-                            document.getElementById('appContainer').style.display = 'flex';
-                        }, 1500);
-                    } else {
-                        document.getElementById('otpError').style.display = 'block';
-                        document.getElementById('otpError').textContent = 'Email not verified yet. Please check your inbox.';
-                        this.disabled = false;
-                    }
-                }
-            } catch (error) {
-                document.getElementById('otpError').style.display = 'block';
-                document.getElementById('otpError').textContent = error.message || 'Verification failed.';
-                this.disabled = false;
-            }
-        });
-
-        document.getElementById('backToLogin').addEventListener('click', () => {
-            document.getElementById('otpScreen').style.display = 'none';
-            document.getElementById('authScreen').style.display = 'block';
-            if (auth.currentUser) {
-                auth.currentUser.delete().catch(() => {});
-            }
-        });
-
-        // ============================================
-        // CREATE POST (simple demo)
+        // CREATE POST
         // ============================================
         document.getElementById('createPostBtn').addEventListener('click', function() {
             const text = document.getElementById('postText').value.trim();
@@ -1311,7 +1359,7 @@
             document.querySelector('[data-screen="screenHome"]').click();
         });
 
-        console.log('🚀 ConnectHub loaded with slideshow!');
+        console.log('🚀 ConnectHub loaded with fixed Google sign-in and OTP!');
     </script>
 </body>
 </html>
