@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link rel="manifest" href="/manifest.json" />
     <meta name="theme-color" content="#7C3AED" />
-    <title>ConnectHub - Social Platform</title>
+    <title>ConnectHub</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     
     <style>
         /* ============================================
-           CSS (same as previous, but keep it clean)
+           CSS
            ============================================ */
         :root {
             --primary: #7C3AED;
@@ -55,7 +55,9 @@
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
 
-        /* SPLASH SCREEN */
+        /* ============================================
+           SPLASH SCREEN
+           ============================================ */
         #splashScreen {
             position: fixed;
             inset: 0;
@@ -118,105 +120,20 @@
             to { transform: rotate(360deg); }
         }
 
-        /* AUTH CONTAINER */
+        /* ============================================
+           AUTH SCREEN
+           ============================================ */
         .auth-container {
             display: none;
-            position: relative;
-            min-height: 100vh;
-            overflow: hidden;
-        }
-
-        /* SLIDESHOW */
-        .slideshow-bg {
-            position: absolute;
-            inset: 0;
-            z-index: 0;
-        }
-        .slideshow-bg .slide {
-            position: absolute;
-            inset: 0;
-            opacity: 0;
-            transition: opacity 1.2s ease-in-out;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-        .slideshow-bg .slide.active {
-            opacity: 1;
-        }
-        .slideshow-bg .slide-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.45);
-        }
-
-        .slideshow-text {
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 500px;
-            padding: 20px 28px;
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-radius: var(--radius);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
-            text-align: center;
-            color: white;
-            z-index: 2;
-        }
-        .slideshow-text h2 {
-            font-size: 24px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            margin-bottom: 6px;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-        .slideshow-text p {
-            font-size: 13px;
-            font-weight: 400;
-            opacity: 0.9;
-            line-height: 1.5;
-            text-shadow: 0 1px 4px rgba(0,0,0,0.15);
-        }
-
-        .slide-dots {
-            position: absolute;
-            bottom: 20px;
-            right: 30px;
-            display: flex;
-            gap: 8px;
-            z-index: 2;
-        }
-        .slide-dots .dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.4);
-            cursor: pointer;
-            transition: var(--transition);
-            border: none;
-            padding: 0;
-        }
-        .slide-dots .dot.active {
-            background: white;
-            transform: scale(1.2);
-        }
-        .slide-dots .dot:hover {
-            background: rgba(255,255,255,0.8);
-        }
-
-        .auth-overlay {
-            position: relative;
-            z-index: 1;
-            display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            background: linear-gradient(135deg, #EEF2FF 0%, #C7D2FE 100%);
             padding: 20px;
+        }
+
+        [data-theme="dark"] .auth-container {
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
         }
 
         .auth-card {
@@ -227,11 +144,6 @@
             max-width: 420px;
             width: 100%;
             animation: fadeUp 0.6s ease;
-            backdrop-filter: blur(4px);
-            background: rgba(255, 255, 255, 0.92);
-        }
-        [data-theme="dark"] .auth-card {
-            background: rgba(30, 41, 59, 0.92);
         }
 
         @keyframes fadeUp {
@@ -240,11 +152,12 @@
         }
 
         .auth-header { text-align: center; margin-bottom: 32px; }
+        
         .auth-logo {
-            width: 72px;
-            height: 72px;
+            width: 80px;
+            height: 80px;
             background: var(--primary-gradient);
-            border-radius: 20px;
+            border-radius: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -254,7 +167,7 @@
             transition: var(--transition);
         }
         .auth-logo:hover { transform: scale(1.05) rotate(-5deg); }
-        .auth-logo i { font-size: 32px; color: white; }
+        .auth-logo i { font-size: 36px; color: white; }
         .auth-logo .logo-dot {
             position: absolute;
             width: 12px;
@@ -265,6 +178,7 @@
             right: -4px;
             border: 3px solid var(--card);
         }
+
         .auth-card h1 {
             font-size: 28px;
             font-weight: 900;
@@ -317,6 +231,7 @@
             font-family: inherit;
         }
         .btn-full { width: 100%; }
+        
         .btn-primary {
             background: var(--primary-gradient);
             color: white;
@@ -326,12 +241,14 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
         }
+        
         .btn-google {
             background: var(--card);
             color: var(--text);
             border: 2px solid var(--border);
         }
         .btn-google:hover { border-color: var(--primary); }
+
         .btn-outline {
             background: transparent;
             color: var(--primary);
@@ -358,6 +275,7 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
+
         .auth-footer {
             text-align: center;
             margin-top: 20px;
@@ -372,7 +290,9 @@
         }
         .auth-footer a:hover { text-decoration: underline; }
 
-        /* OTP */
+        /* ============================================
+           OTP SCREEN
+           ============================================ */
         .otp-container {
             display: none;
             justify-content: center;
@@ -381,6 +301,7 @@
             background: linear-gradient(135deg, #EEF2FF 0%, #C7D2FE 100%);
             padding: 20px;
         }
+
         .otp-card {
             background: var(--card);
             border-radius: var(--radius);
@@ -390,9 +311,11 @@
             width: 100%;
             text-align: center;
         }
+
         .otp-card .icon { font-size: 64px; color: var(--primary); margin-bottom: 16px; }
         .otp-card h2 { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
         .otp-card p { color: var(--text-light); margin-bottom: 24px; }
+
         .otp-input-group {
             display: flex;
             gap: 12px;
@@ -416,22 +339,30 @@
             border-color: var(--primary);
             box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.1);
         }
+
         .otp-card .resend-timer {
             color: var(--text-light);
             font-size: 14px;
             margin-top: 16px;
         }
         .otp-card .resend-timer span { color: var(--primary); font-weight: 600; cursor: pointer; }
+
         .error-message { color: #EF4444; font-size: 13px; margin-top: 8px; display: none; }
         .success-message { color: #10B981; font-size: 13px; margin-top: 8px; display: none; }
 
-        /* APP */
+        /* ============================================
+           MAIN APP
+           ============================================ */
         .app-container {
             display: none;
             height: 100vh;
             flex-direction: column;
             background: var(--bg);
         }
+
+        /* ============================================
+           BOTTOM NAV
+           ============================================ */
         .bottom-nav {
             display: flex;
             justify-content: space-around;
@@ -444,6 +375,7 @@
             bottom: 0;
             z-index: 100;
         }
+
         .nav-item {
             display: flex;
             flex-direction: column;
@@ -480,6 +412,9 @@
             justify-content: center;
         }
 
+        /* ============================================
+           SCREENS
+           ============================================ */
         .screen {
             display: none;
             flex: 1;
@@ -489,6 +424,9 @@
         }
         .screen.active { display: block; }
 
+        /* ============================================
+           HOME - STORIES BAR
+           ============================================ */
         .stories-bar {
             display: flex;
             gap: 12px;
@@ -504,10 +442,12 @@
             gap: 4px;
             cursor: pointer;
             flex-shrink: 0;
+            transition: var(--transition);
         }
+        .story-item:hover { transform: scale(1.05); }
         .story-item .ring {
-            width: 64px;
-            height: 64px;
+            width: 68px;
+            height: 68px;
             border-radius: 50%;
             padding: 3px;
             background: var(--primary-gradient);
@@ -520,33 +460,39 @@
             border: 2px solid var(--card);
         }
         .story-item .add-story {
-            width: 64px;
-            height: 64px;
+            width: 68px;
+            height: 68px;
             border-radius: 50%;
             border: 2px dashed var(--border);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 28px;
             color: var(--primary);
             background: var(--bg);
         }
         .story-item span {
             font-size: 11px;
             color: var(--text-light);
-            max-width: 64px;
+            max-width: 68px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
 
+        /* ============================================
+           POSTS
+           ============================================ */
         .post-card {
             background: var(--card);
             border-radius: var(--radius);
             margin: 12px 16px;
             box-shadow: var(--shadow);
             overflow: hidden;
+            transition: var(--transition);
         }
+        .post-card:hover { box-shadow: var(--shadow-lg); }
+
         .post-header {
             display: flex;
             align-items: center;
@@ -558,22 +504,311 @@
             height: 40px;
             border-radius: 50%;
             object-fit: cover;
+            cursor: pointer;
         }
-        .post-header .post-user { flex: 1; }
-        .post-header .post-user .name { font-weight: 600; font-size: 14px; }
-        .post-header .post-user .time { font-size: 12px; color: var(--text-light); }
-        .post-text { padding: 12px 16px; font-size: 14px; line-height: 1.6; }
+        .post-header .post-user {
+            flex: 1;
+        }
+        .post-header .post-user .name {
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .post-header .post-user .name:hover { color: var(--primary); }
+        .post-header .post-user .time {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+        .post-header .more-btn {
+            color: var(--text-light);
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+        .post-header .more-btn:hover { background: var(--bg); }
 
+        .post-text {
+            padding: 12px 16px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 12px;
+            padding: 8px 16px 12px;
+            border-top: 1px solid var(--border);
+        }
+        .post-actions button {
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 20px;
+            color: var(--text-light);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: inherit;
+            padding: 4px 8px;
+            border-radius: 8px;
+        }
+        .post-actions button:hover { background: var(--bg); color: var(--primary); }
+        .post-actions button.liked { color: #EF4444; }
+        .post-actions button .count { font-size: 13px; font-weight: 500; }
+
+        .post-comments {
+            padding: 8px 16px 12px;
+            border-top: 1px solid var(--border);
+        }
+        .post-comments .comment-input {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .post-comments .comment-input input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 13px;
+            background: var(--bg);
+            color: var(--text);
+        }
+        .post-comments .comment-input input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        .post-comments .comment-input button {
+            padding: 8px 16px;
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        .post-comments .comment-input button:hover { transform: scale(1.05); }
+
+        .comment-item {
+            display: flex;
+            gap: 10px;
+            padding: 6px 0;
+            animation: slideIn 0.3s ease;
+        }
+        .comment-item img {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .comment-item .content .name {
+            font-weight: 600;
+            font-size: 12px;
+            color: var(--text);
+        }
+        .comment-item .content .text {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ============================================
+           EXPLORE
+           ============================================ */
         .explore-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 4px;
             padding: 4px;
         }
-        .explore-grid .explore-item {
+        .explore-grid img {
+            width: 100%;
             aspect-ratio: 1;
-            background: var(--border);
-            border-radius: 8px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .explore-grid img:hover { opacity: 0.8; }
+
+        /* ============================================
+           CREATE
+           ============================================ */
+        .create-container {
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .create-container h2 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+        .create-container textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 16px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-family: inherit;
+            background: var(--card);
+            color: var(--text);
+            resize: vertical;
+            transition: var(--transition);
+        }
+        .create-container textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.1);
+        }
+        .create-container .btn-primary {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            margin-top: 16px;
+        }
+
+        /* ============================================
+           MESSAGES / CHAT
+           ============================================ */
+        .chat-list { padding: 12px 16px; }
+        .chat-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: var(--radius);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        .chat-item:hover { background: var(--bg); }
+        .chat-item img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .chat-item .info { flex: 1; }
+        .chat-item .info .name { font-weight: 600; font-size: 15px; }
+        .chat-item .info .last-msg {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+        .chat-item .time {
+            font-size: 11px;
+            color: var(--text-light);
+        }
+
+        /* ============================================
+           PROFILE
+           ============================================ */
+        .profile-header {
+            background: var(--card);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+        }
+        .profile-header .cover {
+            width: 100%;
+            height: 140px;
+            background: var(--primary-gradient);
+            border-radius: var(--radius);
+            margin-bottom: -50px;
+            position: relative;
+            overflow: hidden;
+        }
+        .profile-header .cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .profile-header .avatar-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+        .profile-header .avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 4px solid var(--card);
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        .profile-header .avatar:hover { transform: scale(1.02); }
+        .profile-header .avatar-edit {
+            position: absolute;
+            bottom: 4px;
+            right: 4px;
+            background: var(--primary);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 2px solid var(--card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .profile-header .avatar-edit:hover { transform: scale(1.1); }
+
+        .profile-header .name {
+            font-size: 22px;
+            font-weight: 800;
+            margin-top: 8px;
+        }
+        .profile-header .username {
+            color: var(--text-light);
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .profile-header .bio {
+            color: var(--text-light);
+            font-size: 14px;
+            margin-top: 4px;
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .profile-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            padding: 16px 0;
+        }
+        .profile-stats .stat { text-align: center; cursor: pointer; }
+        .profile-stats .stat .number {
+            font-weight: 800;
+            font-size: 20px;
+            color: var(--text);
+        }
+        .profile-stats .stat .label {
+            font-size: 12px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .profile-stats .stat:hover .number { color: var(--primary); }
+
+        .profile-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 12px 0;
+        }
+        .profile-actions .btn {
+            padding: 8px 24px;
+            font-size: 13px;
         }
 
         .profile-posts {
@@ -583,18 +818,165 @@
             padding: 4px;
         }
         .profile-posts .post-item {
+            position: relative;
             aspect-ratio: 1;
             overflow: hidden;
             cursor: pointer;
-            background: var(--border);
         }
         .profile-posts .post-item img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: var(--transition);
+        }
+        .profile-posts .post-item:hover img { transform: scale(1.05); }
+        .profile-posts .post-item .overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: var(--transition);
+            gap: 16px;
+        }
+        .profile-posts .post-item:hover .overlay { opacity: 1; }
+        .profile-posts .post-item .overlay span {
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
-        /* TOAST */
+        /* ============================================
+           SETTINGS
+           ============================================ */
+        .settings-container {
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .settings-container h2 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+        .settings-group {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+        }
+        .settings-group h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+        .settings-group .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .settings-group .setting-item:last-child { border-bottom: none; }
+        .settings-group .setting-item:hover { padding-left: 8px; }
+        .settings-group .setting-item .left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .settings-group .setting-item .left i {
+            width: 24px;
+            color: var(--primary);
+            font-size: 16px;
+        }
+        .settings-group .setting-item .left .title {
+            font-weight: 500;
+            font-size: 14px;
+        }
+        .settings-group .setting-item .left .desc {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+        .settings-group .setting-item .right {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+        .settings-group .setting-item .toggle {
+            width: 48px;
+            height: 28px;
+            background: var(--border);
+            border-radius: var(--radius-full);
+            position: relative;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .settings-group .setting-item .toggle.active {
+            background: var(--primary);
+        }
+        .settings-group .setting-item .toggle .dot {
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            transition: var(--transition);
+        }
+        .settings-group .setting-item .toggle.active .dot {
+            left: 23px;
+        }
+
+        /* ============================================
+           NOTIFICATIONS
+           ============================================ */
+        .notif-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: var(--card);
+            border-radius: var(--radius);
+            margin-bottom: 8px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        .notif-item:hover { box-shadow: var(--shadow-lg); }
+        .notif-item img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .notif-item .content { flex: 1; }
+        .notif-item .content .text {
+            font-size: 14px;
+        }
+        .notif-item .content .text strong { color: var(--primary); }
+        .notif-item .content .time {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+        .notif-item .unread {
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+
+        /* ============================================
+           TOAST
+           ============================================ */
         #toastContainer {
             position: fixed;
             bottom: 80px;
@@ -625,23 +1007,47 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
         @media (max-width: 768px) {
             .auth-card { padding: 32px 24px; margin: 16px; }
             .otp-card { padding: 32px 24px; margin: 16px; }
+            .post-card { margin: 8px 8px; }
+            .stories-bar { padding: 12px; gap: 8px; }
+            .story-item .ring { width: 56px; height: 56px; }
+            .story-item .add-story { width: 56px; height: 56px; font-size: 22px; }
             .nav-item { padding: 4px 10px; font-size: 8px; }
             .nav-item i { font-size: 18px; }
             #toastContainer { right: 10px; left: 10px; bottom: 80px; }
-            .slideshow-text h2 { font-size: 20px; }
-            .slideshow-text p { font-size: 12px; }
-            .slideshow-text { padding: 16px 20px; bottom: 30px; }
+            .otp-input-group input { width: 40px; height: 48px; font-size: 20px; }
+            .profile-stats { gap: 20px; }
+            .settings-container { padding: 12px; }
         }
+
         @media (max-width: 480px) {
             .auth-card { padding: 24px 16px; }
             .otp-card { padding: 24px 16px; }
-            .slideshow-text h2 { font-size: 18px; }
-            .slideshow-text p { font-size: 12px; }
+            .profile-stats { gap: 12px; }
+            .profile-stats .stat .number { font-size: 16px; }
+            .post-actions { flex-wrap: wrap; }
+            .otp-input-group input { width: 36px; height: 44px; font-size: 18px; }
         }
+
         .hidden { display: none !important; }
+
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            gap: 8px;
+            color: var(--text-light);
+        }
+        .loading-spinner i {
+            font-size: 24px;
+            color: var(--primary);
+        }
     </style>
 </head>
 <body>
@@ -662,147 +1068,77 @@
     <!-- AUTH SCREEN (Login)                          -->
     <!-- ============================================ -->
     <div id="authScreen" class="auth-container">
-
-        <!-- Slideshow Background -->
-        <div class="slideshow-bg" id="slideshowBg">
-            <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1200&h=800&fit=crop');">
-                <div class="slide-overlay"></div>
-            </div>
-            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1200&h=800&fit=crop');">
-                <div class="slide-overlay"></div>
-            </div>
-            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1529156069898-4993e3bae3b1?w=1200&h=800&fit=crop');">
-                <div class="slide-overlay"></div>
-            </div>
-            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1200&h=800&fit=crop');">
-                <div class="slide-overlay"></div>
-            </div>
-            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=1200&h=800&fit=crop');">
-                <div class="slide-overlay"></div>
-            </div>
-
-            <div class="slideshow-text">
-                <h2>✨ Welcome to the Circle</h2>
-                <p>Join a vibrant community of friends, share your moments, and create lasting memories.</p>
-            </div>
-
-            <div class="slide-dots" id="slideDots">
-                <button class="dot active" data-index="0"></button>
-                <button class="dot" data-index="1"></button>
-                <button class="dot" data-index="2"></button>
-                <button class="dot" data-index="3"></button>
-                <button class="dot" data-index="4"></button>
-            </div>
-        </div>
-
-        <div class="auth-overlay">
-            <div class="auth-card">
-                <div class="auth-header">
-                    <div class="auth-logo">
-                        <i class="fas fa-connectdevelop"></i>
-                        <div class="logo-dot"></div>
-                    </div>
-                    <h1>Connect<span>Hub</span></h1>
-                    <p class="auth-subtitle">Connect, share, and discover</p>
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-logo">
+                    <i class="fas fa-connectdevelop"></i>
+                    <div class="logo-dot"></div>
                 </div>
+                <h1>Connect<span>Hub</span></h1>
+                <p class="auth-subtitle">Connect, share, and discover</p>
+            </div>
 
-                <form id="loginForm" class="auth-form">
-                    <div class="form-group">
-                        <label for="loginEmail"><i class="fas fa-envelope"></i> Email</label>
-                        <input type="email" id="loginEmail" placeholder="you@example.com" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="loginPassword"><i class="fas fa-lock"></i> Password</label>
-                        <input type="password" id="loginPassword" placeholder="••••••••" required />
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-full">
-                        <i class="fas fa-sign-in-alt"></i> Sign In
-                    </button>
-                </form>
-
-                <div class="auth-divider"><span>or</span></div>
-
-                <button id="googleAuthBtn" class="btn btn-google btn-full">
-                    <i class="fab fa-google"></i> Continue with Google
+            <form id="loginForm" class="auth-form">
+                <div class="form-group">
+                    <label for="loginEmail"><i class="fas fa-envelope"></i> Email</label>
+                    <input type="email" id="loginEmail" placeholder="you@example.com" required />
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword"><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" id="loginPassword" placeholder="••••••••" required />
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">
+                    <i class="fas fa-sign-in-alt"></i> Sign In
                 </button>
+            </form>
 
-                <div class="auth-footer">
-                    Don't have an account? <a id="showSignup">Sign Up</a>
-                </div>
-            </div>
-        </div>
-    </div>
+            <div class="auth-divider"><span>or</span></div>
 
-    <!-- ============================================ -->
-    <!-- SIGNUP SCREEN                                -->
-    <!-- ============================================ -->
-    <div id="signupCard" class="auth-container" style="display:none;">
-        <div class="slideshow-bg" id="signupSlideshowBg">
-            <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1200&h=800&fit=crop');">
-                <div class="slide-overlay"></div>
-            </div>
-            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1200&h=800&fit=crop');">
-                <div class="slide-overlay"></div>
-            </div>
-            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1529156069898-4993e3bae3b1?w=1200&h=800&fit=crop');">
-                <div class="slide-overlay"></div>
-            </div>
-            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1200&h=800&fit=crop');">
-                <div class="slide-overlay"></div>
-            </div>
-            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=1200&h=800&fit=crop');">
-                <div class="slide-overlay"></div>
-            </div>
-            <div class="slideshow-text">
-                <h2>✨ Join the Circle</h2>
-                <p>Create your account and start connecting with amazing people.</p>
-            </div>
-            <div class="slide-dots" id="signupSlideDots">
-                <button class="dot active" data-index="0"></button>
-                <button class="dot" data-index="1"></button>
-                <button class="dot" data-index="2"></button>
-                <button class="dot" data-index="3"></button>
-                <button class="dot" data-index="4"></button>
+            <button id="googleAuthBtn" class="btn btn-google btn-full">
+                <i class="fab fa-google"></i> Continue with Google
+            </button>
+
+            <div class="auth-footer">
+                Don't have an account? <a id="showSignup">Sign Up</a>
             </div>
         </div>
 
-        <div class="auth-overlay">
-            <div class="auth-card">
-                <div class="auth-header">
-                    <div class="auth-logo">
-                        <i class="fas fa-user-plus"></i>
-                        <div class="logo-dot"></div>
-                    </div>
-                    <h1>Join Connect<span>Hub</span></h1>
-                    <p class="auth-subtitle">Create your account</p>
+        <!-- Signup Card -->
+        <div class="auth-card" id="signupCard" style="display: none;">
+            <div class="auth-header">
+                <div class="auth-logo">
+                    <i class="fas fa-user-plus"></i>
+                    <div class="logo-dot"></div>
                 </div>
+                <h1>Join Connect<span>Hub</span></h1>
+                <p class="auth-subtitle">Create your account</p>
+            </div>
 
-                <form id="signupForm" class="auth-form">
-                    <div class="form-group">
-                        <label for="signupName"><i class="fas fa-user"></i> Full Name</label>
-                        <input type="text" id="signupName" placeholder="John Doe" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="signupUsername"><i class="fas fa-at"></i> Username</label>
-                        <input type="text" id="signupUsername" placeholder="johndoe" required />
-                        <small style="color:var(--text-light);font-size:11px;">Unique username (letters, numbers, underscore)</small>
-                    </div>
-                    <div class="form-group">
-                        <label for="signupEmail"><i class="fas fa-envelope"></i> Email</label>
-                        <input type="email" id="signupEmail" placeholder="you@example.com" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="signupPassword"><i class="fas fa-lock"></i> Password</label>
-                        <input type="password" id="signupPassword" placeholder="Min 6 characters" required minlength="6" />
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-full">
-                        <i class="fas fa-user-plus"></i> Create Account
-                    </button>
-                </form>
-
-                <div class="auth-footer">
-                    Already have an account? <a id="showLogin">Sign In</a>
+            <form id="signupForm" class="auth-form">
+                <div class="form-group">
+                    <label for="signupName"><i class="fas fa-user"></i> Full Name</label>
+                    <input type="text" id="signupName" placeholder="John Doe" required />
                 </div>
+                <div class="form-group">
+                    <label for="signupUsername"><i class="fas fa-at"></i> Username</label>
+                    <input type="text" id="signupUsername" placeholder="johndoe" required />
+                    <small style="color:var(--text-light);font-size:11px;">Unique username (letters, numbers, underscore)</small>
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail"><i class="fas fa-envelope"></i> Email</label>
+                    <input type="email" id="signupEmail" placeholder="you@example.com" required />
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword"><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" id="signupPassword" placeholder="Min 6 characters" required minlength="6" />
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">
+                    <i class="fas fa-user-plus"></i> Create Account
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                Already have an account? <a id="showLogin">Sign In</a>
             </div>
         </div>
     </div>
@@ -841,6 +1177,7 @@
     <!-- MAIN APP                                     -->
     <!-- ============================================ -->
     <div id="appContainer" class="app-container">
+        <!-- HOME -->
         <div id="screenHome" class="screen active">
             <div class="stories-bar" id="storiesBar">
                 <div class="story-item" onclick="showToast('Add a story', 'info')">
@@ -869,9 +1206,13 @@
             </div>
         </div>
 
+        <!-- EXPLORE -->
         <div id="screenExplore" class="screen">
             <div style="padding:16px;">
-                <h2 style="font-size:20px;font-weight:700;">🔍 Explore</h2>
+                <div class="search-wrapper" style="display:flex;align-items:center;background:var(--card);border-radius:12px;padding:0 16px;box-shadow:var(--shadow);">
+                    <i class="fas fa-search" style="color:var(--text-light);"></i>
+                    <input type="text" id="exploreSearch" placeholder="Search users..." style="border:none;background:transparent;padding:12px;font-size:14px;width:100%;outline:none;color:var(--text);" />
+                </div>
             </div>
             <div class="explore-grid" id="exploreGrid">
                 <div class="explore-item"></div>
@@ -883,42 +1224,115 @@
             </div>
         </div>
 
+        <!-- CREATE -->
         <div id="screenCreate" class="screen">
-            <div style="padding:20px;max-width:600px;margin:0 auto;">
-                <h2 style="margin-bottom:16px;">✨ Create Post</h2>
-                <textarea id="postText" placeholder="What's on your mind?" style="width:100%;min-height:150px;padding:16px;border:2px solid var(--border);border-radius:16px;font-family:inherit;font-size:14px;background:var(--card);color:var(--text);resize:vertical;"></textarea>
-                <button id="createPostBtn" class="btn btn-primary" style="width:100%;margin-top:16px;padding:14px;">
+            <div class="create-container">
+                <h2>✨ Create Post</h2>
+                <textarea id="postText" placeholder="What's on your mind? Share with the world..."></textarea>
+                <button id="createPostBtn" class="btn btn-primary">
                     <i class="fas fa-paper-plane"></i> Post
                 </button>
             </div>
         </div>
 
+        <!-- MESSAGES -->
         <div id="screenMessages" class="screen">
             <div style="padding:16px;">
-                <h2 style="margin-bottom:16px;">💬 Messages</h2>
-                <div id="chatList">
-                    <div style="text-align:center;padding:40px;color:var(--text-light);">
-                        <i class="fas fa-comments" style="font-size:48px;display:block;margin-bottom:12px;color:var(--border);"></i>
-                        <h3>No messages yet</h3>
-                        <p>Start a conversation!</p>
-                    </div>
+                <h2 style="font-size:24px;font-weight:800;margin-bottom:16px;">💬 Messages</h2>
+                <div id="chatList" class="chat-list">
+                    <div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading chats...</div>
                 </div>
             </div>
         </div>
 
+        <!-- PROFILE -->
         <div id="screenProfile" class="screen">
-            <div style="text-align:center;padding:20px;background:var(--card);border-bottom:1px solid var(--border);">
-                <img id="profileAvatar" src="https://ui-avatars.com/api/?name=User&background=7C3AED&color=fff&size=128" style="width:80px;height:80px;border-radius:50%;border:4px solid var(--card);margin-top:-40px;" />
-                <div style="font-size:20px;font-weight:700;margin-top:8px;" id="profileName">User</div>
-                <div style="color:var(--text-light);" id="profileUsername">@username</div>
-                <div style="color:var(--text-light);margin-top:4px;" id="profileBio">Welcome to my profile!</div>
-                <button id="logoutBtn" style="margin-top:12px;padding:8px 24px;background:var(--bg);border:1px solid var(--border);border-radius:8px;cursor:pointer;font-family:inherit;font-weight:600;">
-                    <i class="fas fa-sign-out-alt"></i> Logout
+            <div class="profile-header" id="profileHeader">
+                <div class="cover" id="coverContainer"></div>
+                <div class="avatar-wrapper">
+                    <img id="profileAvatar" class="avatar" src="https://ui-avatars.com/api/?name=User&background=7C3AED&color=fff&size=128" />
+                    <div class="avatar-edit" id="avatarEditBtn"><i class="fas fa-camera"></i></div>
+                </div>
+                <div class="name" id="profileName">User</div>
+                <div class="username" id="profileUsername">@username</div>
+                <div class="bio" id="profileBio">Welcome to my profile!</div>
+                <div class="profile-stats">
+                    <div class="stat"><div class="number" id="postCount">0</div><div class="label">Posts</div></div>
+                    <div class="stat"><div class="number" id="followerCount">0</div><div class="label">Followers</div></div>
+                    <div class="stat"><div class="number" id="followingCount">0</div><div class="label">Following</div></div>
+                </div>
+                <div class="profile-actions">
+                    <button id="editProfileBtn" class="btn btn-primary" style="padding:8px 20px;font-size:13px;">
+                        <i class="fas fa-edit"></i> Edit Profile
+                    </button>
+                    <button id="settingsBtn" class="btn btn-outline" style="padding:8px 20px;font-size:13px;">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+                <button id="logoutBtn" style="position:absolute;top:16px;right:16px;background:var(--bg);border:none;padding:10px 14px;border-radius:10px;cursor:pointer;color:var(--text-light);font-size:16px;transition:var(--transition);">
+                    <i class="fas fa-sign-out-alt"></i>
                 </button>
             </div>
             <div class="profile-posts" id="profilePosts"></div>
         </div>
 
+        <!-- SETTINGS -->
+        <div id="screenSettings" class="screen">
+            <div class="settings-container">
+                <h2>⚙️ Settings</h2>
+                <div class="settings-group">
+                    <h3>Account</h3>
+                    <div class="setting-item" onclick="showToast('Edit profile', 'info')">
+                        <div class="left"><i class="fas fa-user-edit"></i><div><div class="title">Edit Profile</div><div class="desc">Change your name, bio, and photo</div></div></div>
+                        <div class="right"><i class="fas fa-chevron-right"></i></div>
+                    </div>
+                    <div class="setting-item" onclick="showToast('Change password', 'info')">
+                        <div class="left"><i class="fas fa-key"></i><div><div class="title">Change Password</div><div class="desc">Update your password</div></div></div>
+                        <div class="right"><i class="fas fa-chevron-right"></i></div>
+                    </div>
+                </div>
+                <div class="settings-group">
+                    <h3>Preferences</h3>
+                    <div class="setting-item" onclick="toggleDarkMode()">
+                        <div class="left"><i class="fas fa-moon"></i><div><div class="title">Dark Mode</div><div class="desc">Toggle dark/light theme</div></div></div>
+                        <div class="right"><div class="toggle" id="darkModeToggle"><div class="dot"></div></div></div>
+                    </div>
+                </div>
+                <div class="settings-group">
+                    <h3>Privacy & Security</h3>
+                    <div class="setting-item" onclick="showToast('Privacy settings', 'info')">
+                        <div class="left"><i class="fas fa-lock"></i><div><div class="title">Privacy Settings</div><div class="desc">Manage who can see your content</div></div></div>
+                        <div class="right"><i class="fas fa-chevron-right"></i></div>
+                    </div>
+                    <div class="setting-item" onclick="showToast('Blocked users', 'info')">
+                        <div class="left"><i class="fas fa-ban"></i><div><div class="title">Blocked Users</div><div class="desc">Manage blocked accounts</div></div></div>
+                        <div class="right"><i class="fas fa-chevron-right"></i></div>
+                    </div>
+                </div>
+                <div class="settings-group">
+                    <h3>About</h3>
+                    <div class="setting-item" onclick="showToast('ConnectHub v1.0.0', 'info')">
+                        <div class="left"><i class="fas fa-info-circle"></i><div><div class="title">Version</div><div class="desc">ConnectHub v1.0.0</div></div></div>
+                        <div class="right"><i class="fas fa-chevron-right"></i></div>
+                    </div>
+                </div>
+                <button id="settingsBackBtn" class="btn btn-outline btn-full" style="margin-top:16px;">
+                    <i class="fas fa-arrow-left"></i> Back to Profile
+                </button>
+            </div>
+        </div>
+
+        <!-- NOTIFICATIONS -->
+        <div id="screenNotifications" class="screen">
+            <div style="padding:16px;">
+                <h2 style="font-size:24px;font-weight:800;margin-bottom:16px;">🔔 Notifications</h2>
+                <div id="notifContainer">
+                    <div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading notifications...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTTOM NAV -->
         <nav class="bottom-nav">
             <button class="nav-item active" data-screen="screenHome"><i class="fas fa-home"></i> Home</button>
             <button class="nav-item" data-screen="screenExplore"><i class="fas fa-compass"></i> Explore</button>
@@ -928,9 +1342,6 @@
         </nav>
     </div>
 
-    <!-- ============================================ -->
-    <!-- TOAST CONTAINER                              -->
-    <!-- ============================================ -->
     <div id="toastContainer"></div>
 
     <!-- ============================================ -->
@@ -942,7 +1353,7 @@
 
     <script>
         // ============================================
-        // FIREBASE CONFIG
+        // 🔥 YOUR FIREBASE CONFIG
         // ============================================
         const firebaseConfig = {
             apiKey: "AIzaSyCl0CpUJcMMll8klL0ldN22KwbUlCgaw2Q",
@@ -959,66 +1370,15 @@
         db.enablePersistence().catch(() => {});
 
         // ============================================
-        // DOM REFERENCES
+        // SPLASH SCREEN
         // ============================================
-        const splash = document.getElementById('splashScreen');
-        const authScreen = document.getElementById('authScreen');
-        const signupCard = document.getElementById('signupCard');
-        const otpScreen = document.getElementById('otpScreen');
-        const appContainer = document.getElementById('appContainer');
-
-        // ============================================
-        // SLIDESHOW
-        // ============================================
-        function initSlideshow(containerId, dotsId) {
-            const container = document.getElementById(containerId);
-            if (!container) return;
-            const slides = container.querySelectorAll('.slide');
-            const dots = document.getElementById(dotsId);
-            if (!dots) return;
-            const dotButtons = dots.querySelectorAll('.dot');
-            let currentIndex = 0;
-            let slideInterval;
-
-            function goToSlide(index) {
-                slides.forEach(s => s.classList.remove('active'));
-                dotButtons.forEach(d => d.classList.remove('active'));
-                slides[index].classList.add('active');
-                dotButtons[index].classList.add('active');
-                currentIndex = index;
-            }
-
-            function nextSlide() {
-                const next = (currentIndex + 1) % slides.length;
-                goToSlide(next);
-            }
-
-            function startSlideshow() {
-                if (slideInterval) clearInterval(slideInterval);
-                slideInterval = setInterval(nextSlide, 4000);
-            }
-
-            function stopSlideshow() {
-                clearInterval(slideInterval);
-            }
-
-            dotButtons.forEach(dot => {
-                dot.addEventListener('click', function() {
-                    stopSlideshow();
-                    goToSlide(parseInt(this.dataset.index));
-                    startSlideshow();
-                });
-            });
-
-            container.addEventListener('mouseenter', stopSlideshow);
-            container.addEventListener('mouseleave', startSlideshow);
-
-            startSlideshow();
-            return { goToSlide, nextSlide, startSlideshow, stopSlideshow };
-        }
-
-        const mainSlideshow = initSlideshow('slideshowBg', 'slideDots');
-        const signupSlideshow = initSlideshow('signupSlideshowBg', 'signupSlideDots');
+        setTimeout(() => {
+            const splash = document.getElementById('splashScreen');
+            splash.classList.add('hidden');
+            setTimeout(() => {
+                document.getElementById('authScreen').style.display = 'flex';
+            }, 300);
+        }, 5000);
 
         // ============================================
         // TOAST
@@ -1043,22 +1403,14 @@
         // ============================================
         document.getElementById('showSignup').addEventListener('click', function(e) {
             e.preventDefault();
-            authScreen.style.display = 'none';
-            signupCard.style.display = 'block';
-            if (signupSlideshow) {
-                signupSlideshow.stopSlideshow();
-                signupSlideshow.startSlideshow();
-            }
+            document.querySelector('.auth-card:first-child').style.display = 'none';
+            document.getElementById('signupCard').style.display = 'block';
         });
 
         document.getElementById('showLogin').addEventListener('click', function(e) {
             e.preventDefault();
-            signupCard.style.display = 'none';
-            authScreen.style.display = 'block';
-            if (mainSlideshow) {
-                mainSlideshow.stopSlideshow();
-                mainSlideshow.startSlideshow();
-            }
+            document.querySelector('.auth-card:first-child').style.display = 'block';
+            document.getElementById('signupCard').style.display = 'none';
         });
 
         // ============================================
@@ -1071,60 +1423,41 @@
                 document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
                 const target = document.getElementById(this.dataset.screen);
                 if (target) target.classList.add('active');
+                if (this.dataset.screen === 'screenMessages') loadChats();
+                if (this.dataset.screen === 'screenProfile') loadProfile();
             });
         });
 
         // ============================================
-        // LOAD USER PROFILE
+        // SETTINGS NAVIGATION
         // ============================================
-        function loadUserProfile(user) {
-            db.collection('users').doc(user.uid).get().then(doc => {
-                if (doc.exists) {
-                    const data = doc.data();
-                    document.getElementById('profileName').textContent = data.name || 'User';
-                    document.getElementById('profileUsername').textContent = '@' + (data.username || 'username');
-                    document.getElementById('profileBio').textContent = data.bio || 'Welcome to my profile!';
-                    document.getElementById('profileAvatar').src = data.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(data.name || 'User')}&background=7C3AED&color=fff&size=128`;
-                }
-            }).catch(err => console.warn('Profile load error:', err));
+        document.getElementById('settingsBtn').addEventListener('click', () => {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('screenSettings').classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        });
+
+        document.getElementById('settingsBackBtn').addEventListener('click', () => {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('screenProfile').classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.querySelector('[data-screen="screenProfile"]').classList.add('active');
+        });
+
+        // ============================================
+        // DARK MODE
+        // ============================================
+        function toggleDarkMode() {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            const toggle = document.getElementById('darkModeToggle');
+            toggle.classList.toggle('active');
         }
 
-        // ============================================
-        // AUTH STATE LISTENER (Master Control)
-        // ============================================
-        auth.onAuthStateChanged((user) => {
-            // Always hide splash immediately when auth resolves
-            splash.classList.add('hidden');
-
-            if (user) {
-                // Logged in: show app
-                authScreen.style.display = 'none';
-                signupCard.style.display = 'none';
-                otpScreen.style.display = 'none';
-                appContainer.style.display = 'flex';
-                loadUserProfile(user);
-                showToast('Welcome to ConnectHub!', 'success');
-                console.log('✅ User logged in:', user.email);
-            } else {
-                // Logged out: show auth (if splash is hidden)
-                authScreen.style.display = 'block';
-                appContainer.style.display = 'none';
-                console.log('🔓 User logged out');
-            }
-        });
+        document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
 
         // ============================================
-        // HANDLE AUTH REDIRECT RESULT (for Google)
-        // ============================================
-        auth.getRedirectResult().catch((error) => {
-            if (error) {
-                console.error('Redirect error:', error);
-                showToast(error.message, 'error');
-            }
-        });
-
-        // ============================================
-        // LOGIN
+        // AUTH
         // ============================================
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -1133,40 +1466,29 @@
             try {
                 showToast('Signing in...', 'info');
                 await auth.signInWithEmailAndPassword(email, password);
-                // Auth listener will handle app display
+                document.getElementById('authScreen').style.display = 'none';
+                document.getElementById('appContainer').style.display = 'flex';
+                loadProfile();
+                showToast('Welcome back!', 'success');
             } catch (error) {
                 showToast(error.message, 'error');
             }
         });
 
-        // ============================================
-        // GOOGLE LOGIN
-        // ============================================
         document.getElementById('googleAuthBtn').addEventListener('click', async () => {
             const provider = new firebase.auth.GoogleAuthProvider();
             try {
                 showToast('Connecting to Google...', 'info');
-                if (window.innerWidth < 768) {
-                    await auth.signInWithRedirect(provider);
-                } else {
-                    await auth.signInWithPopup(provider);
-                }
+                await auth.signInWithPopup(provider);
+                document.getElementById('authScreen').style.display = 'none';
+                document.getElementById('appContainer').style.display = 'flex';
+                loadProfile();
+                showToast('Welcome!', 'success');
             } catch (error) {
-                if (error.code === 'auth/operation-not-supported-in-this-environment') {
-                    try {
-                        await auth.signInWithPopup(provider);
-                    } catch (popupError) {
-                        showToast(popupError.message, 'error');
-                    }
-                } else {
-                    showToast(error.message, 'error');
-                }
+                showToast(error.message, 'error');
             }
         });
 
-        // ============================================
-        // SIGNUP
-        // ============================================
         document.getElementById('signupForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const name = document.getElementById('signupName').value;
@@ -1196,13 +1518,12 @@
                 });
                 await result.user.sendEmailVerification();
                 showToast('Verification email sent! Check your inbox.', 'success');
-                signupCard.style.display = 'none';
-                otpScreen.style.display = 'flex';
+                document.querySelector('.auth-card:first-child').style.display = 'none';
+                document.getElementById('signupCard').style.display = 'none';
+                document.getElementById('otpScreen').style.display = 'flex';
                 document.getElementById('otpEmailDisplay').textContent = email;
-                // Start auto-check
                 startEmailVerificationCheck(result.user);
             } catch (error) {
-                console.error('Signup error:', error);
                 showToast(error.message, 'error');
             }
         });
@@ -1228,8 +1549,9 @@
                     document.getElementById('otpSuccess').style.display = 'block';
                     showToast('Email verified!', 'success');
                     setTimeout(() => {
-                        otpScreen.style.display = 'none';
-                        appContainer.style.display = 'flex';
+                        document.getElementById('otpScreen').style.display = 'none';
+                        document.getElementById('appContainer').style.display = 'flex';
+                        loadProfile();
                         pendingUserForVerification = null;
                     }, 1500);
                 }
@@ -1249,8 +1571,9 @@
                     document.getElementById('otpSuccess').style.display = 'block';
                     showToast('Email verified!', 'success');
                     setTimeout(() => {
-                        otpScreen.style.display = 'none';
-                        appContainer.style.display = 'flex';
+                        document.getElementById('otpScreen').style.display = 'none';
+                        document.getElementById('appContainer').style.display = 'flex';
+                        loadProfile();
                         pendingUserForVerification = null;
                     }, 1500);
                 } else {
@@ -1276,12 +1599,62 @@
         });
 
         document.getElementById('backToLogin').addEventListener('click', () => {
-            otpScreen.style.display = 'none';
-            authScreen.style.display = 'block';
+            document.getElementById('otpScreen').style.display = 'none';
+            document.getElementById('authScreen').style.display = 'flex';
             if (verificationCheckInterval) clearInterval(verificationCheckInterval);
             if (pendingUserForVerification) {
                 pendingUserForVerification.delete().catch(() => {});
                 pendingUserForVerification = null;
+            }
+        });
+
+        // ============================================
+        // OTP INPUT HANDLING
+        // ============================================
+        document.querySelectorAll('.otp-input').forEach((input, index, inputs) => {
+            input.addEventListener('input', function() {
+                if (this.value.length === 1 && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+                const allFilled = Array.from(inputs).every(inp => inp.value.length === 1);
+                if (allFilled) {
+                    document.getElementById('verifyOtpBtn').click();
+                }
+            });
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Backspace' && this.value.length === 0 && index > 0) {
+                    inputs[index - 1].focus();
+                }
+                if (e.key === 'Enter') {
+                    document.getElementById('verifyOtpBtn').click();
+                }
+            });
+            input.addEventListener('input', function() {
+                this.value = this.value.replace(/[^0-9]/g, '');
+            });
+        });
+
+        // ============================================
+        // AUTH STATE
+        // ============================================
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                document.getElementById('authScreen').style.display = 'none';
+                document.getElementById('signupCard').style.display = 'none';
+                document.getElementById('otpScreen').style.display = 'none';
+                document.getElementById('appContainer').style.display = 'flex';
+                loadProfile();
+                loadFeed();
+                loadExplore();
+                loadStories();
+                loadNotifications();
+                console.log('User logged in:', user.email);
+            } else {
+                document.getElementById('appContainer').style.display = 'none';
+                const splash = document.getElementById('splashScreen');
+                if (splash.classList.contains('hidden')) {
+                    document.getElementById('authScreen').style.display = 'flex';
+                }
             }
         });
 
@@ -1298,24 +1671,479 @@
         });
 
         // ============================================
-        // CREATE POST (demo)
+        // LOAD PROFILE
         // ============================================
-        document.getElementById('createPostBtn').addEventListener('click', function() {
+        function loadProfile() {
+            if (!auth.currentUser) return;
+            db.collection('users').doc(auth.currentUser.uid).get().then(doc => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    document.getElementById('profileName').textContent = data.name || 'User';
+                    document.getElementById('profileUsername').textContent = '@' + (data.username || 'username');
+                    document.getElementById('profileBio').textContent = data.bio || 'Welcome to my profile!';
+                    document.getElementById('profileAvatar').src = data.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(data.name || 'User')}&background=7C3AED&color=fff&size=128`;
+                    document.getElementById('followerCount').textContent = data.followers ? data.followers.length : 0;
+                    document.getElementById('followingCount').textContent = data.following ? data.following.length : 0;
+                }
+            }).catch(() => {});
+
+            db.collection('posts').where('userId', '==', auth.currentUser.uid).onSnapshot((snapshot) => {
+                document.getElementById('postCount').textContent = snapshot.size;
+                const container = document.getElementById('profilePosts');
+                const items = [];
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    items.push({ id: doc.id, ...data });
+                });
+                if (items.length === 0) {
+                    container.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-light);"><i class="fas fa-camera" style="font-size:32px;display:block;margin-bottom:8px;color:var(--border);"></i><p>No posts yet</p></div>`;
+                } else {
+                    container.innerHTML = items.map(item => `
+                        <div class="post-item" onclick="showToast('View post', 'info')">
+                            <img src="${item.image || 'https://ui-avatars.com/api/?name=Post&background=7C3AED&color=fff'}" />
+                            <div class="overlay">
+                                <span><i class="fas fa-heart"></i> ${item.likes ? item.likes.length : 0}</span>
+                                <span><i class="fas fa-comment"></i> ${item.comments ? item.comments.length : 0}</span>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            });
+        }
+
+        // ============================================
+        // EDIT PROFILE
+        // ============================================
+        document.getElementById('editProfileBtn').addEventListener('click', () => {
+            const newBio = prompt('Enter your bio:', document.getElementById('profileBio').textContent);
+            if (newBio !== null && auth.currentUser) {
+                db.collection('users').doc(auth.currentUser.uid).update({ bio: newBio });
+                showToast('Profile updated!', 'success');
+                document.getElementById('profileBio').textContent = newBio;
+            }
+        });
+
+        // ============================================
+        // AVATAR EDIT
+        // ============================================
+        document.getElementById('avatarEditBtn').addEventListener('click', () => {
+            const colors = ['7C3AED', '6D28D9', '8B5CF6', '6366F1', '4F46E5', '3B82F6', '0EA5E9', '06B6D4', '10B981', 'F59E0B', 'EF4444', 'EC4899'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            const name = document.getElementById('profileName').textContent || 'User';
+            const newAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=${randomColor}&color=fff&size=128`;
+            db.collection('users').doc(auth.currentUser.uid).update({ photoURL: newAvatar });
+            document.getElementById('profileAvatar').src = newAvatar;
+            showToast('Avatar updated!', 'success');
+        });
+
+        // ============================================
+        // CREATE POST
+        // ============================================
+        document.getElementById('createPostBtn').addEventListener('click', async () => {
             const text = document.getElementById('postText').value.trim();
             if (!text) {
                 showToast('Please write something', 'error');
                 return;
             }
-            showToast('Post created! 🎉', 'success');
-            document.getElementById('postText').value = '';
-            document.querySelector('[data-screen="screenHome"]').click();
+            try {
+                const user = auth.currentUser;
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                const userData = userDoc.data();
+                await db.collection('posts').add({
+                    userId: user.uid,
+                    username: userData.name || 'User',
+                    userPhoto: userData.photoURL,
+                    text: text,
+                    likes: [],
+                    comments: [],
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                document.getElementById('postText').value = '';
+                showToast('Post created!', 'success');
+                loadFeed();
+                document.querySelector('[data-screen="screenHome"]').click();
+            } catch (error) {
+                showToast(error.message, 'error');
+            }
         });
 
         // ============================================
-        // SPLASH HANDLING: Show splash initially, but auth listener will hide it
+        // LOAD FEED
         // ============================================
-        // splash is shown by default, no need to hide immediately
-        console.log('🚀 App starting...');
+        function loadFeed() {
+            db.collection('posts').orderBy('createdAt', 'desc').onSnapshot((snapshot) => {
+                const posts = [];
+                snapshot.forEach((doc) => {
+                    posts.push({ id: doc.id, ...doc.data() });
+                });
+                renderFeed(posts);
+            });
+        }
+
+        function renderFeed(posts) {
+            const container = document.getElementById('feedContainer');
+            if (posts.length === 0) {
+                container.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-light);">
+                    <i class="fas fa-newspaper" style="font-size:48px;display:block;margin-bottom:16px;color:var(--border);"></i>
+                    <h3 style="color:var(--text);font-weight:700;">No posts yet</h3>
+                    <p>Create your first post!</p>
+                </div>`;
+                return;
+            }
+            container.innerHTML = posts.map(post => `
+                <div class="post-card">
+                    <div class="post-header">
+                        <img src="${post.userPhoto || 'https://ui-avatars.com/api/?name=User&background=7C3AED&color=fff'}" onclick="showToast('View profile', 'info')" />
+                        <div class="post-user">
+                            <div class="name" onclick="showToast('View ${post.username}\'s profile', 'info')">${post.username}</div>
+                            <div class="time">${formatTime(post.createdAt)}</div>
+                        </div>
+                        <div class="more-btn" onclick="showToast('More options', 'info')"><i class="fas fa-ellipsis-h"></i></div>
+                    </div>
+                    ${post.text ? `<div class="post-text">${post.text}</div>` : ''}
+                    <div class="post-actions">
+                        <button onclick="toggleLike('${post.id}')" class="${post.likes && post.likes.includes(auth.currentUser?.uid) ? 'liked' : ''}">
+                            <i class="fas fa-heart"></i> <span class="count">${post.likes ? post.likes.length : 0}</span>
+                        </button>
+                        <button onclick="toggleComment('${post.id}')">
+                            <i class="fas fa-comment"></i> <span class="count">${post.comments ? post.comments.length : 0}</span>
+                        </button>
+                        <button onclick="sharePost('${post.id}', '${post.text}')">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                        <button onclick="showToast('Post saved!', 'success')">
+                            <i class="fas fa-bookmark"></i>
+                        </button>
+                    </div>
+                    <div class="post-comments" id="comments-${post.id}">
+                        ${renderComments(post)}
+                        <div class="comment-input">
+                            <input type="text" id="commentInput-${post.id}" placeholder="Write a comment..." />
+                            <button onclick="addComment('${post.id}')">Post</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderComments(post) {
+            if (!post.comments || post.comments.length === 0) return '';
+            return post.comments.slice(0, 3).map(c => `
+                <div class="comment-item">
+                    <img src="${c.userPhoto || 'https://ui-avatars.com/api/?name=U&background=7C3AED&color=fff'}" />
+                    <div class="content">
+                        <div class="name">${c.username}</div>
+                        <div class="text">${c.text}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function formatTime(timestamp) {
+            if (!timestamp) return 'Just now';
+            const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+            const now = new Date();
+            const diff = Math.floor((now - date) / 60000);
+            if (diff < 1) return 'Just now';
+            if (diff < 60) return diff + 'm';
+            if (diff < 1440) return Math.floor(diff / 60) + 'h';
+            return date.toLocaleDateString();
+        }
+
+        // ============================================
+        // LIKE
+        // ============================================
+        window.toggleLike = async (postId) => {
+            if (!auth.currentUser) return;
+            const postRef = db.collection('posts').doc(postId);
+            const doc = await postRef.get();
+            const data = doc.data();
+            const likes = data.likes || [];
+            const index = likes.indexOf(auth.currentUser.uid);
+            if (index > -1) {
+                likes.splice(index, 1);
+            } else {
+                likes.push(auth.currentUser.uid);
+            }
+            await postRef.update({ likes });
+        };
+
+        // ============================================
+        // COMMENT
+        // ============================================
+        window.addComment = async (postId) => {
+            const input = document.getElementById(`commentInput-${postId}`);
+            const text = input.value.trim();
+            if (!text || !auth.currentUser) return;
+            const postRef = db.collection('posts').doc(postId);
+            const doc = await postRef.get();
+            const data = doc.data();
+            const comments = data.comments || [];
+            const userDoc = await db.collection('users').doc(auth.currentUser.uid).get();
+            const userData = userDoc.data();
+            comments.push({
+                userId: auth.currentUser.uid,
+                username: userData.name || 'User',
+                userPhoto: userData.photoURL,
+                text: text,
+                createdAt: new Date().toISOString()
+            });
+            await postRef.update({ comments });
+            input.value = '';
+            showToast('Comment added!', 'success');
+        };
+
+        window.toggleComment = (postId) => {
+            const el = document.getElementById(`comments-${postId}`);
+            el.style.display = el.style.display === 'none' ? 'block' : 'none';
+        };
+
+        // ============================================
+        // SHARE
+        // ============================================
+        window.sharePost = (postId, text) => {
+            const url = window.location.origin + '/?post=' + postId;
+            if (navigator.share) {
+                navigator.share({ title: 'Check this post on ConnectHub!', text: text || 'Check this post!', url });
+            } else {
+                navigator.clipboard.writeText(`${text || 'Check this post!'} ${url}`);
+                showToast('Link copied to clipboard!', 'success');
+            }
+        };
+
+        // ============================================
+        // LOAD EXPLORE
+        // ============================================
+        function loadExplore() {
+            db.collection('posts').orderBy('createdAt', 'desc').onSnapshot((snapshot) => {
+                const container = document.getElementById('exploreGrid');
+                const items = [];
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    if (data.image) items.push(data.image);
+                });
+                if (items.length === 0) {
+                    container.innerHTML = `
+                        <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-light);">
+                            <i class="fas fa-compass" style="font-size:48px;display:block;margin-bottom:12px;color:var(--border);"></i>
+                            <h3>Explore posts</h3>
+                            <p>Posts with images will appear here</p>
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = items.slice(0, 30).map(img => 
+                        `<img src="${img}" onclick="showToast('View post', 'info')" />`
+                    ).join('');
+                }
+            });
+        }
+
+        // ============================================
+        // SEARCH
+        // ============================================
+        document.getElementById('exploreSearch').addEventListener('input', async (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            if (!query) { loadExplore(); return; }
+            const snapshot = await db.collection('users').get();
+            const results = [];
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                if (data.name.toLowerCase().includes(query) || (data.username && data.username.includes(query))) {
+                    results.push(data);
+                }
+            });
+            const container = document.getElementById('exploreGrid');
+            if (results.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-light);">
+                        <i class="fas fa-user-slash" style="font-size:48px;display:block;margin-bottom:12px;color:var(--border);"></i>
+                        <h3>No users found</h3>
+                        <p>Try a different search term</p>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = results.map(user => `
+                    <div style="padding:16px;background:var(--card);border-radius:var(--radius);text-align:center;box-shadow:var(--shadow);">
+                        <img src="${user.photoURL || 'https://ui-avatars.com/api/?name=U&background=7C3AED&color=fff'}" style="width:72px;height:72px;border-radius:50%;object-fit:cover;margin-bottom:8px;" />
+                        <div style="font-weight:600;">${user.name}</div>
+                        <div style="font-size:12px;color:var(--text-light);">@${user.username || 'username'}</div>
+                        <button onclick="followUser('${user.uid}')" class="btn btn-primary" style="padding:6px 20px;font-size:12px;margin-top:8px;">
+                            Follow
+                        </button>
+                    </div>
+                `).join('');
+            }
+        });
+
+        // ============================================
+        // FOLLOW
+        // ============================================
+        window.followUser = async (userId) => {
+            if (!auth.currentUser) return;
+            if (userId === auth.currentUser.uid) {
+                showToast('You can\'t follow yourself', 'error');
+                return;
+            }
+            const userRef = db.collection('users').doc(auth.currentUser.uid);
+            const doc = await userRef.get();
+            const data = doc.data();
+            const following = data.following || [];
+            if (!following.includes(userId)) {
+                following.push(userId);
+                await userRef.update({ following });
+                const targetRef = db.collection('users').doc(userId);
+                const targetDoc = await targetRef.get();
+                const targetData = targetDoc.data();
+                const followers = targetData.followers || [];
+                if (!followers.includes(auth.currentUser.uid)) {
+                    followers.push(auth.currentUser.uid);
+                    await targetRef.update({ followers });
+                }
+                showToast('Followed!', 'success');
+                loadProfile();
+            }
+        };
+
+        // ============================================
+        // STORIES
+        // ============================================
+        function loadStories() {
+            db.collection('users').limit(10).onSnapshot((snapshot) => {
+                const bar = document.getElementById('storiesBar');
+                let html = `
+                    <div class="story-item" onclick="showToast('Add a story', 'info')">
+                        <div class="add-story"><i class="fas fa-plus"></i></div>
+                        <span>Add Story</span>
+                    </div>
+                `;
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    if (data.uid === auth.currentUser?.uid) return;
+                    html += `
+                        <div class="story-item" onclick="showToast('View story', 'info')">
+                            <div class="ring"><img src="${data.photoURL || 'https://ui-avatars.com/api/?name=U&background=7C3AED&color=fff'}" /></div>
+                            <span>${data.name}</span>
+                        </div>
+                    `;
+                });
+                bar.innerHTML = html;
+            });
+        }
+
+        // ============================================
+        // NOTIFICATIONS
+        // ============================================
+        function loadNotifications() {
+            if (!auth.currentUser) return;
+            db.collection('notifications')
+                .where('userId', '==', auth.currentUser.uid)
+                .orderBy('createdAt', 'desc')
+                .limit(50)
+                .onSnapshot((snapshot) => {
+                    const container = document.getElementById('notifContainer');
+                    if (snapshot.empty) {
+                        container.innerHTML = `
+                            <div style="text-align:center;padding:40px;color:var(--text-light);">
+                                <i class="fas fa-bell" style="font-size:48px;display:block;margin-bottom:12px;color:var(--border);"></i>
+                                <h3>No notifications</h3>
+                                <p>When someone interacts with you, you'll see it here</p>
+                            </div>
+                        `;
+                        return;
+                    }
+                    let unreadCount = 0;
+                    container.innerHTML = snapshot.docs.map(doc => {
+                        const data = doc.data();
+                        if (!data.isRead) unreadCount++;
+                        return `
+                            <div class="notif-item" onclick="markNotifRead('${doc.id}')" style="${data.isRead ? '' : 'border-left: 3px solid #7C3AED;'}">
+                                <img src="${data.fromUserPhoto || 'https://ui-avatars.com/api/?name=U&background=7C3AED&color=fff'}" />
+                                <div class="content">
+                                    <div class="text">
+                                        <strong>${data.fromUserName}</strong>
+                                        ${data.type === 'like' ? 'liked your post' : ''}
+                                        ${data.type === 'comment' ? `commented: "${data.comment}"` : ''}
+                                        ${data.type === 'follow' ? 'started following you' : ''}
+                                    </div>
+                                    <div class="time">${formatTime(data.createdAt)}</div>
+                                </div>
+                                ${!data.isRead ? '<div class="unread"></div>' : ''}
+                            </div>
+                        `;
+                    }).join('');
+                    
+                    const badge = document.getElementById('messageBadge');
+                    if (unreadCount > 0) {
+                        badge.style.display = 'flex';
+                        badge.textContent = unreadCount;
+                    } else {
+                        badge.style.display = 'none';
+                    }
+                });
+        }
+
+        window.markNotifRead = async (notifId) => {
+            await db.collection('notifications').doc(notifId).update({ isRead: true });
+        };
+
+        // ============================================
+        // MESSAGES / CHATS
+        // ============================================
+        function loadChats() {
+            if (!auth.currentUser) return;
+            db.collection('users').where('uid', '!=', auth.currentUser.uid).limit(20).onSnapshot((snapshot) => {
+                const container = document.getElementById('chatList');
+                if (snapshot.empty) {
+                    container.innerHTML = `
+                        <div style="text-align:center;padding:40px;color:var(--text-light);">
+                            <i class="fas fa-comments" style="font-size:48px;display:block;margin-bottom:12px;color:var(--border);"></i>
+                            <h3>No chats yet</h3>
+                            <p>Connect with other users!</p>
+                        </div>
+                    `;
+                    return;
+                }
+                container.innerHTML = snapshot.docs.map(doc => {
+                    const data = doc.data();
+                    return `
+                        <div class="chat-item" onclick="openChat('${data.uid}')">
+                            <img src="${data.photoURL || 'https://ui-avatars.com/api/?name=U&background=7C3AED&color=fff'}" />
+                            <div class="info">
+                                <div class="name">${data.name}</div>
+                                <div class="last-msg">💬 Click to chat</div>
+                            </div>
+                            <div class="time">online</div>
+                        </div>
+                    `;
+                }).join('');
+            });
+        }
+
+        window.openChat = (userId) => {
+            const message = prompt('Send a message:');
+            if (message && message.trim()) {
+                const chatId = [auth.currentUser.uid, userId].sort().join('_');
+                db.collection('messages').add({
+                    chatId: chatId,
+                    senderId: auth.currentUser.uid,
+                    senderName: document.getElementById('profileName').textContent || 'User',
+                    recipientId: userId,
+                    text: message.trim(),
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    read: false
+                });
+                showToast('Message sent!', 'success');
+            }
+        };
+
+        // ============================================
+        // SERVICE WORKER
+        // ============================================
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js').catch(() => {});
+        }
+
+        console.log('🚀 ConnectHub v1.0 loaded!');
     </script>
 </body>
 </html>
