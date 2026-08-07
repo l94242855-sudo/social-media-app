@@ -11,7 +11,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     
     <style>
-        /* ===== CSS VARIABLES ===== */
+        /* ... your existing styles ... */
+        /* Keeping it short for response, but include all your styles here */
         :root {
             --primary: #7C3AED;
             --primary-dark: #6D28D9;
@@ -1117,9 +1118,6 @@
             appId: "1:427918763507:web:82ba7c8e787eaaccc2de86"
         };
 
-        // ============================================
-        // INITIALIZE FIREBASE
-        // ============================================
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
@@ -1541,7 +1539,7 @@
         });
 
         // ============================================
-        // STORY UPLOAD - COMPLETELY REBUILT
+        // STORY UPLOAD - FORCED TO SAVE IMAGE
         // ============================================
         document.getElementById('storyUploadSection')?.addEventListener('click', () => {
             document.getElementById('storyImageInput').click();
@@ -1557,26 +1555,31 @@
             try {
                 showToast('Uploading story...', 'info');
                 
-                // Upload to ImgBB
                 const imageURL = await uploadImageToImgBB(file);
                 console.log('✅ Image uploaded:', imageURL);
                 
                 const expiresAt = new Date();
                 expiresAt.setHours(expiresAt.getHours() + 24);
                 
-                // Save to Firestore with ALL fields
+                // FORCE the image field to be saved
                 const storyData = {
                     userId: currentUser.uid,
                     username: currentUserData.name,
                     userPhoto: currentUserData.photoURL,
-                    image: imageURL,  // Using 'image' field
+                    image: imageURL,  // This MUST be here
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                     expiresAt: firebase.firestore.Timestamp.fromDate(expiresAt)
                 };
                 
-                console.log('📤 Saving story:', storyData);
+                console.log('📤 Saving story data:', JSON.stringify(storyData, null, 2));
                 
-                await db.collection('stories').add(storyData);
+                // Add to Firestore
+                const docRef = await db.collection('stories').add(storyData);
+                console.log('✅ Story saved with ID:', docRef.id);
+                
+                // Verify it was saved
+                const savedDoc = await db.collection('stories').doc(docRef.id).get();
+                console.log('📥 Verified saved data:', savedDoc.data());
                 
                 showToast('Story added!', 'success');
                 loadStories();
@@ -1711,7 +1714,7 @@
             const now = new Date();
             const currentUserId = currentUser?.uid;
             
-            console.log('📸 Loading stories for user:', currentUserId);
+            console.log('📸 Loading stories...');
             
             db.collection('stories')
                 .where('expiresAt', '>', firebase.firestore.Timestamp.fromDate(now))
@@ -1720,20 +1723,19 @@
                     const stories = [];
                     snapshot.forEach((doc) => {
                         const data = doc.data();
+                        console.log('📸 Story data from Firestore:', data);
                         stories.push({ 
                             id: doc.id, 
                             ...data,
-                            // Make sure image is always available
                             image: data.image || null
                         });
                     });
                     
-                    console.log('📸 Found stories:', stories.length);
+                    console.log('📸 Total stories:', stories.length);
                     
-                    // Show all stories except the current user's
-                    // (we show "Your Story" button instead)
+                    // Filter out current user's stories
                     const otherStories = stories.filter(s => s.userId !== currentUserId);
-                    console.log('📸 Other stories:', otherStories.length);
+                    console.log('📸 Other users stories:', otherStories.length);
                     
                     renderStories(otherStories);
                 }, (error) => {
@@ -1747,7 +1749,6 @@
         function renderStories(stories) {
             const bar = document.getElementById('storiesBar');
             
-            // "Your Story" button
             let html = `
                 <div class="story-item" id="addStoryBtn">
                     <div class="story-ring add-story" style="background: var(--border); display: flex; align-items: center; justify-content: center; width: 68px; height: 68px; border-radius: 50%; cursor: pointer;">
@@ -1757,7 +1758,6 @@
                 </div>
             `;
             
-            // Other users' stories
             stories.forEach(story => {
                 const photoURL = story.userPhoto || 'https://ui-avatars.com/api/?name=U&background=7C3AED&color=fff';
                 const username = story.username || 'User';
@@ -1775,14 +1775,13 @@
             
             bar.innerHTML = html;
             
-            // Add story upload handler
             document.getElementById('addStoryBtn')?.addEventListener('click', () => {
                 document.getElementById('storyImageInput').click();
             });
         }
 
         // ============================================
-        // STORY VIEWER - COMPLETELY REBUILT
+        // STORY VIEWER
         // ============================================
         function viewStory(storyId) {
             console.log('📸 Opening story:', storyId);
@@ -1811,8 +1810,8 @@
                     const story = doc.data();
                     console.log('📸 Story data:', story);
                     console.log('📸 Image URL:', story.image);
+                    console.log('📸 All fields:', Object.keys(story));
                     
-                    // Check if image exists
                     if (!story.image) {
                         console.error('❌ No image in story');
                         showToast('Story has no image', 'error');
@@ -1823,11 +1822,9 @@
                         return;
                     }
                     
-                    // Set user info
                     userAvatar.src = story.userPhoto || 'https://ui-avatars.com/api/?name=U&background=7C3AED&color=fff';
                     userName.textContent = story.username || 'User';
                     
-                    // Set image
                     image.src = story.image;
                     image.alt = 'Story from ' + (story.username || 'User');
                     
@@ -1836,7 +1833,6 @@
                         loading.style.display = 'none';
                         image.style.display = 'block';
                         
-                        // Progress bar
                         let progress = 0;
                         progressBars.innerHTML = `<div class="progress-bar"><div class="fill" id="storyProgressFill"></div></div>`;
                         const fill = document.getElementById('storyProgressFill');
@@ -2159,8 +2155,7 @@
         }
 
         console.log('🚀 Social Media App loaded!');
-        console.log('📸 Stories completely rebuilt');
-        console.log('📸 Check the console for debugging info');
+        console.log('📸 Stories will show console logs for debugging');
     </script>
 </body>
 </html>
