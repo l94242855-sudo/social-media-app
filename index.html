@@ -11,8 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     
     <style>
-        /* ===== ALL YOUR STYLES ===== */
-        /* (Keep all your existing styles - they are the same) */
+        /* ===== ALL STYLES ===== */
         :root {
             --primary: #7C3AED;
             --primary-dark: #6D28D9;
@@ -2356,9 +2355,15 @@
                 };
                 
                 comments.push(newComment);
-                await postRef.update({ comments });
-                input.value = '';
                 
+                // Update the post with the new comments array
+                await postRef.update({ comments: comments });
+                
+                // Clear input
+                input.value = '';
+                showToast('Comment added!', 'success');
+                
+                // Send notification
                 if (data.userId !== currentUser.uid) {
                     sendNotificationToUser(data.userId, {
                         title: '💬 New Comment!',
@@ -2368,6 +2373,7 @@
                         url: '/'
                     });
                 }
+                
             } catch (error) {
                 console.error('Comment error:', error);
                 showToast('Failed to add comment', 'error');
@@ -2469,6 +2475,7 @@
 
             container.innerHTML = posts.map(post => {
                 const escapedText = post.text ? post.text.replace(/</g, '&lt;').replace(/>/g, '&gt;') : '';
+                const commentCount = post.comments ? post.comments.length : 0;
                 
                 return `
                 <div class="post-card">
@@ -2500,7 +2507,7 @@
                             <i class="fas fa-heart"></i> <span class="count">${post.likes ? post.likes.length : 0}</span>
                         </button>
                         <button onclick="toggleComment('${post.id}')">
-                            <i class="fas fa-comment"></i> <span class="count">${post.comments ? post.comments.length : 0}</span>
+                            <i class="fas fa-comment"></i> <span class="count">${commentCount}</span>
                         </button>
                         <button onclick="sharePost('${post.id}')">
                             <i class="fas fa-share"></i>
@@ -2833,7 +2840,7 @@
         }
 
         console.log('🚀 Social Media App loaded successfully!');
-        console.log('✅ Comment count fix applied!');
+        console.log('✅ Comment count fix applied - comments stored in Firestore array');
     </script>
 </body>
 </html>
