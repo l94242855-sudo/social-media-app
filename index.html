@@ -363,7 +363,7 @@
             white-space: nowrap;
         }
 
-        /* ===== STORY VIEWER ===== */
+        /* ===== STORY VIEWER (FIXED) ===== */
         .story-viewer {
             display: none;
             position: fixed;
@@ -371,20 +371,33 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.95);
+            background: rgba(0, 0, 0, 0.95);
             z-index: 1000;
             align-items: center;
             justify-content: center;
             flex-direction: column;
+            padding: 20px;
         }
         .story-viewer.active {
             display: flex;
         }
-        .story-viewer img {
-            max-width: 90%;
+        .story-viewer .story-image-container {
+            width: 100%;
+            max-width: 500px;
             max-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
             border-radius: var(--radius);
+            overflow: hidden;
+            position: relative;
+        }
+        .story-viewer .story-image-container img {
+            width: 100%;
+            max-height: 80vh;
             object-fit: contain;
+            border-radius: var(--radius);
         }
         .story-viewer .story-close {
             position: absolute;
@@ -393,7 +406,7 @@
             color: white;
             font-size: 28px;
             cursor: pointer;
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             border: none;
             border-radius: 50%;
             width: 48px;
@@ -402,9 +415,10 @@
             align-items: center;
             justify-content: center;
             transition: var(--transition);
+            z-index: 10;
         }
         .story-viewer .story-close:hover {
-            background: rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.2);
         }
         .story-viewer .story-user {
             color: white;
@@ -414,13 +428,14 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            width: 100%;
+            max-width: 500px;
         }
         .story-viewer .story-user img {
             width: 40px;
             height: 40px;
             border-radius: 50%;
             object-fit: cover;
-            max-height: 40px;
         }
         .story-progress {
             position: absolute;
@@ -430,11 +445,12 @@
             display: flex;
             gap: 4px;
             padding: 8px 16px;
+            z-index: 5;
         }
         .story-progress .progress-bar {
             flex: 1;
             height: 3px;
-            background: rgba(255,255,255,0.3);
+            background: rgba(255, 255, 255, 0.3);
             border-radius: 2px;
             overflow: hidden;
         }
@@ -443,6 +459,18 @@
             background: white;
             width: 0%;
             transition: width 0.1s linear;
+        }
+        .story-viewer .story-loading {
+            color: white;
+            font-size: 18px;
+            text-align: center;
+            padding: 40px;
+        }
+        .story-viewer .story-loading i {
+            font-size: 36px;
+            display: block;
+            margin-bottom: 16px;
+            color: var(--primary);
         }
 
         /* ===== POSTS ===== */
@@ -963,7 +991,7 @@
         </div>
     </div>
 
-    <!-- ===== STORY VIEWER ===== -->
+    <!-- ===== STORY VIEWER (FIXED) ===== -->
     <div id="storyViewer" class="story-viewer">
         <div class="story-progress" id="storyProgress"></div>
         <button class="story-close" id="closeStory"><i class="fas fa-times"></i></button>
@@ -971,7 +999,13 @@
             <img id="storyUserAvatar" src="" alt="User" />
             <span id="storyUserName">User</span>
         </div>
-        <img id="storyImage" src="" alt="Story" />
+        <div class="story-image-container">
+            <div id="storyLoading" class="story-loading">
+                <i class="fas fa-spinner fa-spin"></i>
+                Loading story...
+            </div>
+            <img id="storyImage" src="" alt="Story" style="display: none;" />
+        </div>
     </div>
 
     <!-- ===== MAIN APP ===== -->
@@ -1009,7 +1043,7 @@
                     <button class="remove-btn" id="removeImageBtn"><i class="fas fa-times"></i></button>
                 </div>
                 
-                <!-- ===== Story Upload Section ===== -->
+                <!-- Story Upload Section -->
                 <div class="story-upload-section" id="storyUploadSection">
                     <i class="fas fa-plus-circle"></i>
                     <p>Add to Your Story</p>
@@ -1510,7 +1544,7 @@
         });
 
         // ============================================
-        // STORY UPLOAD (FIXED)
+        // STORY UPLOAD
         // ============================================
         document.getElementById('storyUploadSection')?.addEventListener('click', () => {
             document.getElementById('storyImageInput').click();
@@ -1538,7 +1572,6 @@
                 });
                 
                 showToast('Story added!', 'success');
-                // Force reload stories
                 loadStories();
             } catch (error) {
                 console.error('Story upload error:', error);
@@ -1665,7 +1698,7 @@
         }
 
         // ============================================
-        // STORIES - Load for Stories Bar (FIXED)
+        // STORIES - Load for Stories Bar
         // ============================================
         function loadStories() {
             const now = new Date();
@@ -1679,7 +1712,6 @@
                         storyData.push({ id: doc.id, ...doc.data() });
                     });
                     
-                    // Group by user, show latest story per user
                     const userStories = {};
                     storyData.forEach(story => {
                         const userId = story.userId;
@@ -1695,12 +1727,11 @@
         }
 
         // ============================================
-        // RENDER STORIES (FIXED)
+        // RENDER STORIES
         // ============================================
         function renderStories(storiesData) {
             const bar = document.getElementById('storiesBar');
             
-            // Start with "Your Story" - always visible
             let html = `
                 <div class="story-item" id="addStoryBtn">
                     <div class="story-ring add-story" style="background: var(--border); display: flex; align-items: center; justify-content: center; width: 68px; height: 68px; border-radius: 50%; cursor: pointer;">
@@ -1710,9 +1741,7 @@
                 </div>
             `;
             
-            // Add all other users' stories
             storiesData.forEach(story => {
-                // Skip if it's the current user's story (we show "Your Story" instead)
                 if (story.userId === currentUser?.uid) return;
                 
                 const photoURL = story.userPhoto || 'https://ui-avatars.com/api/?name=U&background=7C3AED&color=fff';
@@ -1730,52 +1759,110 @@
             
             bar.innerHTML = html;
             
-            // Add story upload handler
             document.getElementById('addStoryBtn')?.addEventListener('click', () => {
                 document.getElementById('storyImageInput').click();
             });
         }
 
         // ============================================
-        // STORY VIEWER
+        // STORY VIEWER (FIXED - Shows Image)
         // ============================================
         function viewStory(storyId) {
+            console.log('📸 Opening story:', storyId);
+            
+            const viewer = document.getElementById('storyViewer');
+            const loading = document.getElementById('storyLoading');
+            const image = document.getElementById('storyImage');
+            const userAvatar = document.getElementById('storyUserAvatar');
+            const userName = document.getElementById('storyUserName');
+            const progressBars = document.getElementById('storyProgress');
+            
+            // Show loading
+            viewer.classList.add('active');
+            loading.style.display = 'block';
+            image.style.display = 'none';
+            
             db.collection('stories').doc(storyId).get().then((doc) => {
-                if (!doc.exists) return;
+                if (!doc.exists) {
+                    showToast('Story not found', 'error');
+                    viewer.classList.remove('active');
+                    return;
+                }
+                
                 const story = doc.data();
+                console.log('📸 Story data:', story);
                 
-                document.getElementById('storyUserAvatar').src = story.userPhoto || 'https://ui-avatars.com/api/?name=U&background=7C3AED&color=fff';
-                document.getElementById('storyUserName').textContent = story.username || 'User';
-                document.getElementById('storyImage').src = story.image;
+                if (!story.image) {
+                    showToast('Story has no image', 'error');
+                    viewer.classList.remove('active');
+                    return;
+                }
                 
-                document.getElementById('storyViewer').classList.add('active');
+                // Set user info
+                userAvatar.src = story.userPhoto || 'https://ui-avatars.com/api/?name=U&background=7C3AED&color=fff';
+                userName.textContent = story.username || 'User';
                 
-                // Auto-advance progress bar
-                let progress = 0;
-                const progressBars = document.getElementById('storyProgress');
-                progressBars.innerHTML = `<div class="progress-bar"><div class="fill" id="storyProgressFill"></div></div>`;
+                // Set image
+                image.src = story.image;
+                image.alt = 'Story from ' + (story.username || 'User');
                 
-                const fill = document.getElementById('storyProgressFill');
-                const interval = setInterval(() => {
-                    progress += 1;
-                    fill.style.width = progress + '%';
-                    if (progress >= 100) {
-                        clearInterval(interval);
-                        setTimeout(() => {
-                            document.getElementById('storyViewer').classList.remove('active');
-                        }, 500);
+                // When image loads, hide loading
+                image.onload = function() {
+                    loading.style.display = 'none';
+                    image.style.display = 'block';
+                    
+                    // Start progress bar
+                    let progress = 0;
+                    progressBars.innerHTML = `<div class="progress-bar"><div class="fill" id="storyProgressFill"></div></div>`;
+                    const fill = document.getElementById('storyProgressFill');
+                    
+                    if (window.storyInterval) {
+                        clearInterval(window.storyInterval);
                     }
-                }, 50);
+                    
+                    window.storyInterval = setInterval(() => {
+                        progress += 1;
+                        fill.style.width = progress + '%';
+                        if (progress >= 100) {
+                            clearInterval(window.storyInterval);
+                            setTimeout(() => {
+                                viewer.classList.remove('active');
+                            }, 300);
+                        }
+                    }, 50);
+                };
+                
+                // If image fails to load
+                image.onerror = function() {
+                    loading.style.display = 'none';
+                    showToast('Failed to load story image', 'error');
+                    setTimeout(() => {
+                        viewer.classList.remove('active');
+                    }, 1000);
+                };
+                
+            }).catch((error) => {
+                console.error('Error loading story:', error);
+                showToast('Failed to load story', 'error');
+                viewer.classList.remove('active');
             });
         }
 
-        // Close story viewer
+        // ============================================
+        // CLOSE STORY VIEWER
+        // ============================================
         document.getElementById('closeStory').addEventListener('click', () => {
+            if (window.storyInterval) {
+                clearInterval(window.storyInterval);
+            }
             document.getElementById('storyViewer').classList.remove('active');
         });
 
         document.getElementById('storyViewer').addEventListener('click', (e) => {
-            if (e.target === e.currentTarget) {
+            if (e.target === e.currentTarget || e.target.id === 'storyImage') {
+                if (window.storyInterval) {
+                    clearInterval(window.storyInterval);
+                }
                 document.getElementById('storyViewer').classList.remove('active');
             }
         });
@@ -2046,7 +2133,8 @@
             navigator.serviceWorker.register('/service-worker.js').catch(() => {});
         }
 
-        console.log('🚀 Social Media App loaded with STORIES FIX!');
+        console.log('🚀 Social Media App loaded with STORY VIEWER FIX!');
+        console.log('📸 Click a story to view the image.');
     </script>
 </body>
 </html>
