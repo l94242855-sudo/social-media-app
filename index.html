@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     
     <style>
-        /* ===== ALL STYLES ===== */
         :root {
             --primary: #7C3AED;
             --primary-dark: #6D28D9;
@@ -52,7 +51,6 @@
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
 
-        /* ===== AUTH SCREEN ===== */
         .auth-container {
             display: flex;
             justify-content: center;
@@ -186,7 +184,6 @@
             cursor: pointer;
         }
 
-        /* ===== OTP SCREEN ===== */
         .otp-container {
             display: none;
             justify-content: center;
@@ -250,14 +247,12 @@
         .error-message { color: #EF4444; font-size: 13px; margin-top: 8px; display: none; }
         .success-message { color: #10B981; font-size: 13px; margin-top: 8px; display: none; }
 
-        /* ===== MAIN APP ===== */
         .app-container {
             display: none;
             height: 100vh;
             flex-direction: column;
         }
 
-        /* ===== BOTTOM NAV ===== */
         .bottom-nav {
             display: flex;
             justify-content: space-around;
@@ -290,7 +285,6 @@
         .nav-item.active i { transform: scale(1.1); }
         .nav-item:hover { color: var(--primary); }
 
-        /* ===== SCREENS ===== */
         .screen {
             display: none;
             flex: 1;
@@ -300,7 +294,6 @@
         }
         .screen.active { display: block; }
 
-        /* ===== STORIES BAR ===== */
         .stories-bar {
             display: flex;
             gap: 12px;
@@ -363,7 +356,6 @@
             white-space: nowrap;
         }
 
-        /* ===== STORY VIEWER ===== */
         .story-viewer {
             display: none;
             position: fixed;
@@ -470,7 +462,6 @@
             color: var(--primary);
         }
 
-        /* ===== POSTS ===== */
         .post-card {
             background: var(--card);
             border-radius: var(--radius);
@@ -638,7 +629,6 @@
             font-weight: 600;
         }
 
-        /* ===== COMMENT REPLIES ===== */
         .comment-item {
             display: flex;
             gap: 10px;
@@ -765,7 +755,6 @@
             height: 22px;
         }
 
-        /* ===== EXPLORE ===== */
         .explore-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -780,7 +769,6 @@
             cursor: pointer;
         }
 
-        /* ===== CREATE ===== */
         .create-container {
             padding: 20px;
             max-width: 600px;
@@ -809,7 +797,6 @@
             margin-top: 16px;
         }
 
-        /* ===== MEDIA UPLOAD SECTIONS ===== */
         .media-upload-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -1009,7 +996,6 @@
         }
         .logout-btn:hover { background: var(--border); color: var(--text); }
 
-        /* ===== NOTIFICATION BANNER ===== */
         .notif-banner {
             background: var(--card);
             padding: 12px 20px;
@@ -1033,7 +1019,6 @@
             flex-shrink: 0;
         }
 
-        /* ===== VIDEO VIEWER ===== */
         .video-viewer {
             display: none;
             position: fixed;
@@ -1099,7 +1084,6 @@
             object-fit: cover;
         }
 
-        /* ===== TOAST ===== */
         #toastContainer {
             position: fixed;
             bottom: 80px;
@@ -1127,7 +1111,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .auth-card { padding: 32px 24px; margin: 16px; }
             .otp-card { padding: 32px 24px; margin: 16px; }
@@ -2211,8 +2194,9 @@
         });
 
         // ============================================
-        // COMMENT REPLIES FUNCTIONS
+        // ===== COMMENT REPLIES (FIXED) =====
         // ============================================
+
         function toggleReplyInput(commentId) {
             const container = document.getElementById(`reply-input-${commentId}`);
             if (container) {
@@ -2231,24 +2215,23 @@
             }
         }
 
+        // ===== ADD REPLY =====
         async function addReply(postId, parentCommentId, parentCommentUsername) {
             const input = document.getElementById(`reply-input-${parentCommentId}`);
             if (!input) return;
             
             const text = input.value.trim();
-            if (!text || !currentUser) return;
+            if (!text || !currentUser) {
+                showToast('Please write something', 'error');
+                return;
+            }
             
             try {
                 const postRef = db.collection('posts').doc(postId);
                 const doc = await postRef.get();
                 const data = doc.data();
-                const comments = data.comments || [];
                 
-                const parentIndex = comments.findIndex(c => c.id === parentCommentId);
-                if (parentIndex === -1) {
-                    showToast('Comment not found', 'error');
-                    return;
-                }
+                const comments = data.comments || [];
                 
                 const reply = {
                     id: `reply_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`,
@@ -2260,13 +2243,9 @@
                     createdAt: new Date().toISOString()
                 };
                 
-                if (!comments[parentIndex].replies) {
-                    comments[parentIndex].replies = [];
-                }
+                comments.push(reply);
                 
-                comments[parentIndex].replies.push(reply);
-                
-                await postRef.update({ comments });
+                await postRef.update({ comments: comments });
                 
                 input.value = '';
                 const container = document.getElementById(`reply-input-${parentCommentId}`);
@@ -2290,7 +2269,7 @@
         }
 
         // ============================================
-        // ===== MAIN FEED FUNCTIONS (FIXED) =====
+        // ===== MAIN FEED FUNCTIONS =====
         // ============================================
         
         // ===== LIKE =====
@@ -2328,7 +2307,7 @@
             }
         }
 
-        // ===== COMMENT (FIXED) =====
+        // ===== COMMENT =====
         async function addComment(postId) {
             const input = document.getElementById(`commentInput-${postId}`);
             if (!input) return;
@@ -2351,19 +2330,15 @@
                     username: currentUserData.name,
                     userPhoto: currentUserData.photoURL,
                     text: text,
+                    parentId: null,
                     createdAt: new Date().toISOString()
                 };
                 
                 comments.push(newComment);
-                
-                // Update the post with the new comments array
                 await postRef.update({ comments: comments });
-                
-                // Clear input
                 input.value = '';
                 showToast('Comment added!', 'success');
                 
-                // Send notification
                 if (data.userId !== currentUser.uid) {
                     sendNotificationToUser(data.userId, {
                         title: '💬 New Comment!',
@@ -2373,7 +2348,6 @@
                         url: '/'
                     });
                 }
-                
             } catch (error) {
                 console.error('Comment error:', error);
                 showToast('Failed to add comment', 'error');
@@ -2536,17 +2510,38 @@
         }
 
         // ============================================
-        // RENDER COMMENTS WITH REPLIES
+        // RENDER COMMENTS WITH REPLIES (FIXED)
         // ============================================
         function renderCommentsWithReplies(post) {
             if (!post.comments || post.comments.length === 0) return '';
             
-            const topLevelComments = post.comments.filter(c => !c.parentId);
-            if (topLevelComments.length === 0) return '';
+            const allComments = post.comments || [];
             
-            return topLevelComments.map(comment => {
-                const replies = post.comments.filter(c => c.parentId === comment.id);
-                const replyCount = replies ? replies.length : 0;
+            // Build a tree: parentId -> [children]
+            const commentMap = {};
+            const topLevel = [];
+            
+            allComments.forEach(comment => {
+                commentMap[comment.id] = comment;
+                if (!comment.parentId) {
+                    topLevel.push(comment);
+                }
+            });
+            
+            // Sort top level by createdAt (oldest first)
+            topLevel.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+            
+            // Function to get replies for a comment
+            function getReplies(commentId) {
+                const replies = allComments.filter(c => c.parentId === commentId);
+                replies.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+                return replies;
+            }
+            
+            // Render a single comment with its replies
+            function renderComment(comment) {
+                const replies = getReplies(comment.id);
+                const replyCount = replies.length;
                 
                 return `
                     <div class="comment-item" id="comment-${comment.id}">
@@ -2577,32 +2572,14 @@
                         
                         ${replyCount > 0 ? `
                             <div class="replies-container" id="replies-container-${comment.id}">
-                                ${replies.map(reply => `
-                                    <div class="comment-item" id="comment-${reply.id}">
-                                        <div class="comment-main">
-                                            <img src="${reply.userPhoto || 'https://ui-avatars.com/api/?name=U&background=7C3AED&color=fff'}" />
-                                            <div class="content">
-                                                <div class="name">${reply.username}</div>
-                                                <div class="text">${reply.text}</div>
-                                                <div class="comment-actions">
-                                                    <span class="comment-time">${formatTime(reply.createdAt)}</span>
-                                                    <button class="reply-btn" onclick="toggleReplyInput('${reply.id}')">
-                                                        <i class="fas fa-reply"></i> Reply
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="reply-input-container" id="reply-input-${reply.id}">
-                                            <input type="text" id="replyInput-${reply.id}" placeholder="Reply to ${reply.username}..." />
-                                            <button onclick="addReply('${post.id}', '${reply.id}', '${reply.username}')">Reply</button>
-                                        </div>
-                                    </div>
-                                `).join('')}
+                                ${replies.map(reply => renderComment(reply)).join('')}
                             </div>
                         ` : ''}
                     </div>
                 `;
-            }).join('');
+            }
+            
+            return topLevel.map(comment => renderComment(comment)).join('');
         }
 
         // ============================================
@@ -2840,7 +2817,7 @@
         }
 
         console.log('🚀 Social Media App loaded successfully!');
-        console.log('✅ Comment count fix applied - comments stored in Firestore array');
+        console.log('✅ Reply function fixed with flat comment structure');
     </script>
 </body>
 </html>
