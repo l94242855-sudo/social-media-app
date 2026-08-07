@@ -11,8 +11,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     
     <style>
-        /* ... your existing styles ... */
-        /* Keeping it short for response, but include all your styles here */
         :root {
             --primary: #7C3AED;
             --primary-dark: #6D28D9;
@@ -53,7 +51,6 @@
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
 
-        /* ===== AUTH SCREEN ===== */
         .auth-container {
             display: flex;
             justify-content: center;
@@ -187,7 +184,6 @@
             cursor: pointer;
         }
 
-        /* ===== OTP SCREEN ===== */
         .otp-container {
             display: none;
             justify-content: center;
@@ -251,14 +247,12 @@
         .error-message { color: #EF4444; font-size: 13px; margin-top: 8px; display: none; }
         .success-message { color: #10B981; font-size: 13px; margin-top: 8px; display: none; }
 
-        /* ===== MAIN APP ===== */
         .app-container {
             display: none;
             height: 100vh;
             flex-direction: column;
         }
 
-        /* ===== BOTTOM NAV ===== */
         .bottom-nav {
             display: flex;
             justify-content: space-around;
@@ -291,7 +285,6 @@
         .nav-item.active i { transform: scale(1.1); }
         .nav-item:hover { color: var(--primary); }
 
-        /* ===== SCREENS ===== */
         .screen {
             display: none;
             flex: 1;
@@ -301,7 +294,6 @@
         }
         .screen.active { display: block; }
 
-        /* ===== STORIES BAR ===== */
         .stories-bar {
             display: flex;
             gap: 12px;
@@ -364,7 +356,6 @@
             white-space: nowrap;
         }
 
-        /* ===== STORY VIEWER ===== */
         .story-viewer {
             display: none;
             position: fixed;
@@ -471,7 +462,6 @@
             color: var(--primary);
         }
 
-        /* ===== POSTS ===== */
         .post-card {
             background: var(--card);
             border-radius: var(--radius);
@@ -501,6 +491,18 @@
             max-height: 400px;
             object-fit: cover;
             display: block;
+        }
+
+        /* ===== NEW: Video Styles ===== */
+        .post-video {
+            width: 100%;
+            max-height: 400px;
+            background: #000;
+            display: block;
+            border-radius: 0;
+        }
+        .post-video::-webkit-media-controls {
+            background: rgba(0,0,0,0.3);
         }
 
         .post-text { padding: 12px 16px; font-size: 14px; line-height: 1.6; }
@@ -584,7 +586,6 @@
         .comment-item .content .name { font-weight: 600; font-size: 12px; }
         .comment-item .content .text { font-size: 13px; color: var(--text); }
 
-        /* ===== EXPLORE ===== */
         .explore-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -598,7 +599,6 @@
             cursor: pointer;
         }
 
-        /* ===== CREATE ===== */
         .create-container {
             padding: 20px;
             max-width: 600px;
@@ -627,7 +627,66 @@
             margin-top: 16px;
         }
 
-        /* ===== STORY UPLOAD BUTTON ===== */
+        /* ===== NEW: Video Upload Section ===== */
+        .video-upload-section {
+            margin: 16px 0;
+        }
+        .video-upload-section label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+            justify-content: center;
+        }
+        .video-upload-section label:hover {
+            border-color: var(--primary);
+            background: var(--bg);
+        }
+        .video-upload-section label i {
+            font-size: 24px;
+            color: var(--primary);
+        }
+        .video-upload-section label span {
+            color: var(--text-light);
+        }
+
+        .video-preview-container {
+            display: none;
+            margin: 12px 0;
+            position: relative;
+        }
+        .video-preview-container video {
+            width: 100%;
+            max-height: 300px;
+            border-radius: var(--radius);
+            background: #000;
+        }
+        .video-preview-container .remove-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: #EF4444;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+        .video-preview-container .remove-btn:hover {
+            background: #DC2626;
+            transform: scale(1.1);
+        }
+
         .story-upload-section {
             margin: 16px 0;
             padding: 20px;
@@ -652,7 +711,6 @@
             font-size: 14px;
         }
 
-        /* ===== IMAGE UPLOAD ===== */
         .image-upload-section {
             margin: 16px 0;
         }
@@ -712,34 +770,6 @@
             transform: scale(1.1);
         }
 
-        /* ===== PROFILE PICTURE UPLOAD ===== */
-        .avatar-upload {
-            position: relative;
-            display: inline-block;
-            cursor: pointer;
-        }
-        .avatar-upload .avatar-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0,0,0,0.6);
-            color: white;
-            padding: 4px;
-            border-radius: 0 0 50% 50%;
-            font-size: 10px;
-            text-align: center;
-            opacity: 0;
-            transition: var(--transition);
-        }
-        .avatar-upload:hover .avatar-overlay {
-            opacity: 1;
-        }
-        .avatar-upload input[type="file"] {
-            display: none;
-        }
-
-        /* ===== MESSAGES ===== */
         .chat-list { padding: 12px 16px; }
         .chat-item {
             display: flex;
@@ -759,7 +789,6 @@
         .chat-item .info .name { font-weight: 600; }
         .chat-item .info .last-msg { font-size: 13px; color: var(--text-light); }
 
-        /* ===== PROFILE ===== */
         .profile-header {
             background: var(--card);
             padding: 20px;
@@ -824,7 +853,8 @@
             gap: 4px;
             padding: 4px;
         }
-        .profile-posts img {
+        .profile-posts img,
+        .profile-posts video {
             width: 100%;
             aspect-ratio: 1;
             object-fit: cover;
@@ -845,7 +875,6 @@
         }
         .logout-btn:hover { background: var(--border); color: var(--text); }
 
-        /* ===== TOAST ===== */
         #toastContainer {
             position: fixed;
             bottom: 80px;
@@ -873,7 +902,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .auth-card { padding: 32px 24px; margin: 16px; }
             .otp-card { padding: 32px 24px; margin: 16px; }
@@ -906,7 +934,6 @@
 </head>
 <body>
 
-    <!-- ===== AUTH SCREEN ===== -->
     <div id="authScreen" class="auth-container">
         <div class="auth-card">
             <div class="auth-header">
@@ -961,7 +988,6 @@
         </div>
     </div>
 
-    <!-- ===== OTP SCREEN ===== -->
     <div id="otpScreen" class="otp-container">
         <div class="otp-card">
             <div class="icon"><i class="fas fa-envelope"></i></div>
@@ -989,7 +1015,6 @@
         </div>
     </div>
 
-    <!-- ===== STORY VIEWER ===== -->
     <div id="storyViewer" class="story-viewer">
         <div class="story-progress" id="storyProgress"></div>
         <button class="story-close" id="closeStory"><i class="fas fa-times"></i></button>
@@ -1006,7 +1031,6 @@
         </div>
     </div>
 
-    <!-- ===== MAIN APP ===== -->
     <div id="appContainer" class="app-container">
         <div id="screenHome" class="screen active">
             <div class="stories-bar" id="storiesBar"></div>
@@ -1028,6 +1052,7 @@
                 <h2 style="margin-bottom:16px;">Create Post</h2>
                 <textarea id="postText" placeholder="What's on your mind?"></textarea>
                 
+                <!-- Image Upload -->
                 <div class="image-upload-section">
                     <label for="postImageInput">
                         <i class="fas fa-image"></i>
@@ -1035,13 +1060,25 @@
                         <input type="file" id="postImageInput" accept="image/*" style="display: none;" />
                     </label>
                 </div>
-                
                 <div class="image-preview-container" id="postImagePreview">
                     <img id="previewImage" src="" alt="Preview" />
                     <button class="remove-btn" id="removeImageBtn"><i class="fas fa-times"></i></button>
                 </div>
+
+                <!-- ===== NEW: Video Upload ===== -->
+                <div class="video-upload-section">
+                    <label for="postVideoInput">
+                        <i class="fas fa-video"></i>
+                        <span id="videoUploadText">Click to add a video</span>
+                        <input type="file" id="postVideoInput" accept="video/*" style="display: none;" />
+                    </label>
+                </div>
+                <div class="video-preview-container" id="postVideoPreview">
+                    <video id="previewVideo" controls></video>
+                    <button class="remove-btn" id="removeVideoBtn"><i class="fas fa-times"></i></button>
+                </div>
                 
-                <!-- Story Upload Section -->
+                <!-- Story Upload -->
                 <div class="story-upload-section" id="storyUploadSection">
                     <i class="fas fa-plus-circle"></i>
                     <p>Add to Your Story</p>
@@ -1107,7 +1144,7 @@
 
     <script>
         // ============================================
-        // 🔥 YOUR FIREBASE CONFIG
+        // FIREBASE CONFIG
         // ============================================
         const firebaseConfig = {
             apiKey: "AIzaSyCl0CpUJcMMll8klL0ldN22KwbUlCgaw2Q",
@@ -1125,6 +1162,13 @@
         db.enablePersistence().catch(err => console.warn('Persistence error:', err));
 
         // ============================================
+        // CLOUDINARY CONFIG (VIDEO UPLOAD)
+        // ============================================
+        const CLOUDINARY_CLOUD_NAME = "fuy6hebl";
+        const CLOUDINARY_UPLOAD_PRESET = "social_app_preset";
+        const CLOUDINARY_API_KEY = "368486518211889";
+
+        // ============================================
         // APP STATE
         // ============================================
         let currentUser = null;
@@ -1134,6 +1178,7 @@
         let countdownTimer = 60;
         let countdownInterval = null;
         let selectedImageFile = null;
+        let selectedVideoFile = null;
 
         // ============================================
         // UTILITY FUNCTIONS
@@ -1491,7 +1536,7 @@
 
             try {
                 showToast('Uploading profile picture...', 'info');
-                const imageURL = await uploadImageToImgBB(file);
+                const imageURL = await uploadImageToCloudinary(file);
                 
                 await db.collection('users').doc(currentUser.uid).update({
                     photoURL: imageURL
@@ -1539,7 +1584,63 @@
         });
 
         // ============================================
-        // STORY UPLOAD - FORCED TO SAVE IMAGE
+        // ===== NEW: VIDEO UPLOAD =====
+        // ============================================
+        const postVideoInput = document.getElementById('postVideoInput');
+        const videoPreviewContainer = document.getElementById('postVideoPreview');
+        const previewVideo = document.getElementById('previewVideo');
+        const removeVideoBtn = document.getElementById('removeVideoBtn');
+        const videoUploadText = document.getElementById('videoUploadText');
+
+        postVideoInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                selectedVideoFile = file;
+                const url = URL.createObjectURL(file);
+                previewVideo.src = url;
+                videoPreviewContainer.style.display = 'block';
+                videoUploadText.textContent = file.name;
+            }
+        });
+
+        removeVideoBtn.addEventListener('click', function() {
+            selectedVideoFile = null;
+            videoPreviewContainer.style.display = 'none';
+            previewVideo.src = '';
+            postVideoInput.value = '';
+            videoUploadText.textContent = 'Click to add a video';
+        });
+
+        // ============================================
+        // ===== CLOUDINARY UPLOAD FUNCTION =====
+        // ============================================
+        async function uploadToCloudinary(file, resourceType = 'auto') {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+            formData.append('api_key', CLOUDINARY_API_KEY);
+            
+            const url = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/${resourceType}/upload`;
+            
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                if (data.secure_url) {
+                    return data.secure_url;
+                } else {
+                    throw new Error(data.error?.message || 'Upload failed');
+                }
+            } catch (error) {
+                console.error('Cloudinary upload error:', error);
+                throw error;
+            }
+        }
+
+        // ============================================
+        // STORY UPLOAD
         // ============================================
         document.getElementById('storyUploadSection')?.addEventListener('click', () => {
             document.getElementById('storyImageInput').click();
@@ -1555,31 +1656,22 @@
             try {
                 showToast('Uploading story...', 'info');
                 
-                const imageURL = await uploadImageToImgBB(file);
+                const imageURL = await uploadToCloudinary(file, 'image');
                 console.log('✅ Image uploaded:', imageURL);
                 
                 const expiresAt = new Date();
                 expiresAt.setHours(expiresAt.getHours() + 24);
                 
-                // FORCE the image field to be saved
                 const storyData = {
                     userId: currentUser.uid,
                     username: currentUserData.name,
                     userPhoto: currentUserData.photoURL,
-                    image: imageURL,  // This MUST be here
+                    image: imageURL,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                     expiresAt: firebase.firestore.Timestamp.fromDate(expiresAt)
                 };
                 
-                console.log('📤 Saving story data:', JSON.stringify(storyData, null, 2));
-                
-                // Add to Firestore
-                const docRef = await db.collection('stories').add(storyData);
-                console.log('✅ Story saved with ID:', docRef.id);
-                
-                // Verify it was saved
-                const savedDoc = await db.collection('stories').doc(docRef.id).get();
-                console.log('📥 Verified saved data:', savedDoc.data());
+                await db.collection('stories').add(storyData);
                 
                 showToast('Story added!', 'success');
                 loadStories();
@@ -1591,39 +1683,12 @@
         });
 
         // ============================================
-        // IMGBB UPLOAD
-        // ============================================
-        const IMGBB_API_KEY = "baff149e0772a0ef1f4baef60711e09e";
-
-        async function uploadImageToImgBB(file) {
-            const formData = new FormData();
-            formData.append('image', file);
-            formData.append('key', IMGBB_API_KEY);
-
-            try {
-                const response = await fetch('https://api.imgbb.com/1/upload', {
-                    method: 'POST',
-                    body: formData
-                });
-                const data = await response.json();
-                if (data.success) {
-                    return data.data.url;
-                } else {
-                    throw new Error(data.error?.message || 'Upload failed');
-                }
-            } catch (error) {
-                console.error('ImgBB upload error:', error);
-                throw error;
-            }
-        }
-
-        // ============================================
-        // CREATE POST WITH IMAGE
+        // CREATE POST WITH IMAGE OR VIDEO
         // ============================================
         document.getElementById('createPostBtn').addEventListener('click', async () => {
             const text = document.getElementById('postText').value.trim();
-            if (!text && !selectedImageFile) {
-                showToast('Please write something or add an image', 'error');
+            if (!text && !selectedImageFile && !selectedVideoFile) {
+                showToast('Please write something or add media', 'error');
                 return;
             }
 
@@ -1632,10 +1697,20 @@
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Posting...';
 
             try {
-                let imageURL = null;
-                if (selectedImageFile) {
+                let mediaURL = null;
+                let mediaType = null;
+                
+                // Upload video if selected
+                if (selectedVideoFile) {
+                    showToast('Uploading video... (this may take a moment)', 'info');
+                    mediaURL = await uploadToCloudinary(selectedVideoFile, 'video');
+                    mediaType = 'video';
+                } 
+                // Upload image if selected
+                else if (selectedImageFile) {
                     showToast('Uploading image...', 'info');
-                    imageURL = await uploadImageToImgBB(selectedImageFile);
+                    mediaURL = await uploadToCloudinary(selectedImageFile, 'image');
+                    mediaType = 'image';
                 }
 
                 await db.collection('posts').add({
@@ -1643,23 +1718,31 @@
                     username: currentUserData.name,
                     userPhoto: currentUserData.photoURL,
                     text: text || '',
-                    image: imageURL,
+                    mediaURL: mediaURL,
+                    mediaType: mediaType,
                     likes: [],
                     comments: [],
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
 
+                // Reset form
                 document.getElementById('postText').value = '';
                 selectedImageFile = null;
+                selectedVideoFile = null;
                 previewContainer.style.display = 'none';
                 previewImage.src = '';
                 postImageInput.value = '';
                 imageUploadText.textContent = 'Click to add an image';
+                videoPreviewContainer.style.display = 'none';
+                previewVideo.src = '';
+                postVideoInput.value = '';
+                videoUploadText.textContent = 'Click to add a video';
                 
                 showToast('Post created!', 'success');
                 loadFeed();
                 document.querySelector('[data-screen="screenHome"]').click();
             } catch (error) {
+                console.error('Post error:', error);
                 showToast(error.message || 'Failed to create post', 'error');
             } finally {
                 btn.disabled = false;
@@ -1708,13 +1791,11 @@
         }
 
         // ============================================
-        // STORIES - COMPLETELY REBUILT
+        // STORIES
         // ============================================
         function loadStories() {
             const now = new Date();
             const currentUserId = currentUser?.uid;
-            
-            console.log('📸 Loading stories...');
             
             db.collection('stories')
                 .where('expiresAt', '>', firebase.firestore.Timestamp.fromDate(now))
@@ -1723,7 +1804,6 @@
                     const stories = [];
                     snapshot.forEach((doc) => {
                         const data = doc.data();
-                        console.log('📸 Story data from Firestore:', data);
                         stories.push({ 
                             id: doc.id, 
                             ...data,
@@ -1731,21 +1811,13 @@
                         });
                     });
                     
-                    console.log('📸 Total stories:', stories.length);
-                    
-                    // Filter out current user's stories
                     const otherStories = stories.filter(s => s.userId !== currentUserId);
-                    console.log('📸 Other users stories:', otherStories.length);
-                    
                     renderStories(otherStories);
                 }, (error) => {
                     console.error('❌ Error loading stories:', error);
                 });
         }
 
-        // ============================================
-        // RENDER STORIES
-        // ============================================
         function renderStories(stories) {
             const bar = document.getElementById('storiesBar');
             
@@ -1780,12 +1852,7 @@
             });
         }
 
-        // ============================================
-        // STORY VIEWER
-        // ============================================
         function viewStory(storyId) {
-            console.log('📸 Opening story:', storyId);
-            
             const viewer = document.getElementById('storyViewer');
             const loading = document.getElementById('storyLoading');
             const image = document.getElementById('storyImage');
@@ -1801,19 +1868,14 @@
             db.collection('stories').doc(storyId).get()
                 .then((doc) => {
                     if (!doc.exists) {
-                        console.error('❌ Story not found');
                         showToast('Story not found', 'error');
                         viewer.classList.remove('active');
                         return;
                     }
                     
                     const story = doc.data();
-                    console.log('📸 Story data:', story);
-                    console.log('📸 Image URL:', story.image);
-                    console.log('📸 All fields:', Object.keys(story));
                     
                     if (!story.image) {
-                        console.error('❌ No image in story');
                         showToast('Story has no image', 'error');
                         loading.innerHTML = '<i class="fas fa-exclamation-circle"></i> No image found';
                         setTimeout(() => {
@@ -1829,7 +1891,6 @@
                     image.alt = 'Story from ' + (story.username || 'User');
                     
                     image.onload = function() {
-                        console.log('✅ Image loaded successfully!');
                         loading.style.display = 'none';
                         image.style.display = 'block';
                         
@@ -1854,8 +1915,6 @@
                     };
                     
                     image.onerror = function(e) {
-                        console.error('❌ Image failed to load:', e);
-                        console.error('❌ Image URL:', story.image);
                         loading.innerHTML = '<i class="fas fa-exclamation-circle"></i> Failed to load image';
                         setTimeout(() => {
                             viewer.classList.remove('active');
@@ -1863,15 +1922,11 @@
                     };
                 })
                 .catch((error) => {
-                    console.error('❌ Error loading story:', error);
                     showToast('Failed to load story', 'error');
                     viewer.classList.remove('active');
                 });
         }
 
-        // ============================================
-        // CLOSE STORY VIEWER
-        // ============================================
         document.getElementById('closeStory').addEventListener('click', () => {
             if (window.storyInterval) {
                 clearInterval(window.storyInterval);
@@ -1889,7 +1944,7 @@
         });
 
         // ============================================
-        // LOAD FEED
+        // LOAD FEED (UPDATED FOR VIDEO)
         // ============================================
         function loadFeed() {
             db.collection('posts').orderBy('createdAt', 'desc').onSnapshot((snapshot) => {
@@ -1921,7 +1976,10 @@
                             <div class="time">${formatTime(post.createdAt)}${post.updatedAt ? ' · Edited' : ''}</div>
                         </div>
                     </div>
-                    ${post.image ? `<img src="${post.image}" class="post-image" />` : ''}
+                    ${post.mediaType === 'video' ? 
+                        `<video src="${post.mediaURL}" class="post-video" controls></video>` : 
+                        post.mediaURL ? `<img src="${post.mediaURL}" class="post-image" />` : ''
+                    }
                     ${post.text ? `<div class="post-text">${post.text}</div>` : ''}
                     <div class="post-actions">
                         <button onclick="toggleLike('${post.id}')" class="${post.likes && post.likes.includes(currentUser?.uid) ? 'liked' : ''}">
@@ -2040,7 +2098,9 @@
                 const items = [];
                 snapshot.forEach((doc) => {
                     const data = doc.data();
-                    if (data.image) items.push(data.image);
+                    if (data.mediaURL && data.mediaType === 'image') {
+                        items.push(data.mediaURL);
+                    }
                 });
                 container.innerHTML = items.slice(0, 30).map(img => 
                     `<img src="${img}" onclick="showToast('View post', 'info')" />`
@@ -2107,11 +2167,15 @@
                 const items = [];
                 snapshot.forEach((doc) => {
                     const data = doc.data();
-                    if (data.image) items.push(data.image);
+                    if (data.mediaURL) {
+                        if (data.mediaType === 'video') {
+                            items.push(`<video src="${data.mediaURL}" controls style="width:100%;aspect-ratio:1;object-fit:cover;"></video>`);
+                        } else {
+                            items.push(`<img src="${data.mediaURL}" />`);
+                        }
+                    }
                 });
-                container.innerHTML = items.map(img => 
-                    `<img src="${img}" />`
-                ).join('');
+                container.innerHTML = items.join('');
             });
         }
 
@@ -2154,8 +2218,9 @@
             navigator.serviceWorker.register('/service-worker.js').catch(() => {});
         }
 
-        console.log('🚀 Social Media App loaded!');
-        console.log('📸 Stories will show console logs for debugging');
+        console.log('🚀 Social Media App loaded with VIDEO UPLOAD!');
+        console.log('🎥 Upload videos using Cloudinary');
+        console.log('☁️ Cloud Name:', CLOUDINARY_CLOUD_NAME);
     </script>
 </body>
 </html>
