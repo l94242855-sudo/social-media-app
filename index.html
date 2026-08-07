@@ -1541,7 +1541,7 @@
         });
 
         // ============================================
-        // STORY UPLOAD (FIXED - WITH DEBUGGING)
+        // STORY UPLOAD - SIMPLIFIED
         // ============================================
         document.getElementById('storyUploadSection')?.addEventListener('click', () => {
             document.getElementById('storyImageInput').click();
@@ -1554,37 +1554,29 @@
                 return;
             }
 
-            console.log('📸 Story upload started:', file.name, file.size);
-
             try {
                 showToast('Uploading story...', 'info');
                 
-                // Upload to ImgBB
                 const imageURL = await uploadImageToImgBB(file);
-                console.log('📸 Image uploaded to ImgBB:', imageURL);
+                console.log('📸 Image URL:', imageURL);
                 
-                // Story expires in 24 hours
                 const expiresAt = new Date();
                 expiresAt.setHours(expiresAt.getHours() + 24);
                 
-                // Save to Firestore
                 const storyData = {
                     userId: currentUser.uid,
                     username: currentUserData.name,
                     userPhoto: currentUserData.photoURL,
-                    image: imageURL,
+                    imageUrl: imageURL,  // <-- CHANGED: using imageUrl instead of image
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                     expiresAt: firebase.firestore.Timestamp.fromDate(expiresAt)
                 };
                 
-                console.log('📸 Saving story data:', storyData);
+                console.log('📸 Saving story:', storyData);
                 
                 await db.collection('stories').add(storyData);
                 
                 showToast('Story added!', 'success');
-                console.log('✅ Story saved to Firestore');
-                
-                // Reload stories
                 loadStories();
             } catch (error) {
                 console.error('❌ Story upload error:', error);
@@ -1711,7 +1703,7 @@
         }
 
         // ============================================
-        // STORIES - Load for Stories Bar
+        // STORIES - Load for Stories Bar (FIXED)
         // ============================================
         function loadStories() {
             const now = new Date();
@@ -1759,6 +1751,8 @@
             storiesData.forEach(story => {
                 if (story.userId === currentUser?.uid) return;
                 
+                // Use imageUrl if available, fallback to image
+                const imageUrl = story.imageUrl || story.image;
                 const photoURL = story.userPhoto || 'https://ui-avatars.com/api/?name=U&background=7C3AED&color=fff';
                 const username = story.username || 'User';
                 
@@ -1780,7 +1774,7 @@
         }
 
         // ============================================
-        // STORY VIEWER (FIXED - WITH DEBUGGING)
+        // STORY VIEWER (FIXED - Shows Image)
         // ============================================
         function viewStory(storyId) {
             console.log('📸 Opening story ID:', storyId);
@@ -1792,7 +1786,6 @@
             const userName = document.getElementById('storyUserName');
             const progressBars = document.getElementById('storyProgress');
             
-            // Show viewer with loading
             viewer.classList.add('active');
             loading.style.display = 'block';
             loading.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading story...';
@@ -1801,19 +1794,21 @@
             db.collection('stories').doc(storyId).get()
                 .then((doc) => {
                     if (!doc.exists) {
-                        console.error('❌ Story document does not exist');
+                        console.error('❌ Story not found');
                         showToast('Story not found', 'error');
                         viewer.classList.remove('active');
                         return;
                     }
                     
                     const story = doc.data();
-                    console.log('📸 Full story data:', story);
-                    console.log('📸 Image URL:', story.image);
-                    console.log('📸 All keys:', Object.keys(story));
+                    console.log('📸 Story data:', story);
                     
-                    if (!story.image) {
-                        console.error('❌ No image field in story data');
+                    // Check both image and imageUrl fields
+                    const imageUrl = story.imageUrl || story.image;
+                    console.log('📸 Image URL found:', imageUrl);
+                    
+                    if (!imageUrl) {
+                        console.error('❌ No image found in story');
                         showToast('Story has no image', 'error');
                         loading.innerHTML = '<i class="fas fa-exclamation-circle"></i> No image found';
                         setTimeout(() => {
@@ -1822,22 +1817,18 @@
                         return;
                     }
                     
-                    // Set user info
                     userAvatar.src = story.userPhoto || 'https://ui-avatars.com/api/?name=U&background=7C3AED&color=fff';
                     userName.textContent = story.username || 'User';
                     
-                    // Set image
-                    console.log('📸 Setting image src to:', story.image);
-                    image.src = story.image;
+                    console.log('📸 Setting image src to:', imageUrl);
+                    image.src = imageUrl;
                     image.alt = 'Story from ' + (story.username || 'User');
                     
-                    // When image loads, hide loading
                     image.onload = function() {
                         console.log('✅ Image loaded successfully!');
                         loading.style.display = 'none';
                         image.style.display = 'block';
                         
-                        // Start progress bar
                         let progress = 0;
                         progressBars.innerHTML = `<div class="progress-bar"><div class="fill" id="storyProgressFill"></div></div>`;
                         const fill = document.getElementById('storyProgressFill');
@@ -1858,10 +1849,9 @@
                         }, 50);
                     };
                     
-                    // If image fails to load
                     image.onerror = function(e) {
                         console.error('❌ Image failed to load:', e);
-                        console.error('❌ Image URL was:', story.image);
+                        console.error('❌ Image URL was:', imageUrl);
                         loading.innerHTML = '<i class="fas fa-exclamation-circle"></i> Failed to load image';
                         setTimeout(() => {
                             viewer.classList.remove('active');
@@ -2161,8 +2151,9 @@
             navigator.serviceWorker.register('/service-worker.js').catch(() => {});
         }
 
-        console.log('🚀 Social Media App loaded with STORY DEBUGGING!');
-        console.log('📸 Check the console for logs when uploading/viewing stories.');
+        console.log('🚀 Social Media App loaded with STORY FIX!');
+        console.log('📸 Stories now use "imageUrl" field');
+        console.log('📸 Check the console for debugging info');
     </script>
 </body>
 </html>
