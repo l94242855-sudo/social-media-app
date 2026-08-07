@@ -308,6 +308,7 @@
             overflow-x: auto;
             background: var(--card);
             border-bottom: 1px solid var(--border);
+            min-height: 100px;
         }
         .story-item {
             display: flex;
@@ -316,7 +317,6 @@
             gap: 4px;
             cursor: pointer;
             flex-shrink: 0;
-            position: relative;
         }
         .story-item .story-ring {
             width: 68px;
@@ -340,6 +340,7 @@
             font-size: 24px;
             color: var(--text-light);
             cursor: pointer;
+            padding: 0;
         }
         .story-item .story-ring.add-story:hover {
             background: var(--primary);
@@ -1008,7 +1009,7 @@
                     <button class="remove-btn" id="removeImageBtn"><i class="fas fa-times"></i></button>
                 </div>
                 
-                <!-- ===== NEW: Story Upload Section ===== -->
+                <!-- ===== Story Upload Section ===== -->
                 <div class="story-upload-section" id="storyUploadSection">
                     <i class="fas fa-plus-circle"></i>
                     <p>Add to Your Story</p>
@@ -1100,12 +1101,10 @@
         let currentUser = null;
         let currentUserData = null;
         let posts = [];
-        let stories = [];
         let pendingUserCredential = null;
         let countdownTimer = 60;
         let countdownInterval = null;
         let selectedImageFile = null;
-        let selectedStoryFile = null;
 
         // ============================================
         // UTILITY FUNCTIONS
@@ -1300,7 +1299,6 @@
             loadFeed();
             loadExplore();
             loadStories();
-            loadAllStories();
             showToast('Welcome to Social App!', 'success');
         }
 
@@ -1393,7 +1391,6 @@
                         loadFeed();
                         loadExplore();
                         loadStories();
-                        loadAllStories();
                     }
                 } else {
                     pendingUserCredential = { user };
@@ -1473,8 +1470,6 @@
                 
                 currentUserData.photoURL = imageURL;
                 document.getElementById('profileAvatar').src = imageURL;
-                document.getElementById('userAvatar').src = imageURL;
-                document.getElementById('profileAvatar').src = imageURL;
                 
                 showToast('Profile picture updated!', 'success');
             } catch (error) {
@@ -1515,16 +1510,13 @@
         });
 
         // ============================================
-        // STORY UPLOAD
+        // STORY UPLOAD (FIXED)
         // ============================================
-        const storyImageInput = document.getElementById('storyImageInput');
-        const storyUploadSection = document.getElementById('storyUploadSection');
-
-        storyUploadSection.addEventListener('click', () => {
-            storyImageInput.click();
+        document.getElementById('storyUploadSection')?.addEventListener('click', () => {
+            document.getElementById('storyImageInput').click();
         });
 
-        storyImageInput.addEventListener('change', async function(e) {
+        document.getElementById('storyImageInput')?.addEventListener('change', async function(e) {
             const file = e.target.files[0];
             if (!file || !currentUser) return;
 
@@ -1546,9 +1538,10 @@
                 });
                 
                 showToast('Story added!', 'success');
+                // Force reload stories
                 loadStories();
-                loadAllStories();
             } catch (error) {
+                console.error('Story upload error:', error);
                 showToast(error.message || 'Failed to add story', 'error');
             }
             this.value = '';
@@ -1670,6 +1663,122 @@
                     });
             }
         }
+
+        // ============================================
+        // STORIES - Load for Stories Bar (FIXED)
+        // ============================================
+        function loadStories() {
+            const now = new Date();
+            
+            db.collection('stories')
+                .where('expiresAt', '>', firebase.firestore.Timestamp.fromDate(now))
+                .orderBy('createdAt', 'desc')
+                .onSnapshot((snapshot) => {
+                    const storyData = [];
+                    snapshot.forEach((doc) => {
+                        storyData.push({ id: doc.id, ...doc.data() });
+                    });
+                    
+                    // Group by user, show latest story per user
+                    const userStories = {};
+                    storyData.forEach(story => {
+                        const userId = story.userId;
+                        if (!userStories[userId] || story.createdAt > userStories[userId].createdAt) {
+                            userStories[userId] = story;
+                        }
+                    });
+                    
+                    renderStories(Object.values(userStories));
+                }, (error) => {
+                    console.error('Error loading stories:', error);
+                });
+        }
+
+        // ============================================
+        // RENDER STORIES (FIXED)
+        // ============================================
+        function renderStories(storiesData) {
+            const bar = document.getElementById('storiesBar');
+            
+            // Start with "Your Story" - always visible
+            let html = `
+                <div class="story-item" id="addStoryBtn">
+                    <div class="story-ring add-story" style="background: var(--border); display: flex; align-items: center; justify-content: center; width: 68px; height: 68px; border-radius: 50%; cursor: pointer;">
+                        <i class="fas fa-plus" style="font-size: 24px; color: var(--text-light);"></i>
+                    </div>
+                    <span>Your Story</span>
+                </div>
+            `;
+            
+            // Add all other users' stories
+            storiesData.forEach(story => {
+                // Skip if it's the current user's story (we show "Your Story" instead)
+                if (story.userId === currentUser?.uid) return;
+                
+                const photoURL = story.userPhoto || 'https://ui-avatars.com/api/?name=U&background=7C3AED&color=fff';
+                const username = story.username || 'User';
+                
+                html += `
+                    <div class="story-item" onclick="viewStory('${story.id}')">
+                        <div class="story-ring" style="width: 68px; height: 68px; border-radius: 50%; padding: 2px; background: var(--gradient);">
+                            <img src="${photoURL}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid var(--card);" />
+                        </div>
+                        <span class="story-username">${username}</span>
+                    </div>
+                `;
+            });
+            
+            bar.innerHTML = html;
+            
+            // Add story upload handler
+            document.getElementById('addStoryBtn')?.addEventListener('click', () => {
+                document.getElementById('storyImageInput').click();
+            });
+        }
+
+        // ============================================
+        // STORY VIEWER
+        // ============================================
+        function viewStory(storyId) {
+            db.collection('stories').doc(storyId).get().then((doc) => {
+                if (!doc.exists) return;
+                const story = doc.data();
+                
+                document.getElementById('storyUserAvatar').src = story.userPhoto || 'https://ui-avatars.com/api/?name=U&background=7C3AED&color=fff';
+                document.getElementById('storyUserName').textContent = story.username || 'User';
+                document.getElementById('storyImage').src = story.image;
+                
+                document.getElementById('storyViewer').classList.add('active');
+                
+                // Auto-advance progress bar
+                let progress = 0;
+                const progressBars = document.getElementById('storyProgress');
+                progressBars.innerHTML = `<div class="progress-bar"><div class="fill" id="storyProgressFill"></div></div>`;
+                
+                const fill = document.getElementById('storyProgressFill');
+                const interval = setInterval(() => {
+                    progress += 1;
+                    fill.style.width = progress + '%';
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        setTimeout(() => {
+                            document.getElementById('storyViewer').classList.remove('active');
+                        }, 500);
+                    }
+                }, 50);
+            });
+        }
+
+        // Close story viewer
+        document.getElementById('closeStory').addEventListener('click', () => {
+            document.getElementById('storyViewer').classList.remove('active');
+        });
+
+        document.getElementById('storyViewer').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) {
+                document.getElementById('storyViewer').classList.remove('active');
+            }
+        });
 
         // ============================================
         // LOAD FEED
@@ -1855,120 +1964,6 @@
         });
 
         // ============================================
-        // STORIES - Load for Stories Bar
-        // ============================================
-        function loadStories() {
-            const now = new Date();
-            
-            db.collection('stories')
-                .where('expiresAt', '>', now)
-                .orderBy('createdAt', 'desc')
-                .onSnapshot((snapshot) => {
-                    const storyData = [];
-                    snapshot.forEach((doc) => {
-                        storyData.push({ id: doc.id, ...doc.data() });
-                    });
-                    
-                    // Group by user, show latest story per user
-                    const userStories = {};
-                    storyData.forEach(story => {
-                        if (!userStories[story.userId] || story.createdAt > userStories[story.userId].createdAt) {
-                            userStories[story.userId] = story;
-                        }
-                    });
-                    
-                    renderStories(Object.values(userStories));
-                });
-        }
-
-        function renderStories(storiesData) {
-            const bar = document.getElementById('storiesBar');
-            
-            // Add "Your Story" option
-            let html = `
-                <div class="story-item" id="addStoryBtn">
-                    <div class="story-ring add-story" style="background: var(--border);">
-                        <i class="fas fa-plus" style="font-size: 24px; color: var(--text-light);"></i>
-                    </div>
-                    <span>Your Story</span>
-                </div>
-            `;
-            
-            // Add other users' stories
-            storiesData.forEach(story => {
-                if (story.userId !== currentUser?.uid) {
-                    html += `
-                        <div class="story-item" onclick="viewStory('${story.id}')">
-                            <div class="story-ring">
-                                <img src="${story.userPhoto || 'https://ui-avatars.com/api/?name=U&background=7C3AED&color=fff'}" />
-                            </div>
-                            <span class="story-username">${story.username || 'User'}</span>
-                        </div>
-                    `;
-                }
-            });
-            
-            bar.innerHTML = html;
-            
-            // Add story upload handler
-            document.getElementById('addStoryBtn')?.addEventListener('click', () => {
-                document.getElementById('storyImageInput').click();
-            });
-        }
-
-        // ============================================
-        // STORY VIEWER
-        // ============================================
-        function viewStory(storyId) {
-            db.collection('stories').doc(storyId).get().then((doc) => {
-                if (!doc.exists) return;
-                const story = doc.data();
-                
-                document.getElementById('storyUserAvatar').src = story.userPhoto || 'https://ui-avatars.com/api/?name=U&background=7C3AED&color=fff';
-                document.getElementById('storyUserName').textContent = story.username || 'User';
-                document.getElementById('storyImage').src = story.image;
-                
-                // Show viewer
-                document.getElementById('storyViewer').classList.add('active');
-                
-                // Update progress bar (auto-advance)
-                let progress = 0;
-                const progressBars = document.getElementById('storyProgress');
-                progressBars.innerHTML = `<div class="progress-bar"><div class="fill" id="storyProgressFill"></div></div>`;
-                
-                const fill = document.getElementById('storyProgressFill');
-                const interval = setInterval(() => {
-                    progress += 1;
-                    fill.style.width = progress + '%';
-                    if (progress >= 100) {
-                        clearInterval(interval);
-                        setTimeout(() => {
-                            document.getElementById('storyViewer').classList.remove('active');
-                        }, 500);
-                    }
-                }, 50);
-            });
-        }
-
-        // Close story viewer
-        document.getElementById('closeStory').addEventListener('click', () => {
-            document.getElementById('storyViewer').classList.remove('active');
-        });
-
-        document.getElementById('storyViewer').addEventListener('click', (e) => {
-            if (e.target === e.currentTarget) {
-                document.getElementById('storyViewer').classList.remove('active');
-            }
-        });
-
-        // ============================================
-        // LOAD ALL STORIES (for story viewer)
-        // ============================================
-        function loadAllStories() {
-            // This is a placeholder - stories are loaded in loadStories
-        }
-
-        // ============================================
         // MESSAGES
         // ============================================
         function loadChats() {
@@ -2029,7 +2024,7 @@
         };
 
         // ============================================
-        // VIEW PROFILE (from post header)
+        // VIEW PROFILE
         // ============================================
         window.viewProfile = (userId) => {
             if (userId === currentUser?.uid) {
@@ -2037,10 +2032,9 @@
                 return;
             }
             showToast('Viewing profile...', 'info');
-            // This could be expanded to show other user's profile
         };
 
-        // Make functions global for inline onclick
+        // Make functions global
         window.editPost = editPost;
         window.deletePost = deletePost;
         window.viewStory = viewStory;
@@ -2052,8 +2046,7 @@
             navigator.serviceWorker.register('/service-worker.js').catch(() => {});
         }
 
-        console.log('🚀 Social Media App loaded!');
-        console.log('📸 Stories + Profile Picture Upload added!');
+        console.log('🚀 Social Media App loaded with STORIES FIX!');
     </script>
 </body>
 </html>
